@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sarah Rivers | EcoPower Community</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#686300",
+              "secondary-fixed-dim": "#cede55",
+              "error-dim": "#b92902",
+              "error": "#be2d06",
+              "primary-fixed": "#b1fe4d",
+              "on-tertiary": "#ffffff",
+              "surface-dim": "#dfea90",
+              "on-surface-variant": "#626834",
+              "surface-container-highest": "#e5ef99",
+              "secondary": "#606a00",
+              "on-primary-fixed-variant": "#416a00",
+              "surface-tint": "#457000",
+              "tertiary-fixed": "#f9f05a",
+              "outline-variant": "#b7be81",
+              "primary-fixed-dim": "#a4ef3f",
+              "outline": "#7e854d",
+              "surface-container-low": "#f8ffb9",
+              "primary": "#457000",
+              "secondary-dim": "#545d00",
+              "error-container": "#f95630",
+              "inverse-surface": "#0d1000",
+              "background": "#fdffd9",
+              "on-tertiary-fixed": "#4a4600",
+              "on-primary": "#ffffff",
+              "tertiary-container": "#f9f05a",
+              "surface-container-high": "#ebf4a3",
+              "primary-container": "#b1fe4d",
+              "surface-bright": "#fdffd9",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-dim": "#5f5a00",
+              "secondary-fixed": "#dcec62",
+              "on-secondary-fixed": "#3c4300",
+              "on-secondary-container": "#4e5700",
+              "on-background": "#353b0b",
+              "tertiary": "#6c6700",
+              "on-error-container": "#520c00",
+              "on-tertiary-container": "#5d5900",
+              "tertiary-fixed-dim": "#ebe14e",
+              "on-error": "#ffffff",
+              "inverse-primary": "#b1fe4d",
+              "primary-dim": "#3c6200",
+              "on-primary-fixed": "#2d4b00",
+              "on-secondary": "#ffffff",
+              "on-surface": "#353b0b",
+              "inverse-on-surface": "#9ba167",
+              "surface-container": "#f1faad",
+              "surface": "#fdffd9",
+              "secondary-container": "#dcec62",
+              "on-secondary-fixed-variant": "#576100",
+              "on-primary-container": "#3a5f00",
+              "surface-variant": "#e5ef99"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .solar-glow {
+        background: linear-gradient(135deg, #457000 0%, #b1fe4d 100%);
+      }
+      body {
+        font-family: 'Manrope', sans-serif;
+        background-color: #fdffd9;
+        color: #353b0b;
+      }
+      h1, h2, h3, .headline {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+    </style>
+</head>
+<body class="bg-background min-h-screen text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fdffd9]/80 dark:bg-stone-900/80 backdrop-blur-md">
+<div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-black text-[#353b0b] dark:text-lime-100 tracking-tighter">EcoPower</div>
+<nav class="hidden md:flex items-center gap-8 font-['Plus_Jakarta_Sans'] font-bold tracking-tight">
+<a class="text-[#353b0b]/60 dark:text-stone-400 hover:text-[#457000] transition-colors" href="#">Dashboard</a>
+<a class="text-[#457000] dark:text-[#b1fe4d] border-b-2 border-[#457000] pb-1" href="#">Community</a>
+<a class="text-[#353b0b]/60 dark:text-stone-400 hover:text-[#457000] transition-colors" href="#">Impact</a>
+</nav>
+<div class="flex items-center gap-4 text-lime-700">
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img alt="Alex Rivers" class="w-full h-full object-cover" data-alt="User profile avatar of Alex Rivers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuWpvUUIQXeuJtgq6oPJLJuSsiKQSsj32UAk0RpjqVcK0g0_2dvvqhc1PlAGjLwyjCysIhSX1V8AJpNB2OGxvdX-MA2iKIKpMXU"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Desktop Only) -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-full w-64 flex-col p-4 z-40 bg-[#fdffd9] tonal-transition pt-24">
+<div class="flex flex-col gap-1 mb-8 px-4">
+<div class="w-12 h-12 rounded-2xl overflow-hidden mb-3">
+<img alt="Alex Rivers" class="w-full h-full object-cover" data-alt="Member avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuWpvUUIQXeuJtgq6oPJLJuSsiKQSsj32UAk0RpjqVcK0g0_2dvvqhc1PlAGjLwyjCysIhSX1V8AJpNB2OGxvdX-MA2iKIKpMXU"/>
+</div>
+<h3 class="text-xl font-bold text-[#353b0b]">Alex Rivers</h3>
+<p class="text-xs font-medium text-lime-700 opacity-70">Green Lab Pioneer</p>
+</div>
+<nav class="flex-1 space-y-1 font-['Plus_Jakarta_Sans'] font-medium text-sm">
+<a class="flex items-center gap-3 text-[#353b0b] px-4 py-2 my-1 hover:bg-stone-200 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span> Overview
+            </a>
+<a class="flex items-center gap-3 bg-[#457000] text-white rounded-full px-4 py-2 my-1" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span> My Energy
+            </a>
+<a class="flex items-center gap-3 text-[#353b0b] px-4 py-2 my-1 hover:bg-stone-200 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span> Badges
+            </a>
+<a class="flex items-center gap-3 text-[#353b0b] px-4 py-2 my-1 hover:bg-stone-200 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span> Posts
+            </a>
+<a class="flex items-center gap-3 text-[#353b0b] px-4 py-2 my-1 hover:bg-stone-200 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span> Settings
+            </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/10 pt-4 space-y-1">
+<button class="w-full solar-glow text-white font-bold py-3 rounded-full mb-4 shadow-lg shadow-primary/20">Share Impact</button>
+<a class="flex items-center gap-3 text-[#353b0b] px-4 py-2 hover:bg-stone-200 rounded-full transition-all text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span> Help
+            </a>
+<a class="flex items-center gap-3 text-[#353b0b] px-4 py-2 hover:bg-stone-200 rounded-full transition-all text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span> Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="pt-24 pb-32 px-4 lg:pl-72 lg:pr-12 max-w-[1600px] mx-auto">
+<!-- Profile Header: Editorial Style Asymmetry -->
+<section class="relative mb-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+<div class="lg:col-span-4 relative group">
+<div class="aspect-square rounded-xl lg:rounded-3xl overflow-hidden bg-surface-container-highest shadow-xl rotate-[-2deg] transition-transform hover:rotate-0 duration-500">
+<img alt="Sarah Rivers" class="w-full h-full object-cover" data-alt="Portrait of Sarah Rivers, top energy saver" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuWpvUUIQXeuJtgq6oPJLJuSsiKQSsj32UAk0RpjqVcK0g0_2dvvqhc1PlAGjLwyjCysIhSX1V8AJpNB2OGxvdX-MA2iKIKpMXU"/>
+</div>
+<!-- Floating Rank Badge -->
+<div class="absolute -bottom-4 -right-4 solar-glow text-white px-6 py-3 rounded-full shadow-2xl font-headline font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="stars" style="font-variation-settings: 'FILL' 1;">stars</span>
+                    Rank #2
+                </div>
+</div>
+<div class="lg:col-span-8 lg:pl-8 pb-4">
+<span class="label-md bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full font-bold tracking-widest text-[10px] uppercase mb-4 inline-block">Top Energy Saver</span>
+<h1 class="text-5xl lg:text-7xl font-headline font-extrabold tracking-tighter text-on-surface mb-2">Sarah Rivers</h1>
+<p class="text-xl text-on-surface-variant font-medium max-w-xl mb-8 leading-relaxed">
+                    Pioneering residential sustainability in the <span class="text-primary font-bold">Green Valley Collective</span>. Turning data into dynamic energy savings.
+                </p>
+<div class="flex flex-wrap gap-4">
+<button class="solar-glow text-white px-8 py-3.5 rounded-full font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span> Follow
+                    </button>
+<button class="bg-surface-container-lowest text-primary px-8 py-3.5 rounded-full font-bold flex items-center gap-2 hover:bg-surface-container transition-colors shadow-sm">
+<span class="material-symbols-outlined" data-icon="send">send</span> Message
+                    </button>
+<button class="bg-secondary text-white px-8 py-3.5 rounded-full font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="swords">swords</span> Challenge
+                    </button>
+</div>
+</div>
+</section>
+<!-- Bento Grid for Impact Summary & Badges -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
+<!-- Impact Card 1: Energy Saved -->
+<div class="bg-surface-container-lowest p-8 rounded-xl lg:rounded-3xl border border-outline-variant/10 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-6">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">+12% vs Last Month</span>
+</div>
+<h3 class="text-on-surface-variant font-bold text-sm uppercase tracking-widest mb-1">Energy Saved</h3>
+<div class="text-5xl font-headline font-black text-on-surface">428 <span class="text-xl font-medium text-on-surface-variant">kWh</span></div>
+</div>
+<div class="mt-8 h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full solar-glow w-[85%] rounded-full"></div>
+</div>
+</div>
+<!-- Impact Card 2: CO2 Offset -->
+<div class="bg-surface-container-highest p-8 rounded-xl lg:rounded-3xl flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-6">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="eco" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<h3 class="text-on-surface-variant font-bold text-sm uppercase tracking-widest mb-1">Carbon Offset</h3>
+<div class="text-5xl font-headline font-black text-on-surface">2.1 <span class="text-xl font-medium text-on-surface-variant">Tons</span></div>
+</div>
+<p class="text-sm font-medium text-on-surface-variant mt-8 leading-snug">Equivalent to planting 105 trees this year.</p>
+</div>
+<!-- Impact Card 3: Community Rank Circle -->
+<div class="bg-primary-container p-8 rounded-xl lg:rounded-3xl flex flex-col items-center justify-center text-center relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<svg class="w-full h-full" viewbox="0 0 100 100"><circle cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1"></circle></svg>
+</div>
+<h3 class="text-on-primary-container font-bold text-sm uppercase tracking-widest mb-4">Collective Rank</h3>
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-on-primary-container/10" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-on-primary-container" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364" stroke-dashoffset="36.4" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center pt-2">
+<span class="text-4xl font-black text-on-primary-container">Top</span>
+<span class="text-lg font-bold text-on-primary-container leading-none">1%</span>
+</div>
+</div>
+<p class="mt-4 text-xs font-bold text-on-primary-container/80 uppercase tracking-widest">Green Valley Collective</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Earned Badges Grid -->
+<div class="lg:col-span-7">
+<h2 class="text-3xl font-headline font-extrabold mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="military_tech">military_tech</span>
+                    Earned Badges
+                </h2>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+<!-- Badge Item -->
+<div class="bg-surface-container-low p-6 rounded-2xl flex flex-col items-center text-center group hover:bg-surface-container-highest transition-colors cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-secondary" data-icon="wb_sunny" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+</div>
+<h4 class="font-bold text-sm mb-1">Solar Spark</h4>
+<p class="text-[10px] text-on-surface-variant font-medium">100% Clean Gen</p>
+</div>
+<!-- Badge Item -->
+<div class="bg-surface-container-low p-6 rounded-2xl flex flex-col items-center text-center group hover:bg-surface-container-highest transition-colors cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-primary" data-icon="nights_stay" style="font-variation-settings: 'FILL' 1;">nights_stay</span>
+</div>
+<h4 class="font-bold text-sm mb-1">Vampire Slayer</h4>
+<p class="text-[10px] text-on-surface-variant font-medium">Zero Idle Waste</p>
+</div>
+<!-- Badge Item -->
+<div class="bg-surface-container-low p-6 rounded-2xl flex flex-col items-center text-center group hover:bg-surface-container-highest transition-colors cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-tertiary" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<h4 class="font-bold text-sm mb-1">Grid Guard</h4>
+<p class="text-[10px] text-on-surface-variant font-medium">Peak Demand MVP</p>
+</div>
+<!-- Badge Item Locked -->
+<div class="bg-surface-container-low/50 p-6 rounded-2xl flex flex-col items-center text-center opacity-50 grayscale">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant" data-icon="lock">lock</span>
+</div>
+<h4 class="font-bold text-sm mb-1">Wind Walker</h4>
+<p class="text-[10px] text-on-surface-variant font-medium">Coming Soon</p>
+</div>
+</div>
+</div>
+<!-- Recent Activity Feed -->
+<div class="lg:col-span-5">
+<h2 class="text-3xl font-headline font-extrabold mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="history">history</span>
+                    Recent Activity
+                </h2>
+<div class="space-y-4">
+<!-- Activity Item -->
+<div class="flex gap-4 p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div>
+<p class="text-sm font-medium">Clapped for <span class="font-bold">Michael Chen</span>'s solar breakthrough post.</p>
+<span class="text-[10px] font-bold text-on-surface-variant/60 uppercase tracking-widest mt-1 block">2 hours ago</span>
+</div>
+</div>
+<!-- Activity Item -->
+<div class="flex gap-4 p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-xl" data-icon="article" style="font-variation-settings: 'FILL' 1;">article</span>
+</div>
+<div>
+<p class="text-sm font-medium">Posted a new tip: <span class="font-bold italic">"Maxing output on overcast days."</span></p>
+<span class="text-[10px] font-bold text-on-surface-variant/60 uppercase tracking-widest mt-1 block">Yesterday</span>
+</div>
+</div>
+<!-- Activity Item -->
+<div class="flex gap-4 p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-tertiary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+</div>
+<div>
+<p class="text-sm font-medium">Reclaimed <span class="font-bold">2nd Place</span> on the Monthly Leaderboard.</p>
+<span class="text-[10px] font-bold text-on-surface-variant/60 uppercase tracking-widest mt-1 block">3 days ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-6 pb-6 pt-2 bg-[#fdffd9]/90 backdrop-blur-xl z-50 shadow-[0_-4px_24px_rgba(53,59,11,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#353b0b]/50" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-bold mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#353b0b]/50" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-bold mt-1">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#353b0b]/50" href="#">
+<span class="material-symbols-outlined" data-icon="eco">eco</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-bold mt-1">Impact</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#b1fe4d] text-[#353b0b] rounded-full w-14 h-14 -mt-6 shadow-lg" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-bold mt-0.5">Profile</span>
+</a>
+</nav>
+</body></html>
