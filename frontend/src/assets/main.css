@@ -1,0 +1,12 @@
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap";
+@import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap";
+@import "tailwindcss";
+
+body { font-family: 'Inter', sans-serif; }
+h1, h2, h3, .font-headline { font-family: 'Inter', sans-serif; }
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.solar-glow {
+  background: linear-gradient(135deg, #1978e5 0%, #64b5f6 100%);
+}

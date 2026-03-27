@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\models\\electricitymetermeasurement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:models\\electricitymetermeasurement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,24 +18,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "WeatherForecastController.cs",
-              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\WeatherForecastController.cs",
-              "RelativeDocumentMoniker": "Controllers\\WeatherForecastController.cs",
-              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\WeatherForecastController.cs",
-              "RelativeToolTip": "Controllers\\WeatherForecastController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T12:47:39.524Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -52,6 +43,31 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ElectricityMeterMeasurement.cs",
+              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\ElectricityMeterMeasurement.cs",
+              "RelativeDocumentMoniker": "Models\\ElectricityMeterMeasurement.cs",
+              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\ElectricityMeterMeasurement.cs",
+              "RelativeToolTip": "Models\\ElectricityMeterMeasurement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T08:16:24.381Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WeatherForecastController.cs",
+              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\WeatherForecastController.cs",
+              "RelativeDocumentMoniker": "Controllers\\WeatherForecastController.cs",
+              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\WeatherForecastController.cs",
+              "RelativeToolTip": "Controllers\\WeatherForecastController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-19T12:47:39.524Z"
             }
           ]
         }

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoSave Community | Educational Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-primary": "#bac3ff",
+              "on-surface": "#1a1c1d",
+              "outline": "#717785",
+              "on-secondary-container": "#00536e",
+              "on-secondary": "#ffffff",
+              "on-error": "#ffffff",
+              "surface-container-low": "#f4f3f5",
+              "on-primary-fixed-variant": "#223aa9",
+              "surface-dim": "#dad9dc",
+              "secondary-fixed-dim": "#6dd2ff",
+              "primary-fixed": "#dee1ff",
+              "surface-variant": "#e3e2e4",
+              "background": "#faf9fb",
+              "secondary-fixed": "#bfe9ff",
+              "secondary": "#006685",
+              "on-tertiary": "#ffffff",
+              "error": "#ba1a1a",
+              "surface-container": "#efedf0",
+              "secondary-container": "#4fcbfd",
+              "inverse-on-surface": "#f1f0f3",
+              "on-primary-container": "#fffbff",
+              "on-tertiary-fixed-variant": "#763400",
+              "on-tertiary-fixed": "#321200",
+              "tertiary-fixed-dim": "#ffb68c",
+              "tertiary-fixed": "#ffdbc9",
+              "surface-bright": "#faf9fb",
+              "inverse-surface": "#2f3032",
+              "surface-container-lowest": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-primary-fixed": "#001159",
+              "primary-container": "#566bd9",
+              "surface": "#faf9fb",
+              "on-secondary-fixed-variant": "#004d65",
+              "tertiary": "#964400",
+              "surface-container-highest": "#e3e2e4",
+              "on-tertiary-container": "#fffbff",
+              "on-surface-variant": "#414753",
+              "on-primary": "#ffffff",
+              "primary": "#3b52bf",
+              "surface-container-high": "#e9e8ea",
+              "on-secondary-fixed": "#001f2a",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#bd5700",
+              "outline-variant": "#c1c6d5",
+              "primary-fixed-dim": "#bac3ff",
+              "surface-tint": "#3e54c1",
+              "on-background": "#1a1c1d"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface flex min-h-screen">
+<!-- SideNavBar (Shared Component) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 bg-slate-50 dark:bg-slate-950 h-screen w-64 border-r border-slate-200 dark:border-slate-800 font-['Inter'] text-sm">
+<div class="px-6 py-8">
+<h2 class="text-lg font-black text-blue-900 dark:text-blue-100 uppercase tracking-tight">Energy Guide</h2>
+<p class="text-xs text-slate-500 font-medium mt-1">Community Tips</p>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">home</span>
+<span>Home</span>
+</a>
+<a class="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-bold border-r-4 border-blue-700 flex items-center gap-3 px-4 py-3 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span>Electricity</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">water_drop</span>
+<span>Water</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">thermostat</span>
+<span>Heating</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">solar_power</span>
+<span>Solar</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<button class="w-full bg-primary text-on-primary py-2.5 rounded-lg font-semibold hover:bg-blue-700 active:scale-95 transition-all">
+                Submit a Tip
+            </button>
+</div>
+<div class="px-2 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<div class="flex-1 md:ml-64 flex flex-col">
+<!-- TopAppBar (Shared Component) -->
+<header class="sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none font-['Inter'] antialiased">
+<div class="flex justify-between items-center w-full px-6 py-3 max-w-7xl mx-auto">
+<div class="text-xl font-bold text-blue-900 dark:text-blue-100 tracking-tighter">EcoSave Community</div>
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-blue-700 dark:text-blue-400 font-semibold border-b-2 border-blue-700 dark:border-blue-400 pb-1" href="#">Articles</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#">Quick Tips</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#">Community</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl mx-auto w-full p-6 md:p-10">
+<!-- Hero Section -->
+<section class="mb-12">
+<div class="bg-primary-container/10 rounded-2xl p-8 md:p-12 border border-primary-container/20 flex flex-col md:flex-row items-center gap-8 overflow-hidden relative">
+<div class="flex-1 relative z-10">
+<span class="inline-block px-3 py-1 bg-primary text-on-primary text-xs font-bold rounded-full mb-4">EDUCATIONAL HUB</span>
+<h1 class="text-4xl md:text-5xl font-black text-on-background leading-tight mb-4">Empower Your Sustainable Lifestyle.</h1>
+<p class="text-lg text-on-surface-variant max-w-xl">Join the community in reducing environmental impact through smart energy conservation, real-time insights, and peer-sourced wisdom.</p>
+<div class="mt-8 flex gap-4">
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-blue-700 active:scale-95 transition-all">
+<span class="material-symbols-outlined">explore</span> Start Learning
+                            </button>
+<button class="bg-white text-primary border border-primary/20 px-6 py-3 rounded-lg font-bold hover:bg-slate-50 active:scale-95 transition-all">
+                                View Leaderboard
+                            </button>
+</div>
+</div>
+<div class="w-full md:w-1/3 h-64 md:h-auto rounded-xl bg-cover bg-center shadow-2xl rotate-2" data-alt="Modern energy efficient home with solar panels and wind turbine in a clean green landscape with bright sunlight" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBswQZJCNtLaXvMVB_lHwfrmPYNVppSGfRwNC8YcvMn58oONz8FMW-pqQiCejQhoQNHkpxZiebuG42d-p5eMpwtfkLmW--578TcZVq1Sj2IRVAnweQzHbR1FF6ZPrxlgG3dfTYz7er_YMD_KbLO4ITEDYBGBDDUtUykGbksNbR-cgW3jZH81AylEDnv8avNJHsvuBInwM5Fir2io9uikewogBWp6Ksnla3AFVHOR9hq4vUsBXJy_SolOS29-cc2Os5WFNwZInEKpAaJ')"></div>
+</div>
+</section>
+<!-- Categories / Quick Filter -->
+<div class="flex items-center gap-3 mb-8 overflow-x-auto pb-2 no-scrollbar">
+<button class="bg-primary text-on-primary px-5 py-2 rounded-full font-medium whitespace-nowrap">All Topics</button>
+<button class="bg-surface-container-high text-on-surface-variant px-5 py-2 rounded-full font-medium hover:bg-primary-container/30 transition-colors whitespace-nowrap">Electricity</button>
+<button class="bg-surface-container-high text-on-surface-variant px-5 py-2 rounded-full font-medium hover:bg-primary-container/30 transition-colors whitespace-nowrap">Water</button>
+<button class="bg-surface-container-high text-on-surface-variant px-5 py-2 rounded-full font-medium hover:bg-primary-container/30 transition-colors whitespace-nowrap">Heating</button>
+<button class="bg-surface-container-high text-on-surface-variant px-5 py-2 rounded-full font-medium hover:bg-primary-container/30 transition-colors whitespace-nowrap">Solar</button>
+<button class="bg-surface-container-high text-on-surface-variant px-5 py-2 rounded-full font-medium hover:bg-primary-container/30 transition-colors whitespace-nowrap">Green Energy</button>
+</div>
+<!-- Bento Grid of Tips -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<!-- Smart Alerts -->
+<div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group">
+<div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center text-blue-700 dark:text-blue-300 mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">notifications_active</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Smart Alerts</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Receive proactive notifications when your appliances are running inefficiently or peak energy hours are approaching.</p>
+<div class="h-32 rounded-lg bg-cover bg-center mb-4" data-alt="Close up of a smart thermostat on a wall displaying temperature and energy efficiency settings in a modern home" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCA_SXTcQZkDPQTkk0GM_XHS5ym9S9KwDI5UBPykneHwNBlkrOqorgDUCipIuZiJxJNfdEFdIZhF-JfT26UT7GDgi20otoaLEkHbZjHlVWIDkwYZl38Oc2ELkZzibs1LWZrq0NfSMNCjMSj88EqBr5OXP_ZjbOUr1CxY5cOKTUX9xRFXzhFbH-h-2HddU8ebhzPC6yXY91bhuhFMJrChsJiHTc-2wMjvTes4AU2gKYg1nTvhBN1kwpmTirEfk3gq8NfJlg5ZK_0H4yr')"></div>
+<a class="text-primary font-bold flex items-center gap-1 group-hover:underline" href="#">Setup Alerts <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+</div>
+<!-- Consumption Alerts -->
+<div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col">
+<div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-700 mb-4">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<h3 class="font-bold text-lg mb-2">Consumption Alerts</h3>
+<p class="text-sm text-slate-500 mb-6 flex-1">Automatic detection of unusual energy spikes in your monthly billing cycle.</p>
+<div class="bg-slate-50 rounded-lg p-3 border border-slate-100">
+<div class="flex items-center justify-between text-xs font-bold mb-2">
+<span>Today</span>
+<span class="text-orange-600">+12% vs Avg</span>
+</div>
+<div class="h-1 bg-slate-200 w-full rounded-full overflow-hidden">
+<div class="bg-orange-500 h-full w-[70%]"></div>
+</div>
+</div>
+</div>
+<!-- Data Insights -->
+<div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center text-cyan-700 mb-4">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<h3 class="font-bold text-lg mb-2">Data Insights</h3>
+<p class="text-sm text-slate-500 mb-4">Visual breakdowns of your energy footprint with personalized reduction paths.</p>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-300 flex items-center justify-center text-[10px] font-bold">AS</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[10px] font-bold">+52</div>
+</div>
+<p class="text-[10px] text-slate-400 mt-2 font-medium">Joined by local neighbors</p>
+</div>
+<!-- Green Energy Tips (Large Horizontal) -->
+<div class="md:col-span-3 bg-slate-900 text-white p-8 rounded-2xl border border-slate-800 shadow-xl overflow-hidden relative">
+<div class="relative z-10 md:w-2/3">
+<h3 class="text-2xl font-black mb-4">Green Energy Tips</h3>
+<p class="text-slate-300 mb-6">Learn how to transition your household to renewable sources. From DIY solar maintenance to choosing the right green utility provider.</p>
+<ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+<li class="flex items-center gap-2 text-sm text-slate-200">
+<span class="material-symbols-outlined text-green-400 text-sm">check_circle</span> Solar panel cleaning hacks
+                            </li>
+<li class="flex items-center gap-2 text-sm text-slate-200">
+<span class="material-symbols-outlined text-green-400 text-sm">check_circle</span> Wind turbine basics
+                            </li>
+<li class="flex items-center gap-2 text-sm text-slate-200">
+<span class="material-symbols-outlined text-green-400 text-sm">check_circle</span> Battery storage optimization
+                            </li>
+<li class="flex items-center gap-2 text-sm text-slate-200">
+<span class="material-symbols-outlined text-green-400 text-sm">check_circle</span> Government rebate guide
+                            </li>
+</ul>
+<button class="bg-cyan-500 text-slate-900 px-6 py-2 rounded-lg font-bold hover:bg-cyan-400 transition-colors">Download PDF Guide</button>
+</div>
+<div class="absolute right-[-20px] bottom-[-20px] opacity-20 transform rotate-12">
+<span class="material-symbols-outlined" style="font-size: 240px;">eco</span>
+</div>
+</div>
+<!-- Maintenance Alerts -->
+<div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm group">
+<div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-600 mb-4">
+<span class="material-symbols-outlined">build</span>
+</div>
+<h3 class="font-bold text-lg mb-2">Maintenance</h3>
+<p class="text-sm text-slate-500">Scheduled reminders for filter changes and insulation checks.</p>
+<div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+<span class="text-xs font-bold text-slate-400 uppercase">Upcoming</span>
+<span class="text-xs font-bold text-on-surface">Oct 12</span>
+</div>
+</div>
+<!-- Information Chatbot -->
+<div class="md:col-span-2 bg-gradient-to-br from-blue-600 to-blue-800 text-white p-8 rounded-2xl shadow-lg flex items-center gap-6">
+<div class="flex-1">
+<h3 class="text-xl font-bold mb-2">Energy Expert AI</h3>
+<p class="text-blue-100 text-sm mb-4 leading-relaxed">Ask any energy-saving question and get instant community-verified answers from our smart chatbot.</p>
+<div class="relative">
+<input class="w-full bg-white/10 border-white/20 rounded-lg py-2 px-4 text-sm placeholder:text-blue-200 focus:ring-2 focus:ring-white/50 border-none" placeholder="How to save water in garden?" type="text"/>
+<button class="absolute right-2 top-1.5 text-white">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<div class="hidden sm:flex w-24 h-24 bg-white/20 rounded-full items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-4xl">smart_toy</span>
+</div>
+</div>
+<!-- Accessibility Features -->
+<div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-700 mb-4">
+<span class="material-symbols-outlined">accessibility_new</span>
+</div>
+<h3 class="font-bold text-lg mb-2">Accessibility</h3>
+<p class="text-sm text-slate-500">Universal design for all users, including screen-reader support and high contrast modes.</p>
+</div>
+<!-- Community Competitions -->
+<div class="md:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden group">
+<div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-700 mb-4">
+<span class="material-symbols-outlined">emoji_events</span>
+</div>
+<h3 class="font-bold text-lg mb-2">Competitions</h3>
+<p class="text-sm text-slate-500 mb-4">Join monthly challenges to reduce your neighborhood's carbon footprint.</p>
+<div class="bg-yellow-50 text-yellow-800 text-[10px] font-black px-2 py-1 inline-block rounded uppercase tracking-wider">Active Now</div>
+<div class="absolute -right-4 -bottom-4 text-slate-100 dark:text-slate-700 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-size: 80px;">groups</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full mt-auto flex flex-col items-center justify-center gap-4 px-8 py-8 bg-slate-900 dark:bg-black border-t border-slate-800 font-['Inter'] text-xs uppercase tracking-wider">
+<div class="text-cyan-400 font-bold">EcoSave Community</div>
+<div class="flex gap-6">
+<a class="text-slate-400 hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="text-slate-400 hover:text-white transition-colors" href="#">Terms of Service</a>
+<a class="text-slate-400 hover:text-white transition-colors" href="#">Contact Us</a>
+</div>
+<div class="text-slate-500 text-[10px]">© 2024 EcoSave Community. Powering a greener future.</div>
+</footer>
+</div>
+<!-- Mobile Navigation (Responsive Anchor) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-6 py-3 flex justify-between items-center z-50">
+<a class="flex flex-col items-center text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center text-blue-700" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="text-[10px] mt-1 font-bold">Tips</span>
+</a>
+<button class="bg-primary text-white p-3 rounded-full -mt-10 shadow-lg border-4 border-white dark:border-slate-900">
+<span class="material-symbols-outlined">add</span>
+</button>
+<a class="flex flex-col items-center text-slate-400" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] mt-1">Social</span>
+</a>
+<a class="flex flex-col items-center text-slate-400" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] mt-1">Profile</span>
+</a>
+</nav>
+</body></html>
