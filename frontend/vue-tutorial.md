@@ -135,7 +135,7 @@ The way this is done is via an if-else statement, which looks similar to the `v-
 
 ![sidebaritem](vue-tutorial-images/side-bar-item.png)
 
-If the `selected`-variable equals `false`, the first block gets executed. if it is `true`, then the second block is executed.
+If the `selected`-variable equals `false`, the `<router-link>`-block gets rendered, and if it is `true`, then the `<a>`-block is executed.
 
 There is one more thing related to this that might need explaining, namely `ref()` and `computed()`, which is what you'd use if you want to add some additional reactivity to the site, but this is getting kinda long and I still have some other stuff I need to explain (and I'm writing all this manually instead of just chatgpt-ing it for some reason), so idk, ask me about it or google it if you have need of it.
 
