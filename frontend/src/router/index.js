@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '@/views/DashboardView.vue'
 import LeaderboardPersonalView from '@/views/LeaderboardPersonalView.vue'
 import UploadMeterView from '@/views/UploadMeterView.vue'
+import SettingsView from '@/views/SettingsView.vue'
+
 
 
 
@@ -28,6 +30,11 @@ const router = createRouter({
       name: 'upload-meter',
       component: UploadMeterView
     },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: SettingsView
+    }
   ],
 })
 

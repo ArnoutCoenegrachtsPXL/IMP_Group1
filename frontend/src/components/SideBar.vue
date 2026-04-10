@@ -4,7 +4,7 @@
 
     const options = ['Dashboard', 'Leaderboard', 'Upload Meter', 'Energy Lab', 'Community', 'Settings']
     const symbols = ['grid_view', 'leaderboard', 'add', 'science', 'group', 'settings']
-    const links   = ['/dashboard', '/leaderboard', '/upload', '#', '#', '#']
+    const links   = ['/dashboard', '/leaderboard', '/upload', '#', '#', '/settings']
 </script>
 
 <template>

@@ -6,67 +6,54 @@
     <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
     <!-- Left Column: Upload Interaction -->
     <section class="lg:col-span-7 space-y-6">
-    <!-- Main Upload Card -->
-    <div class="bg-white rounded border border-outline-variant p-8">
-    <div class="mb-8">
-    <h3 class="font-headline font-bold text-lg text-on-surface mb-1">Upload Your Meter Reading</h3>
-    <p class="text-on-surface-variant text-sm">Snap a photo of your meter to automatically extract data.</p>
-    </div>
-    <!-- Dropzone -->
-    <div class="relative group cursor-pointer">
-    <div class="w-full aspect-[4/3] rounded border-2 border-dashed border-outline-variant bg-surface-container/30 flex flex-col items-center justify-center p-12 transition-all hover:border-primary/50 hover:bg-surface-container">
-    <div class="w-16 h-16 rounded bg-primary-container flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-    <span class="material-symbols-outlined text-on-primary-container text-3xl">add_a_photo</span>
-    </div>
-    <span class="text-base font-bold text-on-surface mb-1">Take Photo or Browse</span>
-    <p class="text-xs text-on-surface-variant text-center max-w-xs">Supported: JPG, PNG. Max: 5MB.</p>
-    </div>
-    </div>
-    <!-- Instructions -->
-    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="flex gap-4 p-4 rounded bg-surface-container/50">
-    <span class="material-symbols-outlined text-primary shrink-0">visibility</span>
-    <div>
-    <h4 class="font-bold text-xs mb-1 uppercase tracking-wider">Clearly Visible</h4>
-    <p class="text-[11px] text-on-surface-variant leading-relaxed">Ensure all digits and decimals are within the frame and sharp.</p>
-    </div>
-    </div>
-    <div class="flex gap-4 p-4 rounded bg-surface-container/50">
-    <span class="material-symbols-outlined text-primary shrink-0">light_mode</span>
-    <div>
-    <h4 class="font-bold text-xs mb-1 uppercase tracking-wider">Avoid Glare</h4>
-    <p class="text-[11px] text-on-surface-variant leading-relaxed">Turn off your flash if there's enough natural light to avoid reflections.</p>
-    </div>
-    </div>
-    </div>
-    </div>
     <!-- Manual Entry Section -->
     <div class="bg-white rounded border border-outline-variant p-8">
-    <div class="flex items-center gap-3 mb-6">
-    <span class="material-symbols-outlined text-primary">edit_note</span>
-    <h3 class="font-headline font-bold text-lg">Manual Entry</h3>
+        <div class="flex items-center gap-3 mb-6">
+            <span class="material-symbols-outlined text-primary">edit_note</span>
+            <h3 class="font-headline font-bold text-lg">Submit a meter reading</h3>
+        </div>
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <label for="value" class="center block text-[12px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Reading Value (kWh)</label>
+            <input id="value" class="w-full h-12 bg-surface-container border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm" placeholder="00000.00" type="number"/>
+            <div class="md:col-span-2">
+                <!-- Dropzone -->
+                <label class="relative group cursor-pointer">
+                    <div class="w-full aspect-[4/3] rounded border-2 border-dashed border-outline-variant bg-surface-container/30 flex flex-col items-center justify-center p-12 transition-all hover:border-primary/50 hover:bg-surface-container">
+                        <input type="file" id="MeterImage" accept="image/png, image/jpeg">
+                        <div>
+                            <div class="w-16 h-16 rounded bg-primary-container flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                                <span class="material-symbols-outlined text-on-primary-container text-3xl">add_a_photo</span>
+                            </div>
+                            <span class="text-base font-bold text-on-surface mb-1">Take Photo or Browse</span>
+                            <p class="text-xs text-on-surface-variant text-center max-w-xs">Supported: JPG, PNG. Max: 5MB.</p>
+                        </div>
+                        
+                    </div>
+                </label>
+            </div>
+            <div class="flex gap-4 p-4 rounded bg-surface-container/50">
+                <span class="material-symbols-outlined text-primary shrink-0">visibility</span>
+                <div>
+                    <h4 class="font-bold text-xs mb-1 uppercase tracking-wider">Clearly Visible</h4>
+                    <p class="text-[11px] text-on-surface-variant leading-relaxed">Ensure all digits and decimals are within the frame and sharp.</p>
+                </div>
+            </div>
+            <div class="flex gap-4 p-4 rounded bg-surface-container/50">
+                <span class="material-symbols-outlined text-primary shrink-0">light_mode</span>
+                <div>
+                    <h4 class="font-bold text-xs mb-1 uppercase tracking-wider">Avoid Glare</h4>
+                    <p class="text-[11px] text-on-surface-variant leading-relaxed">Turn off your flash if there's enough natural light to avoid reflections.</p>
+                </div>
+            </div>
+            <div class="md:col-span-2">
+                <button class="solar-glow w-full py-4 rounded text-white font-bold text-base shadow-sm active:scale-[0.99] transition-all flex items-center justify-center gap-2" type="submit">
+                    Submit Reading
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </button>
+            </div>
+        </form>
     </div>
-    <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="space-y-2">
-    <label class="block text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Meter Type</label>
-    <select class="w-full h-12 bg-surface-container border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm">
-    <option>Electricity (kWh)</option>
-    <option>Water (m³)</option>
-    <option>Gas (m³)</option>
-    </select>
-    </div>
-    <div class="space-y-2">
-    <label class="block text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Reading Value</label>
-    <input class="w-full h-12 bg-surface-container border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm" placeholder="00000.00" type="number"/>
-    </div>
-    <div class="md:col-span-2">
-    <button class="solaris-glow w-full py-4 rounded text-white font-bold text-base shadow-sm active:scale-[0.99] transition-all flex items-center justify-center gap-2" type="submit">
-                                Submit Reading
-                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-    </button>
-    </div>
-    </form>
-    </div>
+    
     </section>
     <!-- Right Column: History & Stats -->
     <section class="lg:col-span-5 space-y-6">
@@ -154,3 +141,15 @@
     </section>
     </div>
 </template>
+
+<style scoped>
+
+    input[type="file"] {
+        display : none;
+    }
+
+    .center {
+        margin: auto 0 auto 4pt
+    }
+
+</style>
