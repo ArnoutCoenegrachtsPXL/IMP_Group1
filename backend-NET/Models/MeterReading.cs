@@ -1,4 +1,7 @@
-﻿namespace backend_NET.Models
+﻿using MetadataExtractor;
+using MetadataExtractor.Formats.Exif;
+
+namespace backend_NET.Models
 {
     public class MeterReading
     {
@@ -7,5 +10,21 @@
         public DateTime Time { get; set; }
         public double Value { get; set; }
         public byte[]? MeterImage { get; set; }
+
+        public Status Status { get; set; }
+
+        public static DateTime ExtractTimestamp(byte[] image)
+        {
+            using var ms = new MemoryStream(image);
+            var directories = ImageMetadataReader.ReadMetadata(ms);
+
+            var subIfd = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
+
+            if (subIfd == null) { return DateTime.UtcNow; }
+
+            if (subIfd.TryGetDateTime(ExifDirectoryBase.TagDateTimeOriginal, out var date))
+                return date;
+            return DateTime.UtcNow;
+        }
     }
 }

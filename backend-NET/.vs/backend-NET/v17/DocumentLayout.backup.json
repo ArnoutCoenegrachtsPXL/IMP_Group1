@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\models\\meterreadingmockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:models\\meterreadingmockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\models\\electricitymetermeasurement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:models\\electricitymetermeasurement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\apimodels\\getmeterinfodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:apimodels\\getmeterinfodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\controllers\\meterreadingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:controllers\\meterreadingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\models\\imeterreadingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:models\\imeterreadingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -17,8 +29,8 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "DockedWidth": 175,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,28 +58,67 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ElectricityMeterMeasurement.cs",
-              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\ElectricityMeterMeasurement.cs",
-              "RelativeDocumentMoniker": "Models\\ElectricityMeterMeasurement.cs",
-              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\ElectricityMeterMeasurement.cs",
-              "RelativeToolTip": "Models\\ElectricityMeterMeasurement.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAcAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "MeterReadingMockRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\MeterReadingMockRepository.cs",
+              "RelativeDocumentMoniker": "Models\\MeterReadingMockRepository.cs",
+              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\MeterReadingMockRepository.cs",
+              "RelativeToolTip": "Models\\MeterReadingMockRepository.cs",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAowHsAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T08:16:24.381Z",
+              "WhenOpened": "2026-04-13T13:14:09.261Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "WeatherForecastController.cs",
-              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\WeatherForecastController.cs",
-              "RelativeDocumentMoniker": "Controllers\\WeatherForecastController.cs",
-              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\WeatherForecastController.cs",
-              "RelativeToolTip": "Controllers\\WeatherForecastController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAuAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "GetMeterInfoDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\ApiModels\\GetMeterInfoDTO.cs",
+              "RelativeDocumentMoniker": "ApiModels\\GetMeterInfoDTO.cs",
+              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\ApiModels\\GetMeterInfoDTO.cs",
+              "RelativeToolTip": "ApiModels\\GetMeterInfoDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T12:47:39.524Z",
+              "WhenOpened": "2026-04-13T13:13:55.234Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IMeterReadingRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\IMeterReadingRepository.cs",
+              "RelativeDocumentMoniker": "Models\\IMeterReadingRepository.cs",
+              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\IMeterReadingRepository.cs",
+              "RelativeToolTip": "Models\\IMeterReadingRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-13T13:09:19.281Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-13T12:27:47.235Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MeterReadingController.cs",
+              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\MeterReadingController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MeterReadingController.cs",
+              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\MeterReadingController.cs",
+              "RelativeToolTip": "Controllers\\MeterReadingController.cs",
+              "ViewState": "AgIAADAAAAAAAAAAAAAYwEIAAABoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-11T12:27:19.755Z",
               "EditorCaption": ""
             }
           ]

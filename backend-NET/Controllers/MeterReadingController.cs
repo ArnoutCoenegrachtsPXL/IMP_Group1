@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using backend_NET.Models;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using backend_NET.ApiModels;
+using backend_NET.Models;
+using MetadataExtractor;
+using MetadataExtractor.Formats.Exif;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace backend_NET.Controllers
 {
@@ -9,26 +15,62 @@ namespace backend_NET.Controllers
     [ApiController]
     public class MeterReadingController : ControllerBase
     {
-        private readonly IMeterReadingRepository repository;
-        private readonly IUserRepository userRepository;
+        private readonly IMapper _mapper;
+        private readonly IMeterReadingRepository _repository;
+        private readonly IUserRepository _userRepository;
 
-        public MeterReadingController(IMeterReadingRepository repository, IUserRepository userRepository)
+        public MeterReadingController(IMeterReadingRepository repository, IUserRepository userRepository, IMapper mapper)
         {
-            this.repository = repository;
-            this.userRepository = userRepository;
+            _repository = repository;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpPost()]
-        public ActionResult<MeterReading> PostMeasurement(CreateMeterReadingModel model)
+        public async Task<ActionResult<MeterReading>> PostReading([FromForm] CreateMeterReadingDTO model)
         {
-            MeterReading newMeasurement = new MeterReading();
-            newMeasurement.User = userRepository.getUser(model.UserId);
-            newMeasurement.Time = model.Time;
-            newMeasurement.Value = model.Value;
-            newMeasurement.MeterImage = model.MeterImage;
-            repository.AddReading(newMeasurement);
+            string[] allowed = ["image/png", "image/jpeg"];
+            if (!allowed.Contains(model.File.ContentType))
+            {
+                return BadRequest("Only PNG and JPG are allowed");
+            }
+
+            byte[] bytes;
+            using (var ms = new MemoryStream())
+            {
+                await model.File.CopyToAsync(ms);
+                bytes = ms.ToArray();
+            }
+
+            MeterReading newReading = _mapper.Map<MeterReading>(model);
+            newReading.User = _userRepository.GetUser(model.UserId);
+            newReading.MeterImage = bytes;
+            newReading.Time = MeterReading.ExtractTimestamp(bytes);
+            newReading.Status = Status.PENDING;
+            _repository.AddReading(newReading);
 
             return Created();
         }
+
+        [HttpGet("{id}/recent")]
+        public ActionResult<IEnumerable<ReturnMeterReadingDTO>> GetRecentReadings(Guid id)
+        {
+            IEnumerable<MeterReading> readings = _repository.GetRecentReadingsOf(_userRepository.GetUser(id));
+            IEnumerable<ReturnMeterReadingDTO> readingsDTO = _mapper.Map<IEnumerable<ReturnMeterReadingDTO>>(readings);
+            return Ok(readingsDTO);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<GetMeterInfoDTO> GetUploadMeterPageInfo(Guid id)
+        {
+            User user = _userRepository.GetUser(id);
+            IEnumerable<MeterReading> readings = _repository.GetReadingsOf(_userRepository.GetUser(id));
+            GetMeterInfoDTO uploadMeterInfo = new GetMeterInfoDTO();
+            uploadMeterInfo.RecentSubmissions = _mapper.Map<IEnumerable<ReturnMeterReadingDTO>>(readings);
+            uploadMeterInfo.Progress = Math.Min(_repository.GetWeekProgress(user), uploadMeterInfo.Target);
+            return Ok(uploadMeterInfo);
+        }
+
+        
     }
 }

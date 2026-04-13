@@ -2,6 +2,6 @@
 {
     public interface IUserRepository
     {
-        User getUser(Guid userId);
+        User GetUser(Guid userId);
     }
 }

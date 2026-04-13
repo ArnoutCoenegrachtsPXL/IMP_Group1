@@ -1,4 +1,7 @@
 ﻿
+using System.Globalization;
+using MetadataExtractor;
+using MetadataExtractor.Formats.Exif;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend_NET.Models
@@ -6,6 +9,7 @@ namespace backend_NET.Models
     public class MeterReadingDbRepository : IMeterReadingRepository
     {
         private readonly AppDbContext _context;
+        private static readonly Calendar Calendar = CultureInfo.InvariantCulture.Calendar;
 
         public MeterReadingDbRepository(AppDbContext context)
         {
@@ -34,6 +38,23 @@ namespace backend_NET.Models
         public IEnumerable<MeterReading> GetReadingsOf(User user)
         {
             return _context.MeterReadings.Include(r => r.User).Where(r =>  r.User == user);
+        }
+
+        public IEnumerable<MeterReading> GetRecentReadingsOf(User user)
+        {
+            IEnumerable<MeterReading> allReadings = GetReadingsOf(user);
+            return allReadings.OrderByDescending(r => r.Time).Take(3);
+        }
+
+        public int GetWeekProgress(User user)
+        {
+            int currentyear = DateTime.Now.Year;
+            int currentWeek = Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            return _context.MeterReadings
+                .Where(r => r.Time.Year == currentyear)
+                .Where(r => Calendar.GetWeekOfYear(r.Time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday) == currentWeek)
+                .Where(r => r.Status != Status.REJECTED)
+                .Count();
         }
     }
 }
