@@ -1,25 +1,29 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\",
+  "WorkspaceRootPath": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\models\\meterreadingmockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:models\\meterreadingmockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\apimodels\\getmeterinfodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\lee\\downloads\\debugging the backend\\imp_group1\\backend-net\\apimodels\\getmeterinfodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:apimodels\\getmeterinfodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\controllers\\meterreadingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\lee\\downloads\\debugging the backend\\imp_group1\\backend-net\\controllers\\meterreadingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:controllers\\meterreadingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\models\\imeterreadingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\lee\\downloads\\debugging the backend\\imp_group1\\backend-net\\models\\meterreadingmockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:models\\meterreadingmockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\lee\\downloads\\debugging the backend\\imp_group1\\backend-net\\models\\meterreadingdbrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:models\\meterreadingdbrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\lee\\downloads\\debugging the backend\\imp_group1\\backend-net\\models\\imeterreadingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:models\\imeterreadingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\arnout coenegrachts\\documents\\school\\2526\\semester2\\researchproject\\imp_group1\\backend-net\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|c:\\users\\lee\\downloads\\debugging the backend\\imp_group1\\backend-net\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1ED5EE36-D81F-45DC-AF66-9D76A4A6BB72}|backend-NET.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -30,11 +34,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 175,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 15,
           "Children": [
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
             },
             {
               "$type": "Bookmark",
@@ -42,11 +46,7 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
               "$type": "Bookmark",
@@ -54,28 +54,63 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MeterReadingMockRepository.cs",
+              "DocumentMoniker": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Models\\MeterReadingMockRepository.cs",
+              "RelativeDocumentMoniker": "Models\\MeterReadingMockRepository.cs",
+              "ToolTip": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Models\\MeterReadingMockRepository.cs",
+              "RelativeToolTip": "Models\\MeterReadingMockRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-13T13:14:09.261Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MeterReadingMockRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\MeterReadingMockRepository.cs",
-              "RelativeDocumentMoniker": "Models\\MeterReadingMockRepository.cs",
-              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\MeterReadingMockRepository.cs",
-              "RelativeToolTip": "Models\\MeterReadingMockRepository.cs",
-              "ViewState": "AgIAAGwAAAAAAAAAAAAowHsAAAA2AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-13T13:14:09.261Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "GetMeterInfoDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\ApiModels\\GetMeterInfoDTO.cs",
+              "DocumentMoniker": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\ApiModels\\GetMeterInfoDTO.cs",
               "RelativeDocumentMoniker": "ApiModels\\GetMeterInfoDTO.cs",
-              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\ApiModels\\GetMeterInfoDTO.cs",
+              "ToolTip": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\ApiModels\\GetMeterInfoDTO.cs",
               "RelativeToolTip": "ApiModels\\GetMeterInfoDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -84,42 +119,52 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IMeterReadingRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\IMeterReadingRepository.cs",
-              "RelativeDocumentMoniker": "Models\\IMeterReadingRepository.cs",
-              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Models\\IMeterReadingRepository.cs",
-              "RelativeToolTip": "Models\\IMeterReadingRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "MeterReadingController.cs",
+              "DocumentMoniker": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Controllers\\MeterReadingController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MeterReadingController.cs",
+              "ToolTip": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Controllers\\MeterReadingController.cs",
+              "RelativeToolTip": "Controllers\\MeterReadingController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-13T13:09:19.281Z",
+              "WhenOpened": "2026-04-11T12:27:19.755Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MeterReadingDbRepository.cs",
+              "DocumentMoniker": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Models\\MeterReadingDbRepository.cs",
+              "RelativeDocumentMoniker": "Models\\MeterReadingDbRepository.cs",
+              "ToolTip": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Models\\MeterReadingDbRepository.cs",
+              "RelativeToolTip": "Models\\MeterReadingDbRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADgAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-13T13:57:17.161Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
+              "Title": "IMeterReadingRepository.cs",
+              "DocumentMoniker": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Models\\IMeterReadingRepository.cs",
+              "RelativeDocumentMoniker": "Models\\IMeterReadingRepository.cs",
+              "ToolTip": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Models\\IMeterReadingRepository.cs",
+              "RelativeToolTip": "Models\\IMeterReadingRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-13T12:27:47.235Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-13T13:09:19.281Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MeterReadingController.cs",
-              "DocumentMoniker": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\MeterReadingController.cs",
-              "RelativeDocumentMoniker": "Controllers\\MeterReadingController.cs",
-              "ToolTip": "C:\\Users\\Arnout Coenegrachts\\Documents\\School\\2526\\Semester2\\ResearchProject\\IMP_Group1\\backend-NET\\Controllers\\MeterReadingController.cs",
-              "RelativeToolTip": "Controllers\\MeterReadingController.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAYwEIAAABoAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\lee\\Downloads\\Debugging the backend\\IMP_Group1\\backend-NET\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-11T12:27:19.755Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-13T12:27:47.235Z"
             }
           ]
         }
