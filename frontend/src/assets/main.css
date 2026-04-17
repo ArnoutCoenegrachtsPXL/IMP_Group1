@@ -10,3 +10,46 @@ h1, h2, h3, .font-headline { font-family: 'Inter', sans-serif; }
 .solar-glow {
   background: linear-gradient(135deg, #1978e5 0%, #64b5f6 100%);
 }
+
+/* custom colors */
+
+:root {
+  --pri:            #1565C0;
+  --pri-mid:        #1978E5;
+  --pri-light:      #E3F0FF;
+  --pri-hover:      #0D47A1;
+  --pri-on:         #FFFFFF;
+
+  --surf:           #F6FAFE;
+  --surf-2:         #EBF3FD;
+  --surf-3:         #DDEAF8;
+  --surf-card:      #FFFFFF;
+
+  --text:           #0D1B2A;
+  --text-muted:     #5A7084;
+  --text-disabled:  #A3B4C4;
+
+  --border:         rgba(25, 120, 229, 0.14);
+  --border-strong:  rgba(25, 120, 229, 0.30);
+
+  --success:        #16A34A;
+  --success-bg:     #DCFCE7;
+  --warning:        #D97706;
+  --warning-bg:     #FEF3C7;
+  --error:          #DC2626;
+  --error-bg:       #FEE2E2;
+
+  --radius:         14px;
+  --radius-sm:      8px;
+  --radius-xs:      6px;
+  --shadow-sm:      0 1px 4px rgba(21, 101, 192, 0.08);
+  --shadow:         0 2px 12px rgba(21, 101, 192, 0.12);
+  --shadow-lg:      0 8px 32px rgba(21, 101, 192, 0.16);
+
+  --font-body:      'DM Sans', sans-serif;
+  --font-display:   'Instrument Serif', Georgia, serif;
+
+  --sidebar-w:      256px;
+  --topbar-h:       56px;
+  --transition:     0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
