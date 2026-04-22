@@ -1,70 +1,97 @@
+/**
+ * tailwind.config.js
+ *
+ * ALL colours point to CSS custom properties defined in main.css and
+ * written at runtime by userPrefs.js → applyAll().
+ * This means accent changes, dark mode, and high-contrast all flow
+ * through a single mechanism with zero duplication.
+ */
 export default {
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts}"
   ],
-  darkMode: "class",
+  darkMode: "class",   // <html class="dark"> toggled by userPrefs.applyAll()
   theme: {
     extend: {
-        colors: {
-            "secondary-dim": "#1153a1",
-            "error-container": "#f95630",
-            "inverse-surface": "#0a111a",
-            "background": "#f8fbff",
-            "on-tertiary-fixed": "#002a4a",
-            "on-primary": "#ffffff",
-            "tertiary-container": "#d6e6f9",
-            "surface-container-high": "#e1edf9",
-            "on-primary-fixed-variant": "#00478a",
-            "surface-tint": "#1978e5",
-            "tertiary-fixed": "#d6e6f9",
-            "outline-variant": "#cad4e0",
-            "primary-fixed-dim": "#86b7f3",
-            "outline": "#717882",
-            "surface-container-low": "#f0f5fa",
-            "primary": "#1978e5",
-            "primary-fixed": "#d3e4ff",
-            "on-tertiary": "#ffffff",
-            "surface-dim": "#d8e1e9",
-            "on-surface-variant": "#44474e",
-            "surface-container-highest": "#dce4eb",
-            "secondary": "#1978e5",
-            "on-tertiary-fixed-variant": "#00325b",
-            "secondary-fixed-dim": "#86b7f3",
-            "error-dim": "#b92902",
-            "error": "#be2d06",
-            "surface-container": "#eef2f6",
-            "surface": "#f8fbff",
-            "secondary-container": "#d3e4ff",
-            "on-secondary-fixed-variant": "#00478a",
-            "on-primary-container": "#001b3d",
-            "surface-variant": "#dfe2eb",
-            "on-tertiary-container": "#001e30",
-            "tertiary-fixed-dim": "#adcbe6",
-            "on-error": "#ffffff",
-            "inverse-primary": "#d3e4ff",
-            "primary-dim": "#1565c0",
-            "on-primary-fixed": "#001b3d",
-            "on-secondary": "#ffffff",
-            "on-surface": "#1a1c1e",
-            "inverse-on-surface": "#f0f0f3",
-            "on-secondary-container": "#001b3d",
-            "on-background": "#1a1c1e",
-            "tertiary": "#1978e5",
-            "on-error-container": "#520c00",
-            "primary-container": "#d3e4ff",
-            "surface-bright": "#f8fbff",
-            "surface-container-lowest": "#ffffff",
-            "tertiary-dim": "#1978e5",
-            "secondary-fixed": "#d3e4ff",
-            "on-secondary-fixed": "#001b3d"
-        },
-        fontFamily: {
-            "headline": ["Inter"],
-            "body": ["Inter"],
-            "label": ["Inter"]
-        },
-        borderRadius: {"DEFAULT": "4px", "lg": "4px", "xl": "4px", "full": "9999px"},
+      colors: {
+        // ── Accent (dynamic via CSS vars) ──────────────────────────────
+        "primary":                    "var(--color-primary)",
+        "primary-dim":                "var(--color-primary-dim)",
+        "primary-fixed":              "var(--color-primary-fixed)",
+        "primary-fixed-dim":          "var(--color-primary-fixed-dim)",
+        "on-primary":                 "var(--color-on-primary)",
+        "primary-container":          "var(--color-primary-container)",
+        "on-primary-container":       "var(--color-on-primary-container)",
+
+        "secondary":                  "var(--color-secondary)",
+        "secondary-container":        "var(--color-secondary-container)",
+        "on-secondary-container":     "var(--color-on-secondary-container)",
+
+        "tertiary":                   "var(--color-tertiary)",
+        "tertiary-container":         "var(--color-tertiary-container)",
+        "on-tertiary-container":      "var(--color-on-tertiary-container)",
+        "tertiary-fixed-dim":         "var(--color-tertiary-fixed-dim)",
+
+        // ── Surfaces (dynamic via CSS vars) ────────────────────────────
+        "background":                 "var(--color-background)",
+        "on-background":              "var(--color-on-background)",
+        "surface":                    "var(--color-surface)",
+        "surface-dim":                "var(--color-surface-dim)",
+        "surface-bright":             "var(--color-surface-bright)",
+        "surface-variant":            "var(--color-surface-variant)",
+        "on-surface":                 "var(--color-on-surface)",
+        "on-surface-variant":         "var(--color-on-surface-variant)",
+        "inverse-surface":            "var(--color-inverse-surface)",
+        "surface-container-lowest":   "var(--color-surface-container-lowest)",
+        "surface-container-low":      "var(--color-surface-container-low)",
+        "surface-container":          "var(--color-surface-container)",
+        "surface-container-high":     "var(--color-surface-container-high)",
+        "surface-container-highest":  "var(--color-surface-container-highest)",
+        "outline":                    "var(--color-outline)",
+        "outline-variant":            "var(--color-outline-variant)",
+
+        // ── Error (static) ─────────────────────────────────────────────
+        "error":                      "var(--color-error)",
+        "error-dim":                  "var(--color-error-dim)",
+        "on-error":                   "var(--color-on-error)",
+
+        // ── Kept for any legacy classes not yet migrated ────────────────
+        "secondary-fixed":            "#d3e4ff",
+        "secondary-fixed-dim":        "#86b7f3",
+        "on-secondary":               "#ffffff",
+        "tertiary-fixed":             "#d6e6f9",
+        "on-tertiary":                "#ffffff",
+        "on-tertiary-fixed":          "#002a4a",
+        "on-tertiary-fixed-variant":  "#00325b",
+        "secondary-dim":              "#1153a1",
+        "on-primary-fixed":           "#001b3d",
+        "on-primary-fixed-variant":   "#00478a",
+        "inverse-on-surface":         "#f0f0f3",
+        "inverse-primary":            "#d3e4ff",
+        "surface-tint":               "var(--color-primary)",
+        "error-container":            "#f95630",
+        "on-error-container":         "#520c00",
+      },
+      fontFamily: {
+        "headline": ["Inter"],
+        "body":     ["Inter"],
+        "label":    ["Inter"],
+      },
+      borderRadius: {
+        "DEFAULT": "4px",
+        "lg":      "8px",
+        "xl":      "12px",
+        "full":    "9999px",
+      },
+      screens: {
+        'xs':  '480px',
+        'sm':  '640px',
+        'md':  '768px',
+        'lg':  '1024px',
+        'xl':  '1280px',
+        '2xl': '1536px',
+      },
     },
   },
   plugins: [
