@@ -21,3 +21,9 @@
 /frontend/*npm-debug.log*
 /frontend/*yarn-debug.log*
 /frontend/*yarn-error.log*
+
+
+
+/backend-NET/.vs
+/backend-NET/obj
+/backend-NET/bin
