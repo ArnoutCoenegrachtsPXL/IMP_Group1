@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 
 import SideBar from '@/components/SideBar.vue'
 import TopBar from '@/components/TopBar.vue'
+import ChatBot from '@/components/Chatbot.vue'
 
 const route = useRoute()
 
@@ -27,4 +28,10 @@ const isPublicRoute = computed(() => {
       </main>
     </div>
   </div>
+    <ChatBot />
 </template>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active { transition: opacity 0.25s ease; }
+.fade-enter-from,  .fade-leave-to      { opacity: 0; }
+</style>
