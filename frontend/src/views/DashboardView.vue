@@ -16,15 +16,18 @@
             if (response.ok) {
                 const data = await response.json()
                 updateGreenUI(data)
+                updatePersonalUI(data)  // ← NEW for Issue #27
             } else {
                 updateGreenUI(greenStats.value)
+                updatePersonalUI(greenStats.value)  // ← NEW for Issue #27
             }
         } catch (error) {
             updateGreenUI(greenStats.value)
+            updatePersonalUI(greenStats.value)  // ← NEW for Issue #27
         }
     }
 
-    // Function to update the UI
+    // Function to update the UI (Issue #29)
     const updateGreenUI = (data) => {
         const communityEl = document.getElementById('communityPercentage')
         if (communityEl) communityEl.textContent = data.community.percentage + '%'
@@ -115,6 +118,39 @@
                 userCard.className = 'rounded-lg p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200'
             }
         }
+    }
+
+    // NEW: Update Personal Green Energy (Issue #27)
+    const updatePersonalUI = (data) => {
+        const personalPercent = document.getElementById('personalPercentage')
+        if (personalPercent) personalPercent.textContent = data.user.percentage + '%'
+        
+        const personalBar = document.getElementById('personalBar')
+        if (personalBar) personalBar.style.width = data.user.percentage + '%'
+        
+        const personalGreen = document.getElementById('personalGreenKWh')
+        if (personalGreen) personalGreen.textContent = data.user.greenKWh + ' kWh'
+        
+        const personalTotal = document.getElementById('personalTotalKWh')
+        if (personalTotal) personalTotal.textContent = data.user.totalKWh + ' kWh'
+        
+        const nonGreen = data.user.totalKWh - data.user.greenKWh
+        const nonGreenEl = document.getElementById('nonGreenKWh')
+        if (nonGreenEl) nonGreenEl.textContent = nonGreen.toFixed(1) + ' kWh'
+        
+        // Calculate breakdown based on community percentages
+        const solarContribution = (data.user.greenKWh * data.community.solar / 100).toFixed(1)
+        const windContribution = (data.user.greenKWh * data.community.wind / 100).toFixed(1)
+        const hydroContribution = (data.user.greenKWh * data.community.hydro / 100).toFixed(1)
+        
+        const solarBreakdown = document.getElementById('personalSolar')
+        if (solarBreakdown) solarBreakdown.textContent = solarContribution + ' kWh'
+        
+        const windBreakdown = document.getElementById('personalWind')
+        if (windBreakdown) windBreakdown.textContent = windContribution + ' kWh'
+        
+        const hydroBreakdown = document.getElementById('personalHydro')
+        if (hydroBreakdown) hydroBreakdown.textContent = hydroContribution + ' kWh'
     }
 
     // Function to show tip popups
@@ -303,22 +339,21 @@
             </div>
         </div>
 
-       
-        <!-- GREEN ENERGY MIX - ISSUE #29                 -->
-
-        <div class="md:col-span-12 mt-6">
+        <!-- ROW WITH TWO CARDS: Green Energy Mix (Issue #29) + My Green Energy (Issue #27) -->
+        <div class="md:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            
+            <!-- GREEN ENERGY MIX - ISSUE #29 -->
             <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-xl p-6 shadow-lg">
-                
                 <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
                     <div>
                         <h2 class="text-2xl font-bold flex items-center gap-2">
                             <span class="text-3xl">🌿</span>
                             Green Energy Mix
                         </h2>
-                        <p class="text-on-surface-variant text-sm mt-1">How much of our energy comes from renewable sources</p>
+                        <p class="text-on-surface-variant text-sm mt-1">Community vs Your green energy</p>
                     </div>
                     <div class="text-right bg-white/50 dark:bg-black/20 rounded-lg px-4 py-2">
-                        <div class="text-xs text-on-surface-variant">Your Community Rank</div>
+                        <div class="text-xs text-on-surface-variant">Your Rank</div>
                         <div class="text-2xl font-bold text-primary" id="userRank">#42</div>
                         <div class="text-xs text-on-surface-variant" id="totalUsers">out of 247 users</div>
                     </div>
@@ -377,12 +412,62 @@
                 </div>
 
                 <div class="mt-6">
-                    <h3 class="font-semibold mb-3 flex items-center gap-2"><span>💡</span> Tips to Increase Your Green Energy Usage</h3>
+                    <h3 class="font-semibold mb-3 flex items-center gap-2"><span>💡</span> Tips to Improve</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(1)"><span class="text-green-600">💡</span><span>Run appliances during peak solar hours (10 AM - 3 PM)</span></div>
-                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(2)"><span class="text-green-600">💡</span><span>Join community solar programs to offset non-green usage</span></div>
-                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(3)"><span class="text-green-600">💡</span><span>Schedule EV charging when renewable generation is highest</span></div>
-                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(4)"><span class="text-green-600">💡</span><span>Track daily usage to identify improvement opportunities</span></div>
+                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(1)"><span class="text-green-600">💡</span><span>Run appliances during peak solar hours</span></div>
+                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(2)"><span class="text-green-600">💡</span><span>Join community solar programs</span></div>
+                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(3)"><span class="text-green-600">💡</span><span>Schedule EV charging during high renewable generation</span></div>
+                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(4)"><span class="text-green-600">💡</span><span>Track daily usage patterns</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ISSUE #27: MY GREEN ENERGY (Personal breakdown) -->
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6 shadow-lg">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="text-3xl">🔋</span>
+                    <h2 class="text-2xl font-bold">My Green Energy</h2>
+                </div>
+                <p class="text-on-surface-variant text-sm mb-4">Your personal renewable energy breakdown</p>
+
+                <!-- Main percentage -->
+                <div class="text-center mb-4">
+                    <div class="text-5xl font-black text-primary" id="personalPercentage">72.3%</div>
+                    <div class="text-sm text-on-surface-variant">Green Energy</div>
+                    <div class="w-full bg-gray-200 rounded-full h-3 mt-2">
+                        <div class="bg-primary h-3 rounded-full transition-all" id="personalBar" style="width: 72.3%"></div>
+                    </div>
+                </div>
+
+                <!-- Energy breakdown -->
+                <div class="space-y-3 mb-4">
+                    <div class="flex justify-between items-center p-2 bg-white/50 rounded-lg">
+                        <span><span class="text-yellow-600">☀️</span> Solar</span>
+                        <span class="font-semibold" id="personalSolar">210.0 kWh</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-white/50 rounded-lg">
+                        <span><span class="text-blue-600">💨</span> Wind</span>
+                        <span class="font-semibold" id="personalWind">71.0 kWh</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-white/50 rounded-lg">
+                        <span><span class="text-cyan-600">💧</span> Hydro</span>
+                        <span class="font-semibold" id="personalHydro">37.0 kWh</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-white/50 rounded-lg">
+                        <span><span class="text-gray-500">🔥</span> Non-green</span>
+                        <span class="font-semibold" id="nonGreenKWh">187.3 kWh</span>
+                    </div>
+                </div>
+
+                <!-- Totals -->
+                <div class="border-t pt-3 mt-2">
+                    <div class="flex justify-between text-sm">
+                        <span>Total Green:</span>
+                        <span class="font-bold text-green-600" id="personalGreenKWh">425.5 kWh</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span>Total Energy:</span>
+                        <span class="font-bold" id="personalTotalKWh">612.8 kWh</span>
                     </div>
                 </div>
             </div>
