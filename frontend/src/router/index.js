@@ -10,9 +10,7 @@ import LeaderboardPersonalView from '@/views/LeaderboardPersonalView.vue'
 import UploadMeterView from '@/views/UploadMeterView.vue'
 import EnergyTipsView from '@/views/EnergyTipsView.vue'
 
-import DashboardView from '../views/DashboardView.vue'
-import LeaderboardPersonalView from '../views/LeaderboardPersonalView.vue'
-import UploadMeterView from '../views/UploadMeterView.vue'
+
 import SettingsView from '../views/SettingsView.vue'
 
 const router = createRouter({
