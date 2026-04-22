@@ -1,10 +1,9 @@
+
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '@/views/DashboardView.vue'
 import LeaderboardPersonalView from '@/views/LeaderboardPersonalView.vue'
 import UploadMeterView from '@/views/UploadMeterView.vue'
-import SettingsView from '@/views/SettingsView.vue'
-
-
+import EnergyTipsView from '@/views/EnergyTipsView.vue'
 
 
 const router = createRouter({
@@ -31,9 +30,9 @@ const router = createRouter({
       component: UploadMeterView
     },
     {
-      path: '/settings',
-      name: 'settings',
-      component: SettingsView
+      path: '/energy-tips',
+      name: 'energytips',
+      component: EnergyTipsView
     }
   ],
 })
