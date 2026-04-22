@@ -1,16 +1,6 @@
 
- <!DOCTYPE html>
-
-    <html class="light" lang="en"><head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Personalized Energy Tips | EnergyWise</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <script id="tailwind-config">
-            tailwind.config = {
+<script setup>
+  tailwind.config = {
                 darkMode: "class",
                 theme: {
                     extend: {
@@ -77,84 +67,16 @@
                     },
                 },
             }
-        </script>
-    <style>
-            body { font-family: 'Inter', sans-serif; }
-            .material-symbols-outlined {
-                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            }
-        </style>
-    </head>
-    <body class="bg-background text-on-background">
-    <!-- TopNavBar -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
-    <div class="flex justify-between items-center w-full px-6 py-3 max-w-7xl mx-auto font-['Inter'] antialiased">
-    <div class="text-2xl font-black text-blue-700 dark:text-blue-400">EnergyWise</div>
-    <nav class="hidden md:flex items-center space-x-8">
-    <a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Dashboard</a>
-    <a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Savings</a>
-    <a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Community</a>
-    </nav>
-    <div class="flex items-center space-x-4">
-    <div class="relative hidden sm:block">
-    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-    <input class="pl-10 pr-4 py-1.5 rounded-lg border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Search tips..." type="text"/>
-    </div>
-    <button class="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-150 rounded-full">
-    <span class="material-symbols-outlined text-slate-600 dark:text-slate-300">notifications</span>
-    </button>
-    <div class="w-8 h-8 rounded-full overflow-hidden border border-slate-200">
-    <img alt="User profile" data-alt="professional portrait of a user for a clean user interface profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyDSOOJz78hiKwicckiC4WQO8sg4copfGxeEnN82-Bhh1Q21rNVMCAOYiMbuEhErcKMnHXDcC__oLwGnyQ89dL3Y1Af35kqZZUU6esPeZwyvhQeibmYjcmK4t7NB9rKGXCJ5SD8UQnpFkk3HKXr3tXZwvfWIl-ip5uGO6wVteS6Hd8Q7__WgmdNZMr-QXLUUFPFlJOzpPIaJ1A4z83ZbTywSYL9GmzOcFuBx22EIrxjfpohPM_ZDv7D7pktgxEL5d2y_AMKCkXfxfk"/>
-    </div>
-    </div>
-    </div>
-    </header>
-    <!-- SideNavBar -->
-    <aside class="hidden md:flex flex-col h-full fixed left-0 top-0 pt-16 bg-slate-50 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 w-64 font-['Inter'] text-sm font-medium">
-    <div class="px-6 py-8">
-    <div class="flex items-center space-x-3 mb-1">
-    <div class="w-8 h-8 rounded-lg bg-blue-700 flex items-center justify-center text-white">
-    <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
-    </div>
-    <h2 class="text-xl font-bold text-blue-800 dark:text-blue-300">Energy Tips</h2>
-    </div>
-    <p class="text-slate-500 text-xs pl-11">Save more today</p>
-    </div>
-    <nav class="flex-1 px-4 space-y-1">
-    <a class="flex items-center space-x-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:pl-2 transition-all duration-200 rounded-lg" href="#">
-    <span class="material-symbols-outlined">dashboard</span>
-    <span>Dashboard</span>
-    </a>
-    <a class="flex items-center space-x-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:pl-2 transition-all duration-200 rounded-lg" href="#">
-    <span class="material-symbols-outlined">trophy</span>
-    <span>Leaderboard</span>
-    </a>
-    <a class="flex items-center space-x-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-semibold border-r-4 border-blue-700 hover:pl-2 transition-all duration-200 rounded-lg" href="#">
-    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
-    <span>Energy saving tips</span>
-    </a>
-    <a class="flex items-center space-x-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:pl-2 transition-all duration-200 rounded-lg" href="#">
-    <span class="material-symbols-outlined">science</span>
-    <span>Energy Lab</span>
-    </a>
-    <a class="flex items-center space-x-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:pl-2 transition-all duration-200 rounded-lg" href="#">
-    <span class="material-symbols-outlined">groups</span>
-    <span>Community</span>
-    </a>
-    <a class="flex items-center space-x-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:pl-2 transition-all duration-200 rounded-lg" href="#">
-    <span class="material-symbols-outlined">settings</span>
-    <span>Settings</span>
-    </a>
-    </nav>
-    <div class="p-6 mt-auto">
-    <button class="w-full py-2.5 px-4 bg-blue-700 text-white rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-blue-800 transition-colors">
-                    Upgrade Plan
-                </button>
-    </div>
-    </aside>
-    <!-- Main Content Canvas -->
-    <main class="pt-24 pb-12 px-6 md:pl-80 max-w-7xl mx-auto">
-    <div class="max-w-5xl mx-auto">
+</script>
+
+<template>
+  <div class="flex">
+    <SideBar />
+    <div class="flex-1 ml-72">
+      <TopBar />
+      <div class="max-w-5xl mx-auto p-8">
+        
+       <div class="max-w-5xl mx-auto">
     <!-- Header Section -->
     <section class="mb-12">
     <h1 class="text-4xl font-extrabold text-on-background tracking-tight mb-2">Your Personal Energy Advisor</h1>
@@ -201,7 +123,7 @@
     <p class="text-blue-100 text-sm mb-6">Following your personalized tips could save you up to:</p>
     <div class="text-5xl font-black mb-2">$42<span class="text-xl font-normal">/mo</span></div>
     <div class="w-full bg-blue-800 h-2 rounded-full mt-6 overflow-hidden">
-    <div class="bg-white h-full" style="width: 65%;"></div>
+    <div class="bg-white h-full" style="width: 100%;"></div>
     </div>
     <p class="text-xs text-blue-200 mt-2">65% of potential savings achieved this week</p>
     </div>
@@ -337,28 +259,12 @@
     </div>
     </div>
     </div>
-    </main>
-    <!-- Bottom Navigation (Mobile Only) -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-6 py-3 flex justify-between items-center z-50">
-    <button class="flex flex-col items-center space-y-1 text-slate-400">
-    <span class="material-symbols-outlined">dashboard</span>
-    <span class="text-[10px]">Dashboard</span>
-    </button>
-    <button class="flex flex-col items-center space-y-1 text-slate-400">
-    <span class="material-symbols-outlined">trophy</span>
-    <span class="text-[10px]">Rank</span>
-    </button>
-    <button class="flex flex-col items-center space-y-1 text-blue-700">
-    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
-    <span class="text-[10px] font-bold">Tips</span>
-    </button>
-    <button class="flex flex-col items-center space-y-1 text-slate-400">
-    <span class="material-symbols-outlined">science</span>
-    <span class="text-[10px]">Lab</span>
-    </button>
-    <button class="flex flex-col items-center space-y-1 text-slate-400">
-    <span class="material-symbols-outlined">settings</span>
-    <span class="text-[10px]">Settings</span>
-    </button>
-    </nav>
-    </body></html>
+
+
+      </div>
+    </div>
+  </div>
+</template>
+
+
+

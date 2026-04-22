@@ -1,3 +1,5 @@
+
+
 <script setup> 
     import { defineProps } from 'vue';
     import {useRoute} from 'vue-router'
@@ -13,7 +15,7 @@
 <template>
     <router-link
         v-if="selected===false" 
-        :to=link
+        :to="link"
         class="text-on-surface-variant/70 mx-4 py-3 px-6 hover:translate-x-1 flex items-center gap-3 transition-all" 
     >
         <span class="material-symbols-outlined">{{symbol}}</span>

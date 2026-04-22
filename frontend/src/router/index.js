@@ -1,9 +1,14 @@
+
 import { createRouter, createWebHistory } from 'vue-router'
 
 // Views
 import LandingPageView from '../views/LandingPageView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import DashboardView from '@/views/DashboardView.vue'
+import LeaderboardPersonalView from '@/views/LeaderboardPersonalView.vue'
+import UploadMeterView from '@/views/UploadMeterView.vue'
+import EnergyTipsView from '@/views/EnergyTipsView.vue'
 
 import DashboardView from '../views/DashboardView.vue'
 import LeaderboardPersonalView from '../views/LeaderboardPersonalView.vue'
@@ -44,9 +49,9 @@ const router = createRouter({
       component: UploadMeterView
     },
     {
-      path: '/settings',
-      name: 'settings',
-      component: SettingsView
+      path: '/energy-tips',
+      name: 'energytips',
+      component: EnergyTipsView
     }
   ]
 })

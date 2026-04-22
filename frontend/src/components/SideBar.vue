@@ -1,10 +1,11 @@
+
 <script setup>
     import SideBarItem from './SideBarItem.vue'
     import Logo from './Logo.vue'
 
-    const options = ['Dashboard', 'Leaderboard', 'Upload Meter', 'Energy Lab', 'Community', 'Settings']
-    const symbols = ['grid_view', 'leaderboard', 'add', 'science', 'group', 'settings']
-    const links   = ['/dashboard', '/leaderboard', '/upload', '#', '#', '/settings']
+    const options = ['Dashboard', 'Leaderboard', 'Energy Saving Tips', 'Upload Meter', 'Energy Lab', 'Community', 'Settings']
+    const symbols = ['grid_view', 'leaderboard', 'lightbulb', 'add', 'science', 'group', 'settings']
+    const links = ['/dashboard', '/leaderboard', '/energy-tips', '/upload', '#', '#', '#']
 </script>
 
 <template>
