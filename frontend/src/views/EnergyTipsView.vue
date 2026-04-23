@@ -71,9 +71,9 @@
 
 <template>
   <div class="flex">
-    <SideBar />
-    <div class="flex-1 ml-72">
-      <TopBar />
+    <!--<SideBar />-->
+    <div > <!--class="flex-1 ml-72"-->
+      <!--<TopBar />-->
       <div class="max-w-5xl mx-auto p-8">
         
        <div class="max-w-5xl mx-auto">

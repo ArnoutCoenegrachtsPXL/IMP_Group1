@@ -16,52 +16,21 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior: (to, from, saved) => saved || { top: 0, behavior: 'smooth' },
   routes: [
-    {
-      path: '/',
-      name: 'landing',
-      component: LandingPageView
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: RegisterView
-    },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: DashboardView
-    },
-    {
-      path: '/leaderboard',
-      name: 'leaderboard',
-      component: LeaderboardPersonalView
-    },
-    {
-      path: '/upload',
-      name: 'upload-meter',
-      component: UploadMeterView
-    },
-    {
-      path: '/energy-tips',
-      name: 'energytips',
-      component: EnergyTipsView
-    },
-    {
-      path: '/forgot-password',
-      name: 'forgot-password',
-      component: ForgotPasswordView
-    },
-    {
-      path: '/reset-password',
-      name: 'reset-password',
-      component: ResetPasswordView
-    }
-  ]
+    // ── Public (no sidebar) ──────────────────────────────────────────────────
+    { path: '/',         name: 'landing',  component: LandingPageView },
+    { path: '/login',    name: 'login',    component: LoginView       },
+    { path: '/register', name: 'register', component: RegisterView    },
+    { path: '/forgot-password', name: 'forgot-password', component: ForgotPasswordView},
+    { path: '/reset-password', name: 'reset-password', component: ResetPasswordView   },
+    // ── Protected (sidebar + topbar) ─────────────────────────────────────────
+    { path: '/dashboard',    name: 'dashboard',    component: DashboardView           },
+    { path: '/leaderboard',  name: 'leaderboard',  component: LeaderboardPersonalView },
+    { path: '/upload',       name: 'upload-meter', component: UploadMeterView         },
+    { path: '/energy-tips',  name: 'energy-tips',  component: EnergyTipsView          },
+    { path: '/settings',     name: 'settings',     component: SettingsView            },
+    // ── Catch-all ────────────────────────────────────────────────────────────
+    { path: '/:pathMatch(.*)*', redirect: '/' },
+  ],
 })
 
 export default router
