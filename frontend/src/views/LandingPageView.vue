@@ -1,7 +1,6 @@
 <template>
   <div class="bg-background text-on-surface min-h-screen">
     <!-- Top Navigation -->
-    <!-- Top Navigation - Final Clean Version -->
     <nav class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm flex justify-between items-center px-6 h-16 font-['Inter'] antialiased">
       <div class="flex items-center gap-2">
         <span class="material-symbols-outlined text-primary text-2xl">bolt</span>
@@ -176,5 +175,5 @@
 </template>
 
 <script setup>
-// No script needed for landing page
+
 </script>

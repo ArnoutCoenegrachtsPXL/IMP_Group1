@@ -46,7 +46,7 @@
             <div class="space-y-2">
               <div class="flex justify-between items-center">
                 <label class="block text-sm font-semibold text-on-surface-variant" for="password">Password</label>
-                <a href="#" class="text-sm font-medium text-primary hover:underline">Forgot Password?</a>
+                <router-link to="/forgot-password" class="text-sm font-medium text-primary hover:underline">Forgot Password?</router-link>
               </div>
               <div class="relative">
                 <input
@@ -54,15 +54,15 @@
                   :type="showPassword ? 'text' : 'password'"
                   id="password"
                   placeholder="Enter your password"
-                  class="w-full px-4 py-3 bg-surface-container border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                  class="w-full px-4 py-3 pr-10 bg-surface-container border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
                   required
                 />
                 <button
                   type="button"
                   @click="showPassword = !showPassword"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant leading-none"
                 >
-                  <span class="material-symbols-outlined text-xl">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+                  <span class="material-symbols-outlined" style="font-size: 18px;">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
                 </button>
               </div>
             </div>

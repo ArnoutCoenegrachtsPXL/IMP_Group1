@@ -9,13 +9,13 @@ import ChatBot from '@/components/Chatbot.vue'
 const route = useRoute()
 
 const isPublicRoute = computed(() => {
-  const publicPaths = ['/', '/login', '/register']
+  const publicPaths = ['/', '/login', '/register', '/forgot-password', '/reset-password']
   return publicPaths.includes(route.path)
 })
 </script>
 
 <template>
-  <!-- Public pages: Landing, Login, Register - Full screen, no sidebar -->
+  <!-- Public pages: Landing, Login, Register, Forgot Password, Reset Password - Full screen, no sidebar -->
   <router-view v-if="isPublicRoute" />
 
   <!-- Protected pages: Show sidebar and topbar -->
