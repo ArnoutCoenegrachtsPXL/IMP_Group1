@@ -1,43 +1,120 @@
-
 <script setup>
-    import SideBarItem from './SideBarItem.vue'
-    import Logo from './Logo.vue'
+import { computed } from 'vue'
+import SideBarItem from './SideBarItem.vue'
+import Logo from './Logo.vue'
+import { useUserPrefsStore } from '@/stores/userPrefs'
+import { useRouter } from 'vue-router'
 
-    const options = ['Dashboard', 'Leaderboard', 'Energy Saving Tips', 'Upload Meter', 'Energy Lab', 'Community', 'Settings']
-    const symbols = ['grid_view', 'leaderboard', 'lightbulb', 'add', 'science', 'group', 'settings']
-    const links = ['/dashboard', '/leaderboard', '/energy-tips', '/upload', '#', '#', '#']
+const props = defineProps({ mobileOpen: { type: Boolean, default: false } })
+defineEmits(['close'])
+
+const prefs = useUserPrefsStore()
+const router = useRouter()
+
+const isRtl = computed(() => ['ar', 'he', 'fa', 'ur'].includes(prefs.language))
+
+// Navigation items — only show feature-flagged routes if enabled
+const navItems = computed(() => [
+  { key: 'dashboard',   icon: 'grid_view',   link: '/dashboard',   always: true       },
+  { key: 'leaderboard', icon: 'leaderboard', link: '/leaderboard', feat: 'leaderboard' },
+  { key: 'uploadMeter', icon: 'upload',      link: '/upload',      always: true        },
+  { key: 'energyTips',  icon: 'lightbulb',   link: '/energy-tips', feat: 'energyTips'  },
+  { key: 'community',   icon: 'group',       link: '#',            feat: 'community'   },
+  { key: 'settings',    icon: 'settings',    link: '/settings',    always: true        },
+].filter(item => item.always || prefs.features[item.feat]))
+
+const sidebarTranslate = computed(() => {
+  if (props.mobileOpen) return 'translate-x-0'
+  return isRtl.value ? 'translate-x-full md:translate-x-0' : '-translate-x-full md:translate-x-0'
+})
+
+const sidebarPosition = computed(() =>
+  isRtl.value ? 'right-0 left-auto border-l' : 'left-0 right-auto border-r'
+)
 </script>
 
 <template>
-    <aside class="h-screen w-72 fixed left-0 top-0 border-r border-outline-variant/20 bg-surface flex flex-col h-full py-8 gap-2 z-40 hidden md:flex">
-        <Logo/>
-        <div class="flex flex-col items-center mb-8 px-6">
-            <div class="w-16 h-16 rounded-full bg-surface-container-high mb-3 flex items-center justify-center overflow-hidden">
-                <img class="w-full h-full object-cover" data-alt="EcoPower User Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfmVuxN7riZahEcZ3uEoyYaRu9JXhalFTwXgadhcFsO8Xxou2dNcoqLOfZaIVbt8EnWTxlg3zRPYQ3Ta0F3ZGippGnsp1oxqgxsXlQAVirvN2at_uPKdde96ZedgOfNsdhJsvdG-OHe9C1A783qYo3cywkcasmg1YO50I7lV5oPQ7SctvfOUX2o0b0Bib32LcFYdZAHsglAza7pXs2Huj9NN_-orB0EAl-8zNBzrU9L8qcYNqy1pmq3ak2Y026EolUm5Z-VCZoJaU"/>
-            </div>
-            <p class="font-headline font-bold text-on-surface">Energy Hero</p>
-            <p class="text-xs text-primary font-medium">7 Day Streak 🔥</p>
-        </div>
+  <aside
+    :class="[
+      'fixed top-0 h-screen w-[17rem] z-40 flex flex-col',
+      'bg-surface border-outline-variant/20 transition-transform duration-300 ease-in-out',
+      sidebarPosition, sidebarTranslate,
+    ]"
+    :aria-label="prefs.t.navMenu"
+    role="navigation"
+  >
+    <!-- Logo -->
+    <div class="px-5 pt-6 pb-4 hidden md:block border-b border-outline-variant/10">
+      <Logo />
+    </div>
 
-        <nav class="flex-1 space-y-1">
-            <SideBarItem v-for="(option, index) in options"
-            :text="option"
-            :symbol="symbols[index]"
-            :link="links[index]"
-            />
-        </nav>
-        <div class="px-8 mt-auto flex flex-col gap-4">
-            <button class="solar-glow text-white py-3 px-4 rounded-md font-bold text-sm shadow-md active:scale-95 transition-transform">
-                View Impact Report
-            </button>
-            <div class="flex flex-col gap-1 border-t border-outline-variant/10 pt-4">
-                <a class="flex items-center gap-3 py-2 px-2 text-on-surface-variant/60 text-sm font-medium hover:text-primary transition-colors" href="#">
-                    <span class="material-symbols-outlined text-sm">help</span> Support
-                </a>
-                <a class="flex items-center gap-3 py-2 px-2 text-on-surface-variant/60 text-sm font-medium hover:text-primary transition-colors" href="#">
-                    <span class="material-symbols-outlined text-sm">logout</span> Logout
-                </a>
-            </div>
-        </div>
-    </aside>
+    <!-- Mobile header -->
+    <div class="md:hidden flex justify-between items-center px-5 pt-5 pb-4 border-b border-outline-variant/10">
+      <Logo />
+      <button
+        class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors"
+        :aria-label="prefs.t.close"
+        @click="$emit('close')"
+      >
+        <span class="material-symbols-outlined text-[22px]">close</span>
+      </button>
+    </div>
+
+    <!-- User card -->
+    <div class="flex items-center gap-3 mx-4 mt-5 mb-3 p-3 rounded-2xl bg-surface-container">
+      <div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary/20 shrink-0">
+        <img
+          :src="prefs.avatarUrl"
+          :alt="prefs.profile.displayName"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="min-w-0 flex-1">
+        <p class="font-semibold text-sm text-on-surface truncate leading-tight">
+          {{ prefs.profile.displayName }}
+        </p>
+        <p v-if="prefs.features.streak" class="text-xs text-primary font-medium leading-tight">
+          7 {{ prefs.t.dashboard === 'Dashboard' ? 'Day Streak' : '🔥' }} 🔥
+        </p>
+      </div>
+    </div>
+
+    <!-- Nav items -->
+    <nav class="flex-1 px-2 space-y-0.5 overflow-y-auto">
+      <SideBarItem
+        v-for="item in navItems"
+        :key="item.key"
+        :text="prefs.t[item.key]"
+        :symbol="item.icon"
+        :link="item.link"
+        @click="$emit('close')"
+      />
+    </nav>
+
+    <!-- Bottom actions -->
+    <div class="px-4 pb-6 pt-3 mt-auto border-t border-outline-variant/10 space-y-1">
+      <button
+        class="solar-glow w-full py-2.5 px-4 rounded-xl font-semibold text-sm
+               shadow-sm active:scale-95 transition-transform"
+      >
+        {{ prefs.t.viewImpactReport }}
+      </button>
+      <a
+        href="#"
+        class="flex items-center gap-2.5 py-2.5 px-3 text-sm font-medium text-on-surface-variant/70
+               hover:text-primary hover:bg-surface-container rounded-xl transition-colors"
+      >
+        <span class="material-symbols-outlined text-[18px]">help</span>
+        {{ prefs.t.support }}
+      </a>
+      <a
+        href="/login"
+        class="flex items-center gap-2.5 py-2.5 px-3 text-sm font-medium text-on-surface-variant/70
+               hover:text-primary hover:bg-surface-container rounded-xl transition-colors"
+      >
+        <span class="material-symbols-outlined text-[18px]">logout</span>
+        {{ prefs.t.logout }}
+      </a>
+    </div>
+  </aside>
 </template>

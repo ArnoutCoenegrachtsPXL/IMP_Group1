@@ -1,12 +1,222 @@
-@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap";
-@import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap";
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 @import "tailwindcss";
 
-body { font-family: 'Inter', sans-serif; }
-h1, h2, h3, .font-headline { font-family: 'Inter', sans-serif; }
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES
+   Single source of colour truth. userPrefs.js writes these at runtime.
+   Tailwind reads them via tailwind.config.js → theme.extend.colors.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Accent (overwritten by userPrefs.setAccent) */
+  --color-primary:                  #2563eb;
+  --color-primary-dim:              #1d4ed8;
+  --color-primary-fixed:            #dbeafe;
+  --color-primary-fixed-dim:        #93c5fd;
+  --color-on-primary:               #ffffff;
+  --color-primary-container:        #dbeafe;
+  --color-on-primary-container:     #1e3a5f;
+  --color-secondary:                #2563eb;
+  --color-secondary-container:      #dbeafe;
+  --color-on-secondary-container:   #1e3a5f;
+  --color-tertiary:                 #2563eb;
+  --color-tertiary-container:       #dbeafe;
+  --color-on-tertiary-container:    #1e3a5f;
+
+  /* Surfaces (overwritten by userPrefs.applyAll) */
+  --color-background:               #f8fafc;
+  --color-on-background:            #0f172a;
+  --color-surface:                  #f8fafc;
+  --color-surface-dim:              #dce6f0;
+  --color-surface-bright:           #ffffff;
+  --color-surface-variant:          #e2e8f0;
+  --color-on-surface:               #0f172a;
+  --color-on-surface-variant:       #475569;
+  --color-inverse-surface:          #1e293b;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low:    #f1f5f9;
+  --color-surface-container:        #e8f0f8;
+  --color-surface-container-high:   #dde8f5;
+  --color-surface-container-highest:#d0dff0;
+  --color-outline:                  #64748b;
+  --color-outline-variant:          #cbd5e1;
+
+  /* Error */
+  --color-error:     #dc2626;
+  --color-error-dim: #b91c1c;
+  --color-on-error:  #ffffff;
+
+  /* Legacy chatbot vars (kept for Chatbot.vue compatibility) */
+  --pri:       #1d4ed8;
+  --pri-mid:   #2563eb;
+  --pri-light: #dbeafe;
+  --pri-hover: #1e40af;
+  --pri-on:    #ffffff;
+  --surf:      #f8fafc;
+  --surf-2:    #eff6ff;
+  --surf-3:    #dbeafe;
+  --surf-card: #ffffff;
+  --text:      #0f172a;
+  --text-muted:#475569;
+  --border:        rgba(37,99,235,0.14);
+  --border-strong: rgba(37,99,235,0.28);
+
+  /* Spacing & layout */
+  --sidebar-width: 17rem;
+  --topbar-height: 64px;
+  --radius:  10px;
+  --transition: 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   BASE RESET & TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  font-size: 16px; /* userPrefs overrides this */
+}
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-optical-sizing: auto;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, .font-display { font-family: 'DM Serif Display', Georgia, serif; }
+h4, h5, h6               { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 700; }
+
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THEME TRANSITION
+   All colour-related properties animate together for a polished mode switch.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, box-shadow, fill, stroke, opacity;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Opt-out: transforms, widths, etc. should not inherit the colour transition */
+.no-transition,
+.no-transition * { transition: none !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY — WCAG 2.1 AA+
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* WCAG 2.4.7 — Keyboard focus indicator */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* WCAG 2.5.5 — Minimum touch target 44×44px */
+button, [role="button"], a, [role="switch"],
+input[type="checkbox"], input[type="radio"] {
+  min-height: 44px;
+}
+/* Icon-only buttons override */
+.btn-icon { min-height: 44px; min-width: 44px; }
+.btn-icon-sm { min-height: 36px; min-width: 36px; }
+
+/* WCAG 1.4.6 — Enhanced contrast mode */
+html.high-contrast {
+  --color-on-surface:         #000000;
+  --color-on-background:      #000000;
+  --color-on-surface-variant: #111111;
+  --color-outline:            #000000;
+  --color-outline-variant:    #333333;
+  --text:                     #000000;
+  --text-muted:               #333333;
+}
+html.high-contrast.dark {
+  --color-on-surface:         #ffffff;
+  --color-on-background:      #ffffff;
+  --color-on-surface-variant: #f0f0f0;
+  --color-outline:            #ffffff;
+  --color-outline-variant:    #cccccc;
+  --text:                     #ffffff;
+  --text-muted:               #dddddd;
+}
+
+/* WCAG 2.3.3 — Reduce motion */
+html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after {
+  animation-duration:       0.01ms !important;
+  animation-iteration-count: 1     !important;
+  transition-duration:      0.01ms !important;
+  scroll-behavior:          auto   !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   RTL SUPPORT
+   ═══════════════════════════════════════════════════════════════════════════════ */
+[dir="rtl"] .sidebar-push { padding-left: 0; padding-right: var(--sidebar-width); }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   SOLAR GLOW — themed gradient button
+   ═══════════════════════════════════════════════════════════════════════════════ */
 .solar-glow {
-  background: linear-gradient(135deg, #1978e5 0%, #64b5f6 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dim) 100%);
+  color: var(--color-on-primary);
 }
+.solar-glow:hover {
+  background: linear-gradient(135deg, var(--color-primary-dim) 0%, var(--color-primary) 100%);
+  filter: brightness(1.06);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CUSTOM SCROLLBAR
+   ═══════════════════════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar              { width: 5px; height: 5px; }
+::-webkit-scrollbar-track        { background: transparent; }
+::-webkit-scrollbar-thumb        { background: var(--color-outline-variant); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover  { background: var(--color-outline); }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   UTILITY HELPERS
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.card {
+  background: var(--color-surface-container-lowest);
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 60%, transparent);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: var(--color-surface-container);
+  min-height: 60px;
+}
+.toggle-row:hover { background: var(--color-surface-container-high); }
+
+/* Safe area padding for notched mobile devices */
+.safe-top    { padding-top:    env(safe-area-inset-top, 0px); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.safe-left   { padding-left:   env(safe-area-inset-left, 0px); }
+.safe-right  { padding-right:  env(safe-area-inset-right, 0px); }
+
+/* Hide scrollbar but keep scroll */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
