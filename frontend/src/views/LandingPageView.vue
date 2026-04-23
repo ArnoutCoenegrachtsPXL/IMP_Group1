@@ -4,7 +4,7 @@
     <nav class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm flex justify-between items-center px-6 h-16 font-['Inter'] antialiased">
       <div class="flex items-center gap-2">
         <span class="material-symbols-outlined text-primary text-2xl">bolt</span>
-        <span class="text-xl font-bold text-blue-700 dark:text-blue-400">EcoSave</span>
+        <span class="text-xl font-bold text-blue-700 dark:text-blue-400">Brightbox</span>
       </div>
 
       <div class="hidden md:flex items-center gap-8">
