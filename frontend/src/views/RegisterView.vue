@@ -70,7 +70,7 @@
                 <button
                   type="button"
                   @click="showPassword = !showPassword"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant leading-none"
+                  class="absolute right-3 inset-y-0 flex items-center text-on-surface-variant"
                 >
                   <span class="material-symbols-outlined" style="font-size: 18px;">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
                 </button>
@@ -91,7 +91,7 @@
                 <button
                   type="button"
                   @click="showConfirmPassword = !showConfirmPassword"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant leading-none"
+                  class="absolute right-3 inset-y-0 flex items-center text-on-surface-variant"
                 >
                   <span class="material-symbols-outlined" style="font-size: 18px;">{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</span>
                 </button>
