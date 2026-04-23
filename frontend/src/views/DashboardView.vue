@@ -2,6 +2,7 @@
     import SideBar from '../components/SideBar.vue'
     import TopBar from '@/components/TopBar.vue';
     import { ref, onMounted } from 'vue'
+    import EnergyLineChart from '@/components/EnergyLineChart.vue'
 
     // Green Energy Mix data
     const greenStats = ref({
@@ -473,4 +474,35 @@
             </div>
         </div>
     </div>
+            <!-- CHARTS SECTION: MY ENERGY TREND (#28) + COMMUNITY TREND (#30) -->
+        <div class="md:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-lg">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="text-2xl">📈</span>
+                    <h2 class="text-xl font-bold">My Energy Trend</h2>
+                </div>
+                <EnergyLineChart 
+                    :labels="['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']"
+                    :values="[85.2, 72.5, 98.2, 64.8, 55.3, 48.7, 42.1]"
+                    :total="612.8"
+                    peakDay="Wednesday"
+                    :peakValue="98.2"
+                />
+            </div>
+
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-lg">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="text-2xl">📊</span>
+                    <h2 class="text-xl font-bold">Community Energy Trend</h2>
+                </div>
+                <EnergyLineChart 
+                    :labels="['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']"
+                    :values="[8450, 8200, 8900, 7800, 7500, 7100, 6900]"
+                    :total="50000"
+                    peakDay="Wednesday"
+                    :peakValue="8900"
+                />
+            </div>
+        </div>
 </template>
