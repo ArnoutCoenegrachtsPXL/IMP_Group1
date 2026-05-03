@@ -50,7 +50,7 @@ const chartData = {
       tension: 0.4
     }
   ]
-}
+ }
 
 // Chart options
 const chartOptions = {

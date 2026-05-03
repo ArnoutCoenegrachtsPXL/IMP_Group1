@@ -4,9 +4,21 @@ using backend_NET.Models;
 using backend_NET.Models.MapperProfiles;
 using Microsoft.Extensions.DependencyInjection;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5203") // Your Vue app's address
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 
 builder.Services.AddCors(options =>
 {
@@ -37,20 +49,33 @@ builder.Services.AddAutoMapper(cfg =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevPolicy", policy =>
+    {
+        policy.AllowAnyOrigin()  // This allows ANY port/origin
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowSpecificOrigin");
-
 app.UseHttpsRedirection();
-
-//app.UseAuthorization();
+app.UseRouting();
+app.UseCors("DevPolicy");
+app.UseAuthorization();
+//app.UseCors("AllowSpecificOrigin");
 
 app.MapControllers();
 
