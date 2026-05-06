@@ -67,6 +67,8 @@
               </div>
             </div>
 
+            <!-- Success and Error Messages -->
+            <p v-if="success" class="text-green-600 dark:text-green-400 text-sm font-medium">{{ success }}</p>
             <p v-if="error" class="text-error text-sm">{{ error }}</p>
 
             <button
@@ -87,14 +89,12 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
-            <button class="flex items-center justify-center gap-2 py-3 px-4 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors">
-              Google
-            </button>
-            <button class="flex items-center justify-center gap-2 py-3 px-4 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors">
-              Apple
-            </button>
+          <div class="flex justify-center">
+            <!-- Google Sign In Button rendered by Google -->
+            <div id="google-btn" class="w-full"></div>
           </div>
+
+          <p v-if="googleError" class="text-error text-sm mt-2 text-center">{{ googleError }}</p>
 
           <div class="mt-10 text-center">
             <p class="text-on-surface-variant">
@@ -109,8 +109,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
@@ -118,13 +119,62 @@ const form = ref({ email: '', password: '' })
 const showPassword = ref(false)
 const isLoading = ref(false)
 const error = ref('')
+const success = ref('')
+const googleError = ref('')
+
+onMounted(() => {
+  window.google.accounts.id.initialize({
+    client_id: '491184789863-045kii4su8urcvvrtt8n13s8u2u3v5bh.apps.googleusercontent.com',
+    callback: handleGoogleLogin
+  })
+
+  window.google.accounts.id.renderButton(
+    document.getElementById('google-btn'),
+    { theme: 'outline', size: 'large', width: '100%', text: 'signin_with' }
+  )
+})
+
+const handleGoogleLogin = async (response) => {
+  googleError.value = ''
+  try {
+    const res = await axios.post('https://localhost:7126/api/auth/google-login', {
+      credential: response.credential
+    })
+
+    localStorage.setItem('token', res.data.token)
+    localStorage.setItem('userId', res.data.userId)
+    localStorage.setItem('fullName', res.data.fullName)
+    localStorage.setItem('email', res.data.email)
+
+    router.push('/dashboard')
+  } catch (err) {
+    googleError.value = err.response?.data?.message || 'Google sign in failed. Please try again.'
+  }
+}
 
 const handleLogin = async () => {
   error.value = ''
+  success.value = ''
   isLoading.value = true
-  await new Promise(r => setTimeout(r, 1000))
-  alert('Logged in successfully! (Demo)')
-  router.push('/dashboard')
-  isLoading.value = false
+
+  try {
+    const response = await axios.post('https://localhost:7126/api/auth/login', {
+      email: form.value.email,
+      password: form.value.password
+    })
+
+    localStorage.setItem('token', response.data.token)
+    localStorage.setItem('userId', response.data.userId)
+    localStorage.setItem('fullName', response.data.fullName)
+    localStorage.setItem('email', response.data.email || form.value.email)
+
+    success.value = 'Login successful! Redirecting to dashboard...'
+    setTimeout(() => router.push('/dashboard'), 1200)
+
+  } catch (err) {
+    error.value = err.response?.data?.message || 'Invalid email or password.'
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>

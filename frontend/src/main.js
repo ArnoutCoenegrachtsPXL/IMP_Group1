@@ -9,6 +9,7 @@ import PrimeVue from 'primevue/config'
 import ToggleSwitch from 'primevue/toggleswitch'
 
 import Lara from '@primevue/themes/lara'
+import vue3GoogleLogin from 'vue3-google-login'
 
 const app = createApp(App)
 
@@ -19,6 +20,10 @@ app.use(PrimeVue, {
   theme: {
     preset: Lara
   }
+})
+
+app.use(vue3GoogleLogin, {
+  clientId: '491184789863-045kii4su8urcvvrtt8n13s8u2u3v5bh.apps.googleusercontent.com'
 })
 
 app.component('ToggleSwitch', ToggleSwitch)

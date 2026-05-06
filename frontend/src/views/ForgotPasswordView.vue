@@ -1,6 +1,5 @@
 <template>
   <div class="bg-background text-on-background min-h-screen flex flex-col">
-
     <!-- Top Header -->
     <header class="fixed top-0 w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm z-50">
       <div class="flex justify-between items-center px-4 h-16 w-full">
@@ -51,6 +50,7 @@
                 />
               </div>
 
+              <p v-if="success" class="text-green-600 dark:text-green-400 text-sm font-medium">{{ success }}</p>
               <p v-if="error" class="text-error text-sm">{{ error }}</p>
 
               <button
@@ -62,19 +62,6 @@
               </button>
             </form>
 
-            <!-- Security Tip -->
-            <div class="mt-8 p-5 bg-surface-container rounded-xl flex items-start gap-4">
-              <div class="bg-primary-container p-2 rounded">
-                <span class="material-symbols-outlined text-on-primary-container">info</span>
-              </div>
-              <div>
-                <h4 class="text-sm font-bold text-on-surface mb-1">Security Tip</h4>
-                <p class="text-xs text-on-surface-variant leading-normal">
-                  Ensure your new password uses a combination of letters, numbers, and special characters for maximum account security.
-                </p>
-              </div>
-            </div>
-
             <div class="mt-10 text-center">
               <p class="text-on-surface-variant">
                 Remember your password?
@@ -83,27 +70,23 @@
             </div>
           </template>
 
-          <!-- Step 2: Confirmation Message -->
+          <!-- Step 2: Success -->
           <template v-else>
             <div class="flex flex-col items-center text-center gap-6">
               <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
                 <span class="material-symbols-outlined text-5xl text-primary">mark_email_read</span>
               </div>
               <div>
-                <h1 class="text-3xl font-extrabold text-on-surface mb-2">Check Your Inbox</h1>
-                <p class="text-on-surface-variant max-w-xs mx-auto">
-                  We sent a password reset link to <span class="font-semibold text-on-surface">{{ email }}</span>. Check your inbox and follow the instructions.
+                <h1 class="text-3xl font-extrabold text-on-surface mb-2">Check Your Email</h1>
+                <p class="text-on-surface-variant">
+                  If <span class="font-semibold">{{ email }}</span> is registered, a reset link has been sent.
                 </p>
               </div>
-              <p class="text-sm text-on-surface-variant">
-                Didn't receive it?
-                <button @click="handleResend" class="text-primary font-bold hover:underline ml-1">Resend</button>
-              </p>
+
               <router-link
                 to="/login"
-                class="mt-2 inline-flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors"
+                class="w-full py-4 bg-primary text-on-primary font-bold rounded-lg shadow-lg hover:bg-primary-container active:scale-[0.98] transition-all duration-200 uppercase tracking-wide text-center"
               >
-                <span class="material-symbols-outlined text-base">arrow_back</span>
                 Back to Sign In
               </router-link>
             </div>
@@ -112,34 +95,35 @@
         </div>
       </div>
     </main>
-
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
 
 const email = ref('')
 const isLoading = ref(false)
 const error = ref('')
+const success = ref('')
 const submitted = ref(false)
 
 const handleSubmit = async () => {
   error.value = ''
+  success.value = ''
   isLoading.value = true
 
-  // Simulate API call
-  await new Promise(r => setTimeout(r, 1200))
-
-  // TODO: Replace with real API call
-  // e.g. await api.post('/auth/forgot-password', { email: email.value })
-
-  isLoading.value = false
-  submitted.value = true
-}
-
-const handleResend = async () => {
-  submitted.value = false
-  await handleSubmit()
+  try {
+    await axios.post('https://localhost:7126/api/auth/forgot-password', {
+      email: email.value
+    })
+    
+    success.value = "Reset link sent! Please check your email."
+    submitted.value = true
+  } catch (err) {
+    error.value = err.response?.data?.message || 'Something went wrong. Please try again.'
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
