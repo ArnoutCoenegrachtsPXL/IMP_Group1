@@ -2,6 +2,14 @@
 {
     public interface IUserRepository
     {
-        User GetUser(Guid userId);
+        // Existing method
+        User? getUser(Guid userId);
+
+        // New methods for Auth
+        Task<User?> GetByEmailAsync(string email);
+        Task<bool> EmailExistsAsync(string email);
+        Task AddAsync(User user);
+        Task SaveChangesAsync();
+        Task<User?> GetByResetTokenAsync(string token);
     }
 }
