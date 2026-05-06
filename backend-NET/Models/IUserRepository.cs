@@ -3,7 +3,7 @@
     public interface IUserRepository
     {
         // Existing method
-        User? getUser(Guid userId);
+        User? GetUser(Guid userId);
 
         // New methods for Auth
         Task<User?> GetByEmailAsync(string email);

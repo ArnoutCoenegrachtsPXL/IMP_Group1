@@ -1,7 +1,5 @@
 ﻿
 using System.Globalization;
-using MetadataExtractor;
-using MetadataExtractor.Formats.Exif;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend_NET.Models

@@ -11,7 +11,7 @@ namespace backend_NET.Models
             _context = context;
         }
 
-        public User? getUser(Guid userId)
+        public User? GetUser(Guid userId)
         {
             return _context.Users.Find(userId);
         }

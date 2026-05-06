@@ -1,13 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿
 using AutoMapper;
 using backend_NET.ApiModels;
 using backend_NET.Models;
-using MetadataExtractor;
-using MetadataExtractor.Formats.Exif;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace backend_NET.Controllers
 {
