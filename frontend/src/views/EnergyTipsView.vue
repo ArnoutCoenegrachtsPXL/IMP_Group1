@@ -5,13 +5,16 @@
   import HeatingSavingTip from '@/components/EnergySavingTipsComponents/HeatingSavingTip.vue'
   import KitchenSavingTip from '@/components/EnergySavingTipsComponents/KitchenSavingTip.vue'
   import LaundrySavingTip from '@/components/EnergySavingTipsComponents/LaundrySavingTip.vue'
+  import ScheduledTip from '@/components/EnergySavingTipsComponents/ScheduledTip.vue'
   import SolarSavingTip from '@/components/EnergySavingTipsComponents/SolarSavingTip.vue'
   import WaterSavingTip from '@/components/EnergySavingTipsComponents/WaterSavingTip.vue'
 
   import {ref} from 'vue'
+  import ToggleSwitch from 'primevue/toggleswitch';
 
   const currentView = ref('main')
-
+    const timeFrom = ref('16:00')
+    const timeTo = ref('22:00')
   tailwind.config = {
                 darkMode: "class",
                 theme: {
@@ -63,7 +66,9 @@
                             "primary-fixed-dim": "#19e52d",
                             "surface-container-high": "#e6e8f1",
                             "surface-container-highest": "#e0e2ec",
-                            "on-primary-container": "#f8fff0"
+                            "on-primary-container": "#f8fff0",
+                            "primary": "#006c0c", 
+                             "brand": "#1978e5",
                         },
                         "borderRadius": {
                             "DEFAULT": "0.125rem",
@@ -103,23 +108,19 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
           <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Time From</label>
-          <input class="w-full rounded border-slate-200 bg-slate-50 px-4 py-2.5 focus:ring-blue-500 focus:border-blue-500" type="time" value="16:00"/>
+          <input class="w-full rounded border-slate-200 bg-slate-50 px-4 py-2.5 focus:ring-blue-500 focus:border-blue-500" type="time" v-model="timeFrom"/>
           </div>
           <div>
           <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Time To</label>
-          <input class="w-full rounded border-slate-200 bg-slate-50 px-4 py-2.5 focus:ring-blue-500 focus:border-blue-500" type="time" value="18:00"/>
+          <input class="w-full rounded border-slate-200 bg-slate-50 px-4 py-2.5 focus:ring-blue-500 focus:border-blue-500" type="time" v-model="timeTo"/>
           </div>
           </div>
           </div>
           <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="flex items-center space-x-3">
-          <button class="relative inline-flex h-6 w-11 items-center rounded-full bg-blue-700">
-          <span class="inline-block h-4 w-4 translate-x-6 transform rounded-full bg-white transition"></span>
-          </button> <br>
-          <br>
-          <span class="text-sm font-medium text-slate-700"> <br>Show only tips for my schedule</span>
+          <span class="text-sm font-medium text-slate-700"><ToggleSwitch v-model="checked" /> Show only tips for my schedule</span>
           </div>
-          <button class="w-full sm:w-auto px-6 py-2.5 bg-blue-700 text-white rounded-lg font-bold hover:bg-blue-800 transition-colors flex items-center justify-center space-x-2">
+          <button class="w-full sm:w-auto px-6 py-2.5 bg-blue-700 text-white rounded-lg font-bold hover:bg-blue-800 transition-colors flex items-center justify-center space-x-2" @click="currentView = 'schedule'">
           <span>Get Tailored Tips</span>
           <span class="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
@@ -271,13 +272,15 @@
   
             </div>
 
-            <!-- Category views -->
+            <!-- connections for buttons -->
             <ElectricitySavingTip v-if="currentView === 'electricity'" @back="currentView = 'main'" />
             <WaterSavingTip v-if="currentView=='water'" @back="currentView = 'main'"/>
             <HeatingSavingTip v-if="currentView=='heating'" @back="currentView = 'main'"/>
             <SolarSavingTip v-if="currentView=='solar'" @back="currentView = 'main'"/>
             <KitchenSavingTip v-if="currentView=='kitchen'" @back="currentView = 'main'"/>
             <LaundrySavingTip v-if="currentView=='laundry'" @back="currentView = 'main'"/>
+            <ScheduledTip v-if="currentView == 'schedule'" :timeFrom="timeFrom" :timeTo="timeTo" @back="currentView = 'main'"/>
+           
 </template>
 
 
