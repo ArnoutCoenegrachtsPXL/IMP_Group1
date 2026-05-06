@@ -48,11 +48,11 @@ namespace backend_NET.Models
         {
             int currentyear = DateTime.Now.Year;
             int currentWeek = Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-            return _context.MeterReadings
+            IEnumerable<MeterReading> list = _context.MeterReadings
+                .Where(r => r.User.Id == user.Id)
                 .Where(r => r.Time.Year == currentyear)
-                .Where(r => Calendar.GetWeekOfYear(r.Time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday) == currentWeek)
-                .Where(r => r.Status != Status.REJECTED)
-                .Count();
+                .Where(r => r.Status != Status.REJECTED);
+            return list.Where(r => Calendar.GetWeekOfYear(r.Time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday) == currentWeek).Count();
         }
     }
 }

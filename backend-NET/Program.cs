@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using backend_NET.Models;
+using backend_NET.Models.MapperProfiles;
 using backend_NET.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -54,12 +55,18 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<MeterReadingProfile>();
+});
+
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Repositories
-builder.Services.AddScoped<IMeterReadingRepository, MeterReadingDbRepository>();
+builder.Services.AddScoped<IMeterReadingRepository, MeterReadingDbRepository>(); //
 builder.Services.AddScoped<IUserRepository, UserDbRepository>();
 
 // Email Service
@@ -95,5 +102,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+DbInitializer.Seed(app);
 
 app.Run();
