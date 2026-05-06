@@ -30,3 +30,5 @@
 
 /node_modules
 
+/Jupyter/.ipynb_checkpoints
+/Jupyter/.cache*
