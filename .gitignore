@@ -32,3 +32,5 @@
 
 /Jupyter/.ipynb_checkpoints
 /Jupyter/.cache*
+
+*cache*

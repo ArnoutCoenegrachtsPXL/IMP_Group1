@@ -28,6 +28,8 @@ export default defineConfig({
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
       'Cross-Origin-Embedder-Policy': 'unsafe-none'
-    }
+    },
+    host: true,
+    port:5173
   }
 })
