@@ -26,5 +26,15 @@ namespace backend_NET.Models
                 return date;
             return DateTime.UtcNow;
         }
+
+        public static MeterReading CreateMeterReading(User user, DateTime time, double value, Status status)
+        {
+            MeterReading newReading = new MeterReading();
+            newReading.User = user;
+            newReading.Time = time;
+            newReading.Value = value;
+            newReading.Status = status;
+            return newReading;
+        }
     }
 }
