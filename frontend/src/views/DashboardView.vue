@@ -3,6 +3,7 @@
     import TopBar from '@/components/TopBar.vue';
     import { ref, onMounted } from 'vue'
     import EnergyLineChart from '@/components/EnergyLineChart.vue'
+import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
 
     // Green Energy Mix data
     const greenStats = ref({
@@ -185,7 +186,8 @@
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
         <!-- Real-time Energy Chart (Large Card) -->
         <div class="md:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm overflow-hidden relative">
-            <div class="flex justify-between items-start mb-6">
+            <SolarForecast/>
+            <!--<div class="flex justify-between items-start mb-6">
                 <div>
                     <h2 class="text-lg font-bold text-on-surface">Production vs Consumption</h2>
                     <p class="text-sm text-on-surface-variant">Last 24 hours (kW)</p>
@@ -224,9 +226,8 @@
                     <p class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Total Consumed</p>
                     <p class="text-xl font-bold text-secondary">18.2 kWh</p>
                 </div>
-            </div>
+            </div>-->
         </div>
-
         <!-- Battery Level (Small Vertical Card) -->
         <div class="md:col-span-4 bg-primary text-on-primary rounded-xl p-6 shadow-md flex flex-col justify-between relative overflow-hidden">
             <div class="absolute top-0 right-0 p-8 opacity-10">
@@ -281,7 +282,8 @@
 
         <!-- Solar Forecast (Modern List/Grid) -->
         <div class="md:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
-            <h2 class="text-lg font-bold text-on-surface mb-4">Solar Forecast</h2>
+            this used to be the "solar forecast"-spot
+            <!--<h2 class="text-lg font-bold text-on-surface mb-4">Solar Forecast</h2>
             <div class="grid grid-cols-4 gap-4">
                 <div class="text-center p-3 rounded-lg bg-surface-container-low transition-colors hover:bg-surface-container-high">
                     <p class="text-xs text-on-surface-variant mb-1">09:00</p>
@@ -303,7 +305,7 @@
                     <span class="material-symbols-outlined text-outline block mb-1">wb_twilight</span>
                     <p class="text-sm font-bold">0.5 kW</p>
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <!-- CO2 Saved (Impact Card) -->

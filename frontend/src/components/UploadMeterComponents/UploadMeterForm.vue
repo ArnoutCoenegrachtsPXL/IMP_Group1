@@ -21,7 +21,7 @@
         }
     }
 
-    const userID = "72d18949-feb7-46c0-9d9b-e5e2941c27d7"
+    const userID = localStorage.getItem('userId')
     const postURL = 'https://localhost:7126/api/MeterReading'
 
     

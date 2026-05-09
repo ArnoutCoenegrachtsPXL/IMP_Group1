@@ -50,6 +50,37 @@ namespace backend_NET.Migrations
                     b.ToTable("MeterReadings");
                 });
 
+            modelBuilder.Entity("backend_NET.Models.Tips", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Impact")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tips");
+                });
+
             modelBuilder.Entity("backend_NET.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -73,6 +104,9 @@ namespace backend_NET.Migrations
 
                     b.Property<int?>("PostalCode")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ResetToken")
                         .HasColumnType("nvarchar(max)");

@@ -61,6 +61,10 @@ def denormalize(df, normalization_keys, column = None):
 
 def getData(latitude: float, longitude: float):
     #call API
+    cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
+    retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
+    openmeteo = openmeteo_requests.Client(session = retry_session)
+
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
     	"latitude": latitude,
@@ -68,11 +72,8 @@ def getData(latitude: float, longitude: float):
     	"hourly": ["temperature_2m", "relative_humidity_2m", "precipitation", "snowfall", "cloud_cover", "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high", "wind_speed_10m", "wind_speed_80m", "wind_direction_10m", "wind_direction_80m", "shortwave_radiation_instant", "wind_gusts_10m"],
     	"current": ["precipitation", "snowfall", "cloud_cover", "wind_speed_10m", "wind_direction_10m", "temperature_2m", "relative_humidity_2m"],
     	"timezone": "auto",
+        "forecast_days": 8,
     }
-
-    cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
-    retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
-    openmeteo = openmeteo_requests.Client(session = retry_session)
 
     responses = openmeteo.weather_api(url, params = params)
 
@@ -96,12 +97,14 @@ def getData(latitude: float, longitude: float):
     hourly_shortwave_radiation_instant = hourly.Variables(12).ValuesAsNumpy()
     hourly_wind_gusts_10m = hourly.Variables(13).ValuesAsNumpy()
     
-    hourly_data = {"date": pd.date_range(
-    	start = pd.to_datetime(hourly.Time() + response.UtcOffsetSeconds(), unit = "s", utc = True),
-    	end =  pd.to_datetime(hourly.TimeEnd() + response.UtcOffsetSeconds(), unit = "s", utc = True),
-    	freq = pd.Timedelta(seconds = hourly.Interval()),
-    	inclusive = "left"
-    )}
+    hourly_data = {
+        "date": pd.date_range(
+            start = pd.to_datetime(hourly.Time() + response.UtcOffsetSeconds(), unit = "s", utc = True),
+            end =  pd.to_datetime(hourly.TimeEnd() + response.UtcOffsetSeconds(), unit = "s", utc = True),
+            freq = pd.Timedelta(seconds = hourly.Interval()),
+            inclusive = "left"
+        ).tz_convert(response.Timezone().decode('ascii'))
+    }
     
     hourly_data["temperature_2m"] = hourly_temperature_2m
     hourly_data["relative_humidity_2m"] = hourly_relative_humidity_2m
@@ -122,35 +125,59 @@ def getData(latitude: float, longitude: float):
 
     #boundaries
     now = datetime.now().replace(microsecond=0, second=0, minute=0)
-    end = pd.Timestamp(now + timedelta(days=1), tz='UTC')
+    end_1 = pd.Timestamp(now + timedelta(days=1), tz='UTC')
+    end_7 = pd.Timestamp(now + timedelta(days=7), tz='UTC')
     now = pd.Timestamp(now, tz='UTC')
 
     data = hourly_dataframe[hourly_dataframe["date"] >= now]
-    data = data[data["date"] <= end]
+    data = data[data["date"] <= end_7]
+    data["24h"] = False
+    data.loc[data["date"] <= end_1,"24h"] = True
 
     # get angles
-    az = pvlib.solarposition.get_solarposition(data["date"], params["latitude"], params["longitude"]).drop(["apparent_zenith", "apparent_elevation", "equation_of_time", "elevation"], axis = 1)
+    az = pvlib.solarposition.get_solarposition(time=data["date"], latitude=params["latitude"], longitude=params["longitude"]).drop(["apparent_zenith", "apparent_elevation", "equation_of_time", "elevation"], axis = 1)
 
-    data["angle_of_incidence"] = abs(params["latitude"])
+    data["angle_of_incidence"] = 0
     data["zenith"] = np.array(az['zenith'])
     data["azimuth"] = np.array(az["azimuth"])
-    time = np.array(data["date"])
-    data = data.drop("date", axis=1)
+    data["angle_of_incidence"] = pvlib.irradiance.aoi(abs(params["latitude"]), 0, data["zenith"],  data["azimuth"])
+    
 
-    return time, data
+    if params["latitude"] < 0:
+        data["azimuth"] = (np.array(az["azimuth"]) + 180) % 360  
+
+    x = np.array(data["date"])
+    time = []
+    date = []
+    for dt in x:
+        time.append(dt.strftime("%H:%M"))
+        if ( int(dt.strftime("%H")) == 14 ):
+            date.append(dt.strftime("%d/%m"))
+        else:
+            date.append('')
+    day = np.array(data["24h"])
+    
+
+    data = data.drop(["date", "24h"], axis=1)
+
+    return x, data, np.array(time), np.array(date), day
 
 class Output(BaseModel):
-    time: list[datetime] = None
-    data: list[float] = None
+    x: list[datetime] = None
+    y: list[float] = None
+    time: list[str] = None
+    date: list[str] = None
+    day: list[bool] = None
+    
 
 @app.get("/predict", response_model=Output)
 async def getPrediction(latitude: float = Query(...), longitude:float = Query(...)):
-    time, data = getData(latitude, longitude)
+    x, y, time, date, day = getData(latitude, longitude)
     
-    normalized_data = normalize(data, nkeys)
+    normalized_data = normalize(y, nkeys)
 
     prediction = model.predict(normalized_data)
 
     result = denormalize_array(prediction, ykey)
 
-    return Output(time=time, data=result)
+    return Output(x=x, y=result, time=time, date=date, day=day)
