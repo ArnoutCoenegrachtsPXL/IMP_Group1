@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend_NET.Models;
 
@@ -11,9 +12,11 @@ using backend_NET.Models;
 namespace backend_NET.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260506193430_[AddHouseholdSize]")]
+    partial class AddHouseholdSize
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,6 +30,9 @@ namespace backend_NET.Migrations
                     b.Property<Guid>("MeterReadingID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("HouseholdSize")
+                        .HasColumnType("int");
 
                     b.Property<byte[]>("MeterImage")
                         .HasColumnType("varbinary(max)");
@@ -47,7 +53,7 @@ namespace backend_NET.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MeterReadings", (string)null);
+                    b.ToTable("MeterReadings");
                 });
 
             modelBuilder.Entity("backend_NET.Models.User", b =>
@@ -64,15 +70,9 @@ namespace backend_NET.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("HouseHoldSize")
-                        .HasColumnType("int");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PostalCode")
-                        .HasColumnType("int");
 
                     b.Property<string>("ResetToken")
                         .HasColumnType("nvarchar(max)");
@@ -82,7 +82,7 @@ namespace backend_NET.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("backend_NET.Models.MeterReading", b =>

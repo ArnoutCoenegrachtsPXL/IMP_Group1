@@ -6,6 +6,7 @@ namespace backend_NET.ApiModels
     {
         public Guid UserId { get; set; }
         public double Value { get; set; }
+      
         public required IFormFile File { get; set; } 
     }
 }

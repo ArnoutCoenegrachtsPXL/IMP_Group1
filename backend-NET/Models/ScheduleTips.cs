@@ -42,13 +42,11 @@
     //    public string Title { get; set; }
     //    public string Message { get; set; }
     //    public string Icon { get; set; }
-    //    public string Badge { get; set; }       // "Act now", "Peak Alert", "Later today"
-    //    public string BadgeType { get; set; }   // "now", "peak", "later"
-    //    public string Saving { get; set; }      // "Saves R4.50 today"
-    //    public string SavingIcon { get; set; }  // "payments" or "trending_up"
-    //    public string ActionLabel { get; set; } // "Remind me" or "Plan for 8:15pm"
-    //    public string Section { get; set; }     // "now" or "later"
-    //}
+    //    public string Badge { get; set; }       
+    //    public string Saving { get; set; }      
+    //    public string SavingIcon { get; set; }  
+    //    public string ActionLabel { get; set; } 
+    //    public string Section { get; set; }        //}
 
     //public class ScheduleResponse
     //{

@@ -4,11 +4,12 @@ import LandingPageView from '../views/LandingPageView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
-import LeaderboardPersonalView from '@/views/LeaderboardPersonalView.vue'
 import UploadMeterView from '@/views/UploadMeterView.vue'
 import EnergyTipsView from '@/views/EnergyTipsView.vue'
 import ForgotPasswordView from '@/views/ForgotPasswordView.vue'
 import ResetPasswordView from '@/views/ResetPasswordView.vue'
+
+
 
 import SettingsView from '../views/SettingsView.vue'
 
@@ -24,10 +25,12 @@ const router = createRouter({
     { path: '/reset-password', name: 'reset-password', component: ResetPasswordView   },
     // ── Protected (sidebar + topbar) ─────────────────────────────────────────
     { path: '/dashboard',    name: 'dashboard',    component: DashboardView           },
-    { path: '/leaderboard',  name: 'leaderboard',  component: LeaderboardPersonalView },
+  
+  
     { path: '/upload',       name: 'upload-meter', component: UploadMeterView         },
     { path: '/energy-tips',  name: 'energy-tips',  component: EnergyTipsView          },
     { path: '/settings',     name: 'settings',     component: SettingsView            },
+   
     // ── Catch-all ────────────────────────────────────────────────────────────
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],

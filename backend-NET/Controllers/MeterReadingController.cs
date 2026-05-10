@@ -4,6 +4,8 @@ using backend_NET.ApiModels;
 using backend_NET.Models;
 using Microsoft.AspNetCore.Mvc;
 
+
+
 namespace backend_NET.Controllers
 {
     [Route("api/[controller]")]
@@ -65,7 +67,6 @@ namespace backend_NET.Controllers
             uploadMeterInfo.Progress = Math.Min(_repository.GetWeekProgress(user), uploadMeterInfo.Target);
             return Ok(uploadMeterInfo);
         }
-
-        
     }
 }
+

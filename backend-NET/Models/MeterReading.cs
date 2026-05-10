@@ -9,6 +9,7 @@ namespace backend_NET.Models
         public User User { get; set; } = default!;
         public DateTime Time { get; set; }
         public double Value { get; set; }
+     
         public byte[]? MeterImage { get; set; }
 
         public Status Status { get; set; }
