@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
 import { useUserPrefsStore, ACCENT_PALETTES } from '@/stores/userPrefs'
+
 import ProfileSection      from '@/components/settings/ProfileSection.vue'
 import AppearanceSection   from '@/components/settings/AppearanceSection.vue'
 import NotificationsSection from '@/components/settings/NotificationsSection.vue'

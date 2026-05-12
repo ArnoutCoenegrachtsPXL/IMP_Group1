@@ -2,13 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 @import "tailwindcss";
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   CSS CUSTOM PROPERTIES
-   Single source of colour truth. userPrefs.js writes these at runtime.
+/* ═══════════════════════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES — single source of colour truth.
+   userPrefs.js writes accent + surface tokens to <html> at runtime.
    Tailwind reads them via tailwind.config.js → theme.extend.colors.
-   ═══════════════════════════════════════════════════════════════════════════════ */
+   Values here are fallback defaults only; they are always overwritten on load.
+   ═══════════════════════════════════════════════════════════════════════════ */
 :root {
-  /* Accent (overwritten by userPrefs.setAccent) */
+  /* Accent — overwritten by userPrefs.setAccent() */
   --color-primary:                  #2563eb;
   --color-primary-dim:              #1d4ed8;
   --color-primary-fixed:            #dbeafe;
@@ -23,7 +24,7 @@
   --color-tertiary-container:       #dbeafe;
   --color-on-tertiary-container:    #1e3a5f;
 
-  /* Surfaces (overwritten by userPrefs.applyAll) */
+  /* Surfaces — overwritten by userPrefs.applyAll() */
   --color-background:               #f8fafc;
   --color-on-background:            #0f172a;
   --color-surface:                  #f8fafc;
@@ -46,7 +47,7 @@
   --color-error-dim: #b91c1c;
   --color-on-error:  #ffffff;
 
-  /* Legacy chatbot vars (kept for Chatbot.vue compatibility) */
+  /* Legacy chatbot vars — kept for Chatbot.vue compatibility */
   --pri:       #1d4ed8;
   --pri-mid:   #2563eb;
   --pri-light: #dbeafe;
@@ -61,16 +62,14 @@
   --border:        rgba(37,99,235,0.14);
   --border-strong: rgba(37,99,235,0.28);
 
-  /* Spacing & layout */
+  /* Layout */
   --sidebar-width: 17rem;
   --topbar-height: 64px;
-  --radius:  10px;
-  --transition: 0.18s cubic-bezier(0.4,0,0.2,1);
+  --radius:        10px;
+  --transition:    0.18s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   BASE RESET & TYPOGRAPHY
-   ═══════════════════════════════════════════════════════════════════════════════ */
+/* ── BASE RESET ─────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
@@ -102,41 +101,28 @@ h4, h5, h6               { font-family: 'DM Sans', system-ui, sans-serif; font-w
   vertical-align: middle;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   THEME TRANSITION
-   All colour-related properties animate together for a polished mode switch.
-   ═══════════════════════════════════════════════════════════════════════════════ */
+/* ── THEME TRANSITIONS ─────────────────────────────────────────────────── */
 *, *::before, *::after {
   transition-property: background-color, border-color, color, box-shadow, fill, stroke, opacity;
   transition-duration: 180ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* Opt-out: transforms, widths, etc. should not inherit the colour transition */
 .no-transition,
 .no-transition * { transition: none !important; }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   ACCESSIBILITY — WCAG 2.1 AA+
-   ═══════════════════════════════════════════════════════════════════════════════ */
-
-/* WCAG 2.4.7 — Keyboard focus indicator */
+/* ── ACCESSIBILITY ─────────────────────────────────────────────────────── */
 :focus-visible {
   outline: 3px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 4px;
 }
-
-/* WCAG 2.5.5 — Minimum touch target 44×44px */
 button, [role="button"], a, [role="switch"],
 input[type="checkbox"], input[type="radio"] {
   min-height: 44px;
 }
-/* Icon-only buttons override */
-.btn-icon { min-height: 44px; min-width: 44px; }
+.btn-icon    { min-height: 44px; min-width: 44px; }
 .btn-icon-sm { min-height: 36px; min-width: 36px; }
 
-/* WCAG 1.4.6 — Enhanced contrast mode */
 html.high-contrast {
   --color-on-surface:         #000000;
   --color-on-background:      #000000;
@@ -155,43 +141,35 @@ html.high-contrast.dark {
   --text:                     #ffffff;
   --text-muted:               #dddddd;
 }
-
-/* WCAG 2.3.3 — Reduce motion */
 html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after {
-  animation-duration:       0.01ms !important;
-  animation-iteration-count: 1     !important;
-  transition-duration:      0.01ms !important;
-  scroll-behavior:          auto   !important;
+  animation-duration:        0.01ms !important;
+  animation-iteration-count: 1      !important;
+  transition-duration:       0.01ms !important;
+  scroll-behavior:           auto   !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   RTL SUPPORT
-   ═══════════════════════════════════════════════════════════════════════════════ */
+/* ── RTL ───────────────────────────────────────────────────────────────── */
 [dir="rtl"] .sidebar-push { padding-left: 0; padding-right: var(--sidebar-width); }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   SOLAR GLOW — themed gradient button
-   ═══════════════════════════════════════════════════════════════════════════════ */
+/* ── SOLAR GLOW (themed gradient button) ──────────────────────────────── */
 .solar-glow {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dim) 100%);
   color: var(--color-on-primary);
 }
 .solar-glow:hover {
-  background: linear-gradient(135deg, var(--color-primary-dim) 0%, var(--color-primary) 100%);
   filter: brightness(1.06);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   CUSTOM SCROLLBAR
-   ═══════════════════════════════════════════════════════════════════════════════ */
-::-webkit-scrollbar              { width: 5px; height: 5px; }
-::-webkit-scrollbar-track        { background: transparent; }
-::-webkit-scrollbar-thumb        { background: var(--color-outline-variant); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover  { background: var(--color-outline); }
+/* ── SCROLLBAR ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar             { width: 5px; height: 5px; }
+::-webkit-scrollbar-track       { background: transparent; }
+::-webkit-scrollbar-thumb       { background: var(--color-outline-variant); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-outline); }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   UTILITY HELPERS
-   ═══════════════════════════════════════════════════════════════════════════════ */
+/* ── UTILITY HELPERS ───────────────────────────────────────────────────── */
+/* .card is used in Settings sections */
 .card {
   background: var(--color-surface-container-lowest);
   border: 1px solid color-mix(in srgb, var(--color-outline-variant) 60%, transparent);
@@ -199,6 +177,7 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
   padding: 1.5rem;
 }
 
+/* .toggle-row is used in Settings sections */
 .toggle-row {
   display: flex;
   align-items: center;
@@ -211,12 +190,8 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
 }
 .toggle-row:hover { background: var(--color-surface-container-high); }
 
-/* Safe area padding for notched mobile devices */
+/* Safe area padding (mobile notch) */
 .safe-top    { padding-top:    env(safe-area-inset-top, 0px); }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .safe-left   { padding-left:   env(safe-area-inset-left, 0px); }
 .safe-right  { padding-right:  env(safe-area-inset-right, 0px); }
-
-/* Hide scrollbar but keep scroll */
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
