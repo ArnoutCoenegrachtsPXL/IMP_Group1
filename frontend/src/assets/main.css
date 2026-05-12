@@ -1,15 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 @import "tailwindcss";
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   CSS CUSTOM PROPERTIES — single source of colour truth.
-   userPrefs.js writes accent + surface tokens to <html> at runtime.
-   Tailwind reads them via tailwind.config.js → theme.extend.colors.
-   Values here are fallback defaults only; they are always overwritten on load.
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   BRIGHTBOX DESIGN SYSTEM — CSS CUSTOM PROPERTIES
+   userPrefs.js writes these at runtime based on user selection.
+   Everything in the app reads from here — guaranteed consistency.
+   ═══════════════════════════════════════════════════════════════════════════════ */
 :root {
-  /* Accent — overwritten by userPrefs.setAccent() */
+  /* ── Accent (userPrefs.setAccent overwrites) ─────────────────────────────── */
   --color-primary:                  #2563eb;
   --color-primary-dim:              #1d4ed8;
   --color-primary-fixed:            #dbeafe;
@@ -24,102 +23,143 @@
   --color-tertiary-container:       #dbeafe;
   --color-on-tertiary-container:    #1e3a5f;
 
-  /* Surfaces — overwritten by userPrefs.applyAll() */
-  --color-background:               #f8fafc;
-  --color-on-background:            #0f172a;
-  --color-surface:                  #f8fafc;
-  --color-surface-dim:              #dce6f0;
+  /* ── Surfaces — LIGHT default (userPrefs.applyAll overwrites) ─────────────── */
+  --color-background:               #f6f8fc;
+  --color-on-background:            #0d1117;
+  --color-surface:                  #f6f8fc;
+  --color-surface-dim:              #dce4f0;
   --color-surface-bright:           #ffffff;
-  --color-surface-variant:          #e2e8f0;
-  --color-on-surface:               #0f172a;
-  --color-on-surface-variant:       #475569;
-  --color-inverse-surface:          #1e293b;
+  --color-surface-variant:          #e4eaf4;
+  --color-on-surface:               #0d1117;
+  --color-on-surface-variant:       #4a5568;
+  --color-inverse-surface:          #1a2332;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low:    #f1f5f9;
-  --color-surface-container:        #e8f0f8;
-  --color-surface-container-high:   #dde8f5;
-  --color-surface-container-highest:#d0dff0;
-  --color-outline:                  #64748b;
-  --color-outline-variant:          #cbd5e1;
+  --color-surface-container-low:    #f0f4fb;
+  --color-surface-container:        #e8eff9;
+  --color-surface-container-high:   #dde6f5;
+  --color-surface-container-highest:#d0dcee;
+  --color-outline:                  #6b7a99;
+  --color-outline-variant:          #c9d4e8;
 
-  /* Error */
+  /* ── Error ────────────────────────────────────────────────────────────────── */
   --color-error:     #dc2626;
   --color-error-dim: #b91c1c;
   --color-on-error:  #ffffff;
 
-  /* Legacy chatbot vars — kept for Chatbot.vue compatibility */
+  /* ── Legacy tokens (Chatbot.vue + other components) ───────────────────────── */
   --pri:       #1d4ed8;
   --pri-mid:   #2563eb;
   --pri-light: #dbeafe;
   --pri-hover: #1e40af;
   --pri-on:    #ffffff;
-  --surf:      #f8fafc;
-  --surf-2:    #eff6ff;
+  --surf:      #f6f8fc;
+  --surf-2:    #eef4ff;
   --surf-3:    #dbeafe;
   --surf-card: #ffffff;
-  --text:      #0f172a;
-  --text-muted:#475569;
-  --border:        rgba(37,99,235,0.14);
-  --border-strong: rgba(37,99,235,0.28);
+  --text:      #0d1117;
+  --text-muted:#4a5568;
+  --border:        rgba(37,99,235,0.12);
+  --border-strong: rgba(37,99,235,0.24);
 
-  /* Layout */
+  /* ── Layout ────────────────────────────────────────────────────────────────── */
   --sidebar-width: 17rem;
   --topbar-height: 64px;
-  --radius:        10px;
+  --radius:        12px;
+  --radius-lg:     20px;
+  --radius-xl:     28px;
   --transition:    0.18s cubic-bezier(0.4,0,0.2,1);
+
+  /* ── BrightBox brand gradient ─────────────────────────────────────────────── */
+  --bb-gradient: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dim) 100%);
+  --bb-glow:     0 0 20px color-mix(in srgb, var(--color-primary) 30%, transparent);
 }
 
-/* ── BASE RESET ─────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
+/* ═══════════════════════════════════════════════════════════════════════════════
+   DARK MODE SURFACES — applied by userPrefs.applyAll()
+   Rich, layered dark palette — NOT flat black. Uses warm dark slate tones
+   with subtle blue-grey undertones for visual depth and eye comfort.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+html.dark {
+  color-scheme: dark;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   BASE RESET & TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;
-  font-size: 16px; /* userPrefs overrides this */
+  font-size: 15px;
 }
 
 body {
-  margin: 0;
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-optical-sizing: auto;
   background-color: var(--color-background);
   color: var(--color-on-surface);
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
 }
 
-h1, h2, h3, .font-display { font-family: 'DM Serif Display', Georgia, serif; }
-h4, h5, h6               { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 700; }
+h1, h2, h3, .font-display {
+  font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 700;
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
 
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
   user-select: none;
   line-height: 1;
   display: inline-block;
   vertical-align: middle;
+  flex-shrink: 0;
 }
 
-/* ── THEME TRANSITIONS ─────────────────────────────────────────────────── */
-*, *::before, *::after {
+/* ═══════════════════════════════════════════════════════════════════════════════
+   SMOOTH THEME TRANSITIONS
+   Colour properties smoothly animate when switching light ↔ dark ↔ accent.
+   Transform/layout properties excluded to avoid jank.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+*,
+*::before,
+*::after {
   transition-property: background-color, border-color, color, box-shadow, fill, stroke, opacity;
-  transition-duration: 180ms;
+  transition-duration: 200ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .no-transition,
 .no-transition * { transition: none !important; }
 
-/* ── ACCESSIBILITY ─────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY — WCAG 2.1 AA+
+   ═══════════════════════════════════════════════════════════════════════════════ */
 :focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: 2.5px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
+
 button, [role="button"], a, [role="switch"],
 input[type="checkbox"], input[type="radio"] {
   min-height: 44px;
 }
+
 .btn-icon    { min-height: 44px; min-width: 44px; }
 .btn-icon-sm { min-height: 36px; min-width: 36px; }
 
@@ -129,8 +169,6 @@ html.high-contrast {
   --color-on-surface-variant: #111111;
   --color-outline:            #000000;
   --color-outline-variant:    #333333;
-  --text:                     #000000;
-  --text-muted:               #333333;
 }
 html.high-contrast.dark {
   --color-on-surface:         #ffffff;
@@ -138,60 +176,379 @@ html.high-contrast.dark {
   --color-on-surface-variant: #f0f0f0;
   --color-outline:            #ffffff;
   --color-outline-variant:    #cccccc;
-  --text:                     #ffffff;
-  --text-muted:               #dddddd;
 }
-html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after {
+
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
   animation-duration:        0.01ms !important;
   animation-iteration-count: 1      !important;
   transition-duration:       0.01ms !important;
   scroll-behavior:           auto   !important;
 }
 
-/* ── RTL ───────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   RTL SUPPORT
+   ═══════════════════════════════════════════════════════════════════════════════ */
 [dir="rtl"] .sidebar-push { padding-left: 0; padding-right: var(--sidebar-width); }
 
-/* ── SOLAR GLOW (themed gradient button) ──────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   BRIGHTBOX LOGO — app name wordmark
+   Refined typographic mark with gradient highlight on the "B"
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.bb-wordmark {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: -0.04em;
+  color: var(--color-on-surface);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.bb-wordmark .bb-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 10px;
+  background: var(--bb-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 35%, transparent);
+  flex-shrink: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.bb-wordmark:hover .bb-icon {
+  transform: rotate(-6deg) scale(1.05);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-primary) 45%, transparent);
+}
+
+.bb-wordmark .bb-name {
+  background: linear-gradient(135deg, var(--color-on-surface) 0%, var(--color-on-surface-variant) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Dark mode wordmark: slightly lighter for legibility */
+html.dark .bb-wordmark .bb-name {
+  background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   SOLAR GLOW — primary action button
+   ═══════════════════════════════════════════════════════════════════════════════ */
 .solar-glow {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dim) 100%);
+  background: var(--bb-gradient);
   color: var(--color-on-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: filter 0.2s, transform 0.15s, box-shadow 0.2s !important;
 }
 .solar-glow:hover {
-  filter: brightness(1.06);
+  filter: brightness(1.08);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--color-primary) 40%, transparent);
 }
+.solar-glow:active { transform: scale(0.98); }
 
-/* ── SCROLLBAR ─────────────────────────────────────────────────────────── */
-::-webkit-scrollbar             { width: 5px; height: 5px; }
-::-webkit-scrollbar-track       { background: transparent; }
-::-webkit-scrollbar-thumb       { background: var(--color-outline-variant); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-outline); }
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* ── UTILITY HELPERS ───────────────────────────────────────────────────── */
-/* .card is used in Settings sections */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CARD — surface container with depth
+   Three variants: default, elevated, flat
+   ═══════════════════════════════════════════════════════════════════════════════ */
 .card {
   background: var(--color-surface-container-lowest);
-  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 60%, transparent);
-  border-radius: 16px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
+  transition: box-shadow 0.2s, border-color 0.2s !important;
 }
 
-/* .toggle-row is used in Settings sections */
+html.dark .card {
+  background: var(--color-surface-container-low);
+  border-color: var(--color-outline-variant);
+}
+
+.card-elevated {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+}
+
+html.dark .card-elevated {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   TOGGLE ROW — settings list items
+   ═══════════════════════════════════════════════════════════════════════════════ */
 .toggle-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
+  padding: 0.875rem 1rem;
+  border-radius: 14px;
   background: var(--color-surface-container);
-  min-height: 60px;
+  border: 1px solid transparent;
+  min-height: 64px;
+  transition: background 0.15s, border-color 0.15s !important;
 }
-.toggle-row:hover { background: var(--color-surface-container-high); }
+.toggle-row:hover {
+  background: var(--color-surface-container-high);
+  border-color: var(--color-outline-variant);
+}
 
-/* Safe area padding (mobile notch) */
+html.dark .toggle-row {
+  background: var(--color-surface-container);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   TOPBAR SEARCH — glass morphism style
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.search-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-field input {
+  width: 100%;
+  background: var(--color-surface-container);
+  border: 1.5px solid var(--color-outline-variant);
+  border-radius: 14px;
+  padding: 0.5rem 1rem 0.5rem 2.75rem;
+  font-size: 0.875rem;
+  color: var(--color-on-surface);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s !important;
+  min-height: 40px;
+}
+
+.search-field input::placeholder {
+  color: var(--color-on-surface-variant);
+  opacity: 0.6;
+}
+
+.search-field input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-surface-container-lowest);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+html.dark .search-field input {
+  background: var(--color-surface-container-high);
+  border-color: var(--color-outline-variant);
+}
+
+html.dark .search-field input:focus {
+  background: var(--color-surface-container);
+  border-color: var(--color-primary);
+}
+
+.search-field .search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-on-surface-variant);
+  pointer-events: none;
+  opacity: 0.7;
+  font-size: 1.125rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   TOPBAR — frosted glass header
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.topbar {
+  background: color-mix(in srgb, var(--color-background) 85%, transparent);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+html.dark .topbar {
+  background: color-mix(in srgb, var(--color-surface-container-low) 90%, transparent);
+  border-bottom-color: var(--color-outline-variant);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   SIDEBAR — elegant side navigation
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.sidebar {
+  background: var(--color-surface-container-lowest);
+  border-right: 1px solid var(--color-outline-variant);
+}
+
+html.dark .sidebar {
+  background: var(--color-surface-container-low);
+  border-right-color: var(--color-outline-variant);
+}
+
+/* Active sidebar item glow */
+.sidebar-item-active {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   AVATAR — profile picture ring
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.avatar-ring {
+  ring: 2px;
+  ring-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THEME MODE PREVIEWS — appearance section
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.theme-preview-light {
+  background: #f6f8fc;
+  border: 1.5px solid #c9d4e8;
+}
+.theme-preview-dark {
+  background: #0f1623;
+  border: 1.5px solid #2d3748;
+}
+.theme-preview-system {
+  background: linear-gradient(135deg, #f6f8fc 50%, #0f1623 50%);
+  border: 1.5px solid #c9d4e8;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   ACCENT SWATCH — colour palette selector
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.accent-swatch {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s !important;
+  border: 2.5px solid transparent;
+  position: relative;
+  overflow: visible;
+}
+.accent-swatch:hover { transform: scale(1.12); }
+.accent-swatch.selected {
+  transform: scale(1.08);
+}
+.accent-swatch.selected::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2.5px solid currentColor;
+  opacity: 0.6;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   NOTIFICATION PANEL
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.notif-panel {
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+html.dark .notif-panel {
+  background: var(--color-surface-container);
+  border-color: var(--color-outline-variant);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   FORM INPUTS — unified across all views
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.form-input {
+  width: 100%;
+  background: var(--color-surface-container);
+  border: 1.5px solid var(--color-outline-variant);
+  border-radius: 12px;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  color: var(--color-on-surface);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  min-height: 44px;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+html.dark .form-input {
+  background: var(--color-surface-container-high);
+  border-color: var(--color-outline-variant);
+}
+
+.form-input::placeholder {
+  color: var(--color-on-surface-variant);
+  opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   SCROLLBAR — minimal, themed
+   ═══════════════════════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar              { width: 5px; height: 5px; }
+::-webkit-scrollbar-track        { background: transparent; }
+::-webkit-scrollbar-thumb        { background: var(--color-outline-variant); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover  { background: var(--color-outline); }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Safe area insets (notched phones, tablets) */
 .safe-top    { padding-top:    env(safe-area-inset-top, 0px); }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .safe-left   { padding-left:   env(safe-area-inset-left, 0px); }
 .safe-right  { padding-right:  env(safe-area-inset-right, 0px); }
+
+/* Status pills */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+}
+
+/* Gradient text utility */
+.text-gradient {
+  background: var(--bb-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Compact mode — tighter spacing everywhere */
+html.compact .card       { padding: 1rem; }
+html.compact .toggle-row { padding: 0.625rem 0.875rem; min-height: 52px; }
+html.compact .card       { border-radius: 12px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE LAYOUT HELPERS
+   ═══════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .card { padding: 1rem; }
+  html { font-size: 14px; }
+}
+
+@media (max-width: 480px) {
+  .card { padding: 0.875rem; border-radius: 14px; }
+}
