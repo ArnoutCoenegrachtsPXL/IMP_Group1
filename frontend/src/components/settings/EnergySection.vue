@@ -1,5 +1,6 @@
 <script setup>
 import { useUserPrefsStore } from '@/stores/userPrefs'
+import ToggleSwitch from 'primevue/toggleswitch'
 
 defineEmits(['saved'])
 const prefs = useUserPrefsStore()

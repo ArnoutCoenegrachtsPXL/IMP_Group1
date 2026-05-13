@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useUserPrefsStore } from '@/stores/userPrefs'
 import { useNotificationStore } from '@/stores/notifications'
+import ToggleSwitch from 'primevue/toggleswitch'
 
 defineEmits(['saved'])
 const prefs  = useUserPrefsStore()
