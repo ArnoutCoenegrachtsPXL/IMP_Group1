@@ -27,7 +27,7 @@ const modeOptions = [
   },
   {
     id: 'dark', labelKey: 'dark', icon: 'dark_mode',
-    previewBg: '#0d111a', previewCard: '#111827', previewText: '#e8edf5', previewAccent: '#3b82f6',
+    previewBg: '##121212', previewCard: '#192734', previewText: '#2C2C2C', previewAccent: '#1A1A1A',
     desc: 'Easy on the eyes at night',
   },
   {
