@@ -1,6 +1,7 @@
 <script setup>
 import { useUserPrefsStore } from '@/stores/userPrefs'
 import { useRouter } from 'vue-router'
+import ToggleSwitch from 'primevue/toggleswitch'
 
 defineEmits(['saved'])
 const prefs  = useUserPrefsStore()
