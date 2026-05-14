@@ -34,3 +34,5 @@
 /Jupyter/.cache*
 
 *cache*
+
+*node_modules*
