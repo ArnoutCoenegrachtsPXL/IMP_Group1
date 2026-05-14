@@ -11,6 +11,7 @@ import ResetPasswordView  from '@/views/ResetPasswordView.vue'
 import SettingsView       from '../views/SettingsView.vue'
 import SupportView        from '@/views/SupportView.vue'
 import CommunityView      from '@/views/CommunityView.vue'
+import LeaderboardPersonalView from '@/views/LeaderboardPersonalView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,7 @@ const router = createRouter({
     { path: '/reset-password',  name: 'reset-password', component: ResetPasswordView  },
     // Protected
     { path: '/dashboard',       name: 'dashboard',      component: DashboardView      },
+    { path: '/leaderboard',     name: 'leaderboard',    component: LeaderboardPersonalView },
     { path: '/upload',          name: 'upload-meter',   component: UploadMeterView    },
     { path: '/energy-tips',     name: 'energy-tips',    component: EnergyTipsView     },
     { path: '/settings',        name: 'settings',       component: SettingsView       },
