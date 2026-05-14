@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@primevue/themes": "^4.5.4",
     "primeicons": "^7.0.0",
     "primevue": "^4.5.5",

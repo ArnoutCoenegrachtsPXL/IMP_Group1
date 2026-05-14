@@ -70,3 +70,68 @@ app.component('ToggleSwitch', {
 })
 
 app.mount('#app')
+
+// ── Apply persisted preferences immediately ───────────────────────────────────
+import { useUserPrefsStore } from './stores/userPrefs'
+const prefs = useUserPrefsStore()
+prefs.applyAll()
+
+// ── Google Translate — free gtx endpoint, no API key needed ─────────────────
+// Called by userPrefs.setLanguage() via window.__ecoTranslate(langCode)
+window.__ecoTranslate = async function(targetLang) {
+  if (targetLang === 'en') {
+    // Restore originals
+    document.querySelectorAll('[data-bb-orig]').forEach(el => {
+      el.textContent = el.getAttribute('data-bb-orig')
+      el.removeAttribute('data-bb-orig')
+    })
+    return
+  }
+
+  const SKIP_TAGS = new Set(['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','INPUT','CODE','PRE'])
+
+  // Collect text leaf nodes
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const p = node.parentElement
+      if (!p || SKIP_TAGS.has(p.tagName)) return NodeFilter.FILTER_REJECT
+      if (node.textContent.trim().length < 2)  return NodeFilter.FILTER_REJECT
+      return NodeFilter.FILTER_ACCEPT
+    }
+  })
+  const nodes = []
+  let n
+  while ((n = walker.nextNode())) nodes.push(n)
+  if (!nodes.length) return
+
+  const texts = nodes.map(n => n.textContent.trim())
+
+  // Batch in groups of 40 to stay within URL length limits
+  async function translateBatch(batch) {
+    try {
+      const q = batch.map(t => encodeURIComponent(t)).join('&q=')
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${encodeURIComponent(batch.join('\n'))}`
+      const res  = await fetch(url)
+      if (!res.ok) throw new Error('translate failed')
+      const data = await res.json()
+      return data[0].map(item => item[0]).join('').split('\n')
+    } catch {
+      return batch // fallback: keep originals
+    }
+  }
+
+  const BATCH = 40
+  const translated = []
+  for (let i = 0; i < texts.length; i += BATCH) {
+    const result = await translateBatch(texts.slice(i, i + BATCH))
+    translated.push(...result)
+  }
+
+  nodes.forEach((node, i) => {
+    if (!node.parentElement.hasAttribute('data-bb-orig')) {
+      node.parentElement.setAttribute('data-bb-orig', node.textContent.trim())
+    }
+    if (translated[i]) node.textContent = translated[i]
+  })
+}
+
