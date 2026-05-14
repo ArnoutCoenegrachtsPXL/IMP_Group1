@@ -61,7 +61,8 @@ namespace backend_NET.Controllers
                 token = token,
                 userId = user.Id,
                 fullName = user.FullName,
-                email = user.Email
+                email = user.Email,
+                postalcode = user.PostalCode
             });
         }
 

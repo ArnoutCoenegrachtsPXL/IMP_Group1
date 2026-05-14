@@ -15,7 +15,7 @@
   const currentView = ref('main')
     const timeFrom = ref('16:00')
     const timeTo = ref('22:00')
-  tailwind.config = {
+  /*tailwind.config = {
                 darkMode: "class",
                 theme: {
                     extend: {
@@ -83,7 +83,7 @@
                         }
                     },
                 },
-            }
+            }*/
 </script>
 
 <template>

@@ -188,16 +188,15 @@ async def getPrediction(latitude: float = Query(...), longitude:float = Query(..
     return output
 
 @app.get("/predict/postal", response_model=Output)
-async def getPredictionIn(postalcode: float = Query(...)):
+async def getPredictionIn(postalcode: int = Query(...)):
     df = pd.read_csv(postal_code_file)
-    df = df[df["street_code"] == postalcode]
-    if df.shape == 0:
+    df = df[df["street_code"] == postalcode].reset_index()
+    if df.shape[0] == 0:
         latitude=-26.2041
         longitude=28.0473
     else:
-        latitude = df["latitude"]
-        longitude = df["longitude"]
-
+        latitude = df["latitude"][0]#.astype(float)
+        longitude = df["longitude"][0]#.astype(float)
     output = makePrediction(latitude, longitude)
     return output
 
