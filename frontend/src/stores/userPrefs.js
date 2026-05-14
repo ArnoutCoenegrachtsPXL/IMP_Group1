@@ -757,7 +757,7 @@ export const useUserPrefsStore = defineStore('userPrefs', () => {
     language.value = v
     localStorage.setItem('ep-lang', v)
     applyAll()
-    if (typeof window.__ecoTranslate === 'function') setTimeout(() => window.__ecoTranslate(v), 200)
+   
   }
   function setTimezone(v)    { timezone.value = v;    localStorage.setItem('ep-timezone', v) }
   function setCurrency(v)    { currency.value = v;    localStorage.setItem('ep-currency', v) }
