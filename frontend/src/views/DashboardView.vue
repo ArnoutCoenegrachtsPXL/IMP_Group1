@@ -77,22 +77,22 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
         let messageColor, icon, messageText, subtext
         
         if (difference >= 10) {
-            messageColor = 'bg-green-100 dark:bg-green-900/30'
+            messageColor = 'bg-primary-container/50'
             icon = '🏆'
             messageText = `Incredible! You're leading the community by ${difference.toFixed(1)}%!`
             subtext = `You're in the top 10% of all users!`
         } else if (difference >= 5) {
-            messageColor = 'bg-emerald-100 dark:bg-emerald-900/30'
+            messageColor = 'bg-primary-container/40'
             icon = '📈'
             messageText = `Great job! You're ${difference.toFixed(1)}% above community average!`
             subtext = `Keep up the excellent work!`
         } else if (difference >= -5) {
-            messageColor = 'bg-blue-100 dark:bg-blue-900/30'
+            messageColor = 'bg-surface-container-high'
             icon = '🌱'
             messageText = `You're keeping pace with the community!`
             subtext = `${Math.abs(difference).toFixed(1)}% from community average`
         } else {
-            messageColor = 'bg-yellow-100 dark:bg-yellow-900/30'
+            messageColor = 'bg-surface-container'
             icon = '📉'
             messageText = `Room for improvement! You're ${Math.abs(difference).toFixed(1)}% below average.`
             subtext = `Check the tips below to increase your green score!`
@@ -113,11 +113,11 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
         const userCard = document.getElementById('userStatsCard')
         if (userCard) {
             if (difference >= 5) {
-                userCard.className = 'rounded-lg p-4 bg-green-50 dark:bg-green-900/20 border border-green-200'
+                userCard.className = 'rounded-lg p-4 bg-primary-container/20 border border-outline-variant'
             } else if (difference >= -5) {
-                userCard.className = 'rounded-lg p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200'
+                userCard.className = 'rounded-lg p-4 bg-surface-container border border-outline-variant'
             } else {
-                userCard.className = 'rounded-lg p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200'
+                userCard.className = 'rounded-lg p-4 bg-surface-container border border-outline-variant'
             }
         }
     }
@@ -247,8 +247,8 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
                 </p>
             </div>
             <div class="z-10 mt-auto">
-                <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
-                    <div class="bg-white h-full w-[82%]"></div>
+                <div class="w-full h-2 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.2)">
+                    <div class="h-full w-[82%]" style="background:var(--color-on-primary)"></div>
                 </div>
                 <div class="flex justify-between mt-2 text-xs font-medium">
                     <span>Empty</span>
@@ -311,7 +311,7 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
         <!-- CO2 Saved (Impact Card) -->
         <div class="md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-secondary-container text-on-secondary-container rounded-xl p-6 shadow-sm flex items-center gap-4">
-                <div class="p-3 bg-white/30 rounded-lg">
+                <div class="p-3 bg-surface-container-lowest/30 rounded-lg">
                     <span class="material-symbols-outlined text-3xl">eco</span>
                 </div>
                 <div>
@@ -346,7 +346,7 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
         <div class="md:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             
             <!-- GREEN ENERGY MIX - ISSUE #29 -->
-            <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-xl p-6 shadow-lg">
+            <div class="bg-surface-container-low border border-outline-variant rounded-xl p-6 shadow-lg">
                 <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
                     <div>
                         <h2 class="text-2xl font-bold flex items-center gap-2">
@@ -355,7 +355,7 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
                         </h2>
                         <p class="text-on-surface-variant text-sm mt-1">Community vs Your green energy</p>
                     </div>
-                    <div class="text-right bg-white/50 dark:bg-black/20 rounded-lg px-4 py-2">
+                    <div class="text-right bg-surface-container-lowest rounded-lg px-4 py-2">
                         <div class="text-xs text-on-surface-variant">Your Rank</div>
                         <div class="text-2xl font-bold text-primary" id="userRank">#42</div>
                         <div class="text-xs text-on-surface-variant" id="totalUsers">out of 247 users</div>
@@ -363,20 +363,20 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div class="bg-white/50 dark:bg-black/20 rounded-lg p-4">
+                    <div class="bg-surface-container-lowest rounded-lg p-4 border border-outline-variant/30">
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-semibold">🌍 Community Average</span>
                             <span class="text-2xl font-bold text-primary" id="communityPercentage">68.5%</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-4 mb-3">
+                        <div class="w-full bg-surface-container-highest rounded-full h-4 mb-3">
                             <div class="bg-primary h-4 rounded-full transition-all" id="communityBar" style="width: 68.5%"></div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 text-center text-sm mt-3">
-                            <div><div class="text-yellow-600">☀️ Solar</div><div class="font-semibold" id="solarPercent">45.2%</div></div>
-                            <div><div class="text-blue-600">💨 Wind</div><div class="font-semibold" id="windPercent">15.3%</div></div>
-                            <div><div class="text-cyan-600">💧 Hydro</div><div class="font-semibold" id="hydroPercent">8.0%</div></div>
+                            <div><div class="text-amber-500">☀️ Solar</div><div class="font-semibold" id="solarPercent">45.2%</div></div>
+                            <div><div class="text-primary">💨 Wind</div><div class="font-semibold" id="windPercent">15.3%</div></div>
+                            <div><div class="text-primary/70">💧 Hydro</div><div class="font-semibold" id="hydroPercent">8.0%</div></div>
                         </div>
-                        <div class="text-xs text-gray-500 mt-3" id="communityTotal">Total: 34,250 kWh green out of 50,000 kWh</div>
+                        <div class="text-xs text-on-surface-variant mt-3" id="communityTotal">Total: 34,250 kWh green out of 50,000 kWh</div>
                     </div>
 
                     <div class="rounded-lg p-4" id="userStatsCard">
@@ -384,7 +384,7 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
                             <span class="font-semibold">👤 Your Green Usage</span>
                             <span class="text-2xl font-bold text-primary" id="userPercentage">72.3%</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-4 mb-3">
+                        <div class="w-full bg-surface-container-highest rounded-full h-4 mb-3">
                             <div class="bg-primary h-4 rounded-full transition-all" id="userBar" style="width: 72.3%"></div>
                         </div>
                         <div class="flex justify-between text-sm mb-2">
@@ -409,7 +409,7 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
                         <span class="text-3xl" id="comparisonIcon">📈</span>
                         <div>
                             <p class="font-semibold" id="comparisonText">Great job! You're 3.8% above community average!</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400" id="comparisonSubtext">You're doing better than 65% of your community</p>
+                            <p class="text-sm text-on-surface-variant" id="comparisonSubtext">You're doing better than 65% of your community</p>
                         </div>
                     </div>
                 </div>
@@ -417,16 +417,16 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
                 <div class="mt-6">
                     <h3 class="font-semibold mb-3 flex items-center gap-2"><span>💡</span> Tips to Improve</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(1)"><span class="text-green-600">💡</span><span>Run appliances during peak solar hours</span></div>
-                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(2)"><span class="text-green-600">💡</span><span>Join community solar programs</span></div>
-                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(3)"><span class="text-green-600">💡</span><span>Schedule EV charging during high renewable generation</span></div>
-                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-white/30 rounded-lg transition-colors cursor-pointer" @click="showTip(4)"><span class="text-green-600">💡</span><span>Track daily usage patterns</span></div>
+                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-surface-container-high rounded-lg transition-colors cursor-pointer" @click="showTip(1)"><span class="text-primary">💡</span><span>Run appliances during peak solar hours</span></div>
+                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-surface-container-high rounded-lg transition-colors cursor-pointer" @click="showTip(2)"><span class="text-primary">💡</span><span>Join community solar programs</span></div>
+                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-surface-container-high rounded-lg transition-colors cursor-pointer" @click="showTip(3)"><span class="text-primary">💡</span><span>Schedule EV charging during high renewable generation</span></div>
+                        <div class="flex items-start gap-2 text-sm p-2 hover:bg-surface-container-high rounded-lg transition-colors cursor-pointer" @click="showTip(4)"><span class="text-primary">💡</span><span>Track daily usage patterns</span></div>
                     </div>
                 </div>
             </div>
 
             <!-- ISSUE #27: MY GREEN ENERGY (Personal breakdown) -->
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6 shadow-lg">
+            <div class="bg-surface-container-low border border-outline-variant rounded-xl p-6 shadow-lg">
                 <div class="flex items-center gap-2 mb-4">
                     <span class="text-3xl">🔋</span>
                     <h2 class="text-2xl font-bold">My Green Energy</h2>
@@ -437,27 +437,27 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
                 <div class="text-center mb-4">
                     <div class="text-5xl font-black text-primary" id="personalPercentage">72.3%</div>
                     <div class="text-sm text-on-surface-variant">Green Energy</div>
-                    <div class="w-full bg-gray-200 rounded-full h-3 mt-2">
+                    <div class="w-full bg-surface-container-highest rounded-full h-3 mt-2">
                         <div class="bg-primary h-3 rounded-full transition-all" id="personalBar" style="width: 72.3%"></div>
                     </div>
                 </div>
 
                 <!-- Energy breakdown -->
                 <div class="space-y-3 mb-4">
-                    <div class="flex justify-between items-center p-2 bg-white/50 rounded-lg">
-                        <span><span class="text-yellow-600">☀️</span> Solar</span>
+                    <div class="flex justify-between items-center p-2 bg-surface-container-lowest rounded-lg">
+                        <span><span class="text-amber-500">☀️</span> Solar</span>
                         <span class="font-semibold" id="personalSolar">210.0 kWh</span>
                     </div>
-                    <div class="flex justify-between items-center p-2 bg-white/50 rounded-lg">
-                        <span><span class="text-blue-600">💨</span> Wind</span>
+                    <div class="flex justify-between items-center p-2 bg-surface-container-lowest rounded-lg">
+                        <span><span class="text-primary">💨</span> Wind</span>
                         <span class="font-semibold" id="personalWind">71.0 kWh</span>
                     </div>
-                    <div class="flex justify-between items-center p-2 bg-white/50 rounded-lg">
-                        <span><span class="text-cyan-600">💧</span> Hydro</span>
+                    <div class="flex justify-between items-center p-2 bg-surface-container-lowest rounded-lg">
+                        <span><span class="text-primary/70">💧</span> Hydro</span>
                         <span class="font-semibold" id="personalHydro">37.0 kWh</span>
                     </div>
-                    <div class="flex justify-between items-center p-2 bg-white/50 rounded-lg">
-                        <span><span class="text-gray-500">🔥</span> Non-green</span>
+                    <div class="flex justify-between items-center p-2 bg-surface-container-lowest rounded-lg">
+                        <span><span class="text-on-surface-variant">🔥</span> Non-green</span>
                         <span class="font-semibold" id="nonGreenKWh">187.3 kWh</span>
                     </div>
                 </div>
@@ -466,7 +466,7 @@ import SolarForecast from '@/components/SolarForecast/SolarForecast.vue';
                 <div class="border-t pt-3 mt-2">
                     <div class="flex justify-between text-sm">
                         <span>Total Green:</span>
-                        <span class="font-bold text-green-600" id="personalGreenKWh">425.5 kWh</span>
+                        <span class="font-bold text-primary" id="personalGreenKWh">425.5 kWh</span>
                     </div>
                     <div class="flex justify-between text-sm">
                         <span>Total Energy:</span>

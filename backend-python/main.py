@@ -13,6 +13,7 @@ import pvlib
 
 pkl_file = "model.pkl"
 normalization_file = "normalization_keys.csv"
+postal_code_file = "opendb-2026-05-13.csv"
 
 if os.path.exists(pkl_file):
     model = joblib.load(pkl_file)
@@ -162,6 +163,17 @@ def getData(latitude: float, longitude: float):
 
     return x, data, np.array(time), np.array(date), day
 
+def makePrediction(latitude: float, longitude:float):
+    x, y, time, date, day = getData(latitude, longitude)
+    
+    normalized_data = normalize(y, nkeys)
+
+    prediction = model.predict(normalized_data)
+
+    result = denormalize_array(prediction, ykey)
+    return Output(x=x, y=result, time=time, date=date, day=day)
+
+
 class Output(BaseModel):
     x: list[datetime] = None
     y: list[float] = None
@@ -172,12 +184,22 @@ class Output(BaseModel):
 
 @app.get("/predict", response_model=Output)
 async def getPrediction(latitude: float = Query(...), longitude:float = Query(...)):
-    x, y, time, date, day = getData(latitude, longitude)
+    output = makePrediction(latitude, longitude)
+    return output
+
+@app.get("/predict/postal", response_model=Output)
+async def getPredictionIn(postalcode: float = Query(...)):
+    df = pd.read_csv(postal_code_file)
+    df = df[df["street_code"] == postalcode]
+    if df.shape == 0:
+        latitude=-26.2041
+        longitude=28.0473
+    else:
+        latitude = df["latitude"]
+        longitude = df["longitude"]
+
+    output = makePrediction(latitude, longitude)
+    return output
+
     
-    normalized_data = normalize(y, nkeys)
-
-    prediction = model.predict(normalized_data)
-
-    result = denormalize_array(prediction, ykey)
-
-    return Output(x=x, y=result, time=time, date=date, day=day)
+    

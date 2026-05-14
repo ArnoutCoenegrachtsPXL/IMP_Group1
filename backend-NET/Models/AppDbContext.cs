@@ -6,7 +6,7 @@ namespace backend_NET.Models
     {
         public DbSet<MeterReading> MeterReadings { get; set; }
         public DbSet<User> Users { get; set; }
-        // add other tables here
+        public DbSet<Notification> Notifications { get; set; }
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

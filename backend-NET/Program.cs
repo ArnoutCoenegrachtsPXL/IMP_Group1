@@ -59,6 +59,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<MeterReadingProfile>();
+    cfg.AddProfile<NotificationProfile>();
 });
 
 // Database
@@ -68,6 +69,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Repositories
 builder.Services.AddScoped<IMeterReadingRepository, MeterReadingDbRepository>(); //
 builder.Services.AddScoped<IUserRepository, UserDbRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationDbRepository>();
 
 // Email Service
 builder.Services.AddScoped<IEmailService, EmailService>();
