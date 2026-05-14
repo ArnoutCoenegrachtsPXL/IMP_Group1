@@ -5,8 +5,9 @@
     import ToggleButton from 'primevue/togglebutton';
 
 
-    const latitude = -29
-    const longitude = 24
+
+    
+    
 
     const x = ref([])
     const y = ref([])
@@ -20,8 +21,17 @@
 
     const dayview = ref(true)
 
-    const url = `http://localhost:9876/predict?latitude=${latitude}&longitude=${longitude}`
-
+    const postalcode = localStorage.getItem("postalcode")
+    console.log(postalcode)
+    let url;
+    if (postalcode === null) {
+        const latitude = -29
+        const longitude = 24
+        url = `http://localhost:9876/predict?latitude=${latitude}&longitude=${longitude}`
+    } else {
+        url = `http://localhost:9876/predict/postal?postalcode=${postalcode}`
+    }
+    
     async function fetchData() {
         try {
             await axios({

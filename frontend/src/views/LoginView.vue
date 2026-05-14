@@ -140,7 +140,6 @@ const handleGoogleLogin = async (response) => {
     const res = await axios.post('https://localhost:7126/api/auth/google-login', {
       credential: response.credential
     })
-
     localStorage.setItem('token', res.data.token)
     localStorage.setItem('userId', res.data.userId)
     localStorage.setItem('fullName', res.data.fullName)
@@ -167,6 +166,7 @@ const handleLogin = async () => {
     localStorage.setItem('userId', response.data.userId)
     localStorage.setItem('fullName', response.data.fullName)
     localStorage.setItem('email', response.data.email || form.value.email)
+    localStorage.setItem('postalcode', response.data.postalcode)
 
     success.value = 'Login successful! Redirecting to dashboard...'
     setTimeout(() => router.push('/dashboard'), 1200)

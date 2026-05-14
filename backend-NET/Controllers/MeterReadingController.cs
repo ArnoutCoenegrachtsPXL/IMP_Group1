@@ -15,12 +15,14 @@ namespace backend_NET.Controllers
         private readonly IMapper _mapper;
         private readonly IMeterReadingRepository _repository;
         private readonly IUserRepository _userRepository;
+        private readonly INotificationRepository _notificationRepository;
 
-        public MeterReadingController(IMeterReadingRepository repository, IUserRepository userRepository, IMapper mapper)
+        public MeterReadingController(IMeterReadingRepository repository, IUserRepository userRepository, IMapper mapper, INotificationRepository notificationRepository)
         {
             _repository = repository;
             _userRepository = userRepository;
             _mapper = mapper;
+            _notificationRepository = notificationRepository;
         }
 
         [HttpPost()]
@@ -65,6 +67,11 @@ namespace backend_NET.Controllers
             GetMeterInfoDTO uploadMeterInfo = new GetMeterInfoDTO();
             uploadMeterInfo.RecentSubmissions = _mapper.Map<IEnumerable<ReturnMeterReadingDTO>>(readings);
             uploadMeterInfo.Progress = Math.Min(_repository.GetWeekProgress(user), uploadMeterInfo.Target);
+            if (uploadMeterInfo.Progress == 7)
+            {
+                Notification newNotif = Notification.CreateNewNotification(user, "Reached weekly goal", "Congratulations, you've reached your weekly meterreading upload goal! Keep it up!", NotificationType.SUCCESS);
+                _notificationRepository.AddNotification(newNotif);
+            }
             return Ok(uploadMeterInfo);
         }
     }

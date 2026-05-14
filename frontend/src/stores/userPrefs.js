@@ -589,8 +589,8 @@ export const useUserPrefsStore = defineStore('userPrefs', () => {
   const _avatarKey = 'ep-profile-avatar'
 
   const profile = ref({
-    displayName: localStorage.getItem('ep-profile-name')     || 'Energy Hero',
-    email:       localStorage.getItem('ep-profile-email')    || 'hero@brightbox.app',
+    displayName: localStorage.getItem('fullName')            || 'Energy Hero',
+    email:       localStorage.getItem('email')               || 'hero@brightbox.app',
     phone:       localStorage.getItem('ep-profile-phone')    || '',
     bio:         localStorage.getItem('ep-profile-bio')      || '',
     location:    localStorage.getItem('ep-profile-location') || 'South Africa',

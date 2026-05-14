@@ -5,21 +5,43 @@ import GlobalSearch from './GlobalSearch.vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useUserPrefsStore } from '@/stores/userPrefs'
 import { useNotificationStore } from '@/stores/notifications'
-import { useRouter } from 'vue-router'
+import axios from 'axios'
 
-const prefs  = useUserPrefsStore()
 const notifs = useNotificationStore()
-const router = useRouter()
+const prefs  = useUserPrefsStore()
 defineEmits(['toggle-sidebar'])
 
-// ── Notification dropdown ─────────────────────────────────────────────────────
-const dropdownOpen = ref(false)
-function toggleDropdown() { dropdownOpen.value = !dropdownOpen.value }
-function handleOutsideClick(e) {
-  if (!e.target.closest('#notif-dropdown-root')) dropdownOpen.value = false
+async function GetNotifs() {
+  const userID = localStorage.getItem('userId')
+  try {
+    await axios({
+      method: "get",
+      url: 'https://localhost:7126/api/Notification/of/'+userID
+    })
+    .then(function (response) {
+      notifs.items = response.data
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+  } catch (error) {
+    console.log(error)
+  }
 }
-onMounted(()   => document.addEventListener('click', handleOutsideClick, true))
-onUnmounted(() => document.removeEventListener('click', handleOutsideClick, true))
+
+GetNotifs().then(() => console.log("notifs fetched")).then(() => console.log(notifs.items))
+
+const notifOpen   = ref(false)
+const notifBtn    = ref(null)
+const notifPanel  = ref(null)
+const searchQuery = ref('')
+
+function toggleNotif() { notifOpen.value = !notifOpen.value }
+function handleOutside(e) {
+  if (notifOpen.value && notifPanel.value && !notifPanel.value.contains(e.target) && !notifBtn.value?.contains(e.target))
+    notifOpen.value = false
+}
+
 
 const emailSummaryItems = computed(() => [
   { key: 'emailAlerts',    icon: 'security',     label: 'Critical alerts' },
@@ -30,24 +52,37 @@ const emailSummaryItems = computed(() => [
   { key: 'marketingEmail', icon: 'local_offer',  label: 'Promotions'      },
 ].map(i => ({ ...i, enabled: prefs.notif.emailMaster && prefs.notif[i.key] })))
 
-const pushSummaryItems = computed(() => [
-  { key: 'priceAlerts',     icon: 'price_change', label: 'Price alerts'     },
-  { key: 'maintenanceTips', icon: 'build',        label: 'Maintenance tips' },
-].map(i => ({ ...i, enabled: prefs.notif.push && prefs.notif[i.key] })))
-
-const activeCount = computed(() =>
-  emailSummaryItems.value.filter(i => i.enabled).length +
-  pushSummaryItems.value.filter(i => i.enabled).length
-)
-const showBadge = computed(() => activeCount.value > 0)
-
-function goToNotifications() {
-  dropdownOpen.value = false
-  router.push({ name: 'settings', hash: '#sec-notifications' }).then(() => {
-    document.getElementById('sec-notifications')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  })
+const notifIconMap = {
+  price: 'price_change', maintenance: 'build', system: 'notifications',
+  info: 'info', success: 'check_circle', warning: 'warning', alert: 'error',
 }
-// MARKER: TOPBAR-END
+const notifColorMap = {
+  price: 'text-amber-500', maintenance: 'text-blue-500', system: 'text-primary',
+  info: 'text-primary', success: 'text-emerald-500', warning: 'text-amber-500', alert: 'text-red-500',
+}
+const notifBgMap = {
+  price: 'bg-amber-500/10', maintenance: 'bg-blue-500/10', system: 'bg-primary/10',
+  info: 'bg-primary/10', success: 'bg-emerald-500/10', warning: 'bg-amber-500/10', alert: 'bg-red-500/10',
+}
+
+function timeAgo(ms) {
+    console.log(ms)
+    if (!(ms instanceof Date)) {
+      ms = new Date(ms)
+      console.log(ms)
+    }
+    const s = Math.floor((Date.now() - ms) / 1000)
+    if (s < 60) return 'Just now'
+    if (s < 3600) return `${Math.floor(s/60)}m ago`
+    if (s < 86400) return `${Math.floor(s/3600)}h ago`
+    return `${Math.floor(s/86400)}d ago`
+  }
+
+
+
+onMounted(() => document.addEventListener('mousedown', handleOutside))
+onUnmounted(() => document.removeEventListener('mousedown', handleOutside))
+
 </script>
 
 <template>
@@ -196,10 +231,8 @@ function goToNotifications() {
                           :class="item.enabled ? 'text-primary' : 'text-on-surface-variant/50'">{{ item.icon }}</span>
                     <span class="text-xs text-on-surface">{{ item.label }}</span>
                   </div>
-                  <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
-                        :class="item.enabled ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant/50'">
-                    {{ item.enabled ? 'ON' : 'OFF' }}
-                  </span>
+                  <p class="text-xs text-on-surface-variant mt-0.5 line-clamp-2 leading-relaxed">{{ n.body }}</p>
+                  <p class="text-[10px] text-on-surface-variant/50 mt-1 font-medium">{{ timeAgo(n.date) }}</p>
                 </div>
               </div>
             </div>

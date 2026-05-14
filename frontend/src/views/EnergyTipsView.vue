@@ -13,329 +13,78 @@ import WaterSavingTip       from '@/components/EnergySavingTipsComponents/WaterS
 const prefs  = useUserPrefsStore()
 const notifs = useNotificationStore()
 
-const currentView = ref('main')
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SCHEDULE STATE — persisted to localStorage
-// ─────────────────────────────────────────────────────────────────────────────
-const scheduleFrom    = ref(localStorage.getItem('et-sched-from') || '07:00')
-const scheduleTo      = ref(localStorage.getItem('et-sched-to')   || '18:00')
-const scheduleFilter  = ref(localStorage.getItem('et-sched-filter') === 'true')
-const scheduleApplied = ref(false)
-const savingSchedule  = ref(false)
-
-watch(scheduleFrom,   v => localStorage.setItem('et-sched-from', v))
-watch(scheduleTo,     v => localStorage.setItem('et-sched-to', v))
-watch(scheduleFilter, v => localStorage.setItem('et-sched-filter', String(v)))
-
-function applySchedule() {
-  savingSchedule.value = true
-  setTimeout(() => {
-    savingSchedule.value  = false
-    scheduleApplied.value = true
-    notifs.add({
-      type: 'success',
-      title: 'Schedule Saved',
-      body: `Showing tips personalised for your active hours: ${scheduleFrom.value}–${scheduleTo.value}.`,
-    })
-    setTimeout(() => { scheduleApplied.value = false }, 3000)
-  }, 600)
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SAVINGS ALGORITHM
-// Estimates monthly savings based on:
-// - Schedule window width (longer active = more shift opportunities)
-// - User's configured features (EV, smart scheduling, auto-offset)
-// - Active category filters
-// - Completed tips count
-// ─────────────────────────────────────────────────────────────────────────────
-const completedTips = ref(JSON.parse(localStorage.getItem('et-completed') || '[]'))
-
-function toggleTip(id) {
-  const idx = completedTips.value.indexOf(id)
-  if (idx === -1) completedTips.value.push(id)
-  else            completedTips.value.splice(idx, 1)
-  localStorage.setItem('et-completed', JSON.stringify(completedTips.value))
-}
-
-const estimatedSavings = computed(() => {
-  // Base saving from schedule width (off-peak shifting opportunity)
-  const [fh, fm] = scheduleFrom.value.split(':').map(Number)
-  const [th, tm] = scheduleTo.value.split(':').map(Number)
-  const windowHrs = Math.max(0, (th * 60 + tm - fh * 60 - fm) / 60)
-
-  let base = 18 // ZAR baseline per month
-  base += Math.min(windowHrs * 1.8, 22) // up to +22 from schedule width
-
-  // Boost from enabled smart features
-  if (prefs.energy?.smart)       base += 8
-  if (prefs.energy?.autoOffset)  base += 12
-  if (prefs.energy?.ev)          base += 6
-  if (prefs.energy?.community)   base += 3
-
-  // Boost from completed tips (R4 per tip)
-  base += completedTips.value.length * 4
-
-  // Currency scaling (rough purchasing parity)
-  const curr = prefs.currency || 'ZAR'
-  const scale = { ZAR: 1, USD: 0.054, EUR: 0.050, GBP: 0.043, NGN: 43, KES: 7.2, AED: 0.2, INR: 4.5, BRL: 0.28 }
-  const amount = Math.round(base * (scale[curr] || 1))
-
-  return {
-    amount,
-    currency: curr,
-    symbol: { ZAR: 'R', USD: '$', EUR: '€', GBP: '£', NGN: '₦', KES: 'KSh', AED: 'د.إ', INR: '₹', BRL: 'R$' }[curr] || curr,
-    percentage: Math.min(95, 20 + completedTips.value.length * 5 + (prefs.energy?.smart ? 15 : 0)),
-  }
-})
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TIP DATA with schedule metadata, category, and impact
-// ─────────────────────────────────────────────────────────────────────────────
-const ALL_TIPS = [
-  {
-    id: 'peak-cooling',
-    category: 'cooling',
-    label: 'Cooling',
-    impact: 'high',
-    timeWindow: '16:00–18:00',
-    windowStart: 16, windowEnd: 18,
-    title: 'Optimise Peak Hour Cooling',
-    desc: 'Lower your AC by 2°C between 4–6 PM to avoid peak tariff pricing and reduce grid strain.',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDav2CwnH7_sK8zJshe51W_8peePokZF0VTHkhWK4i9wTp6MyPQHEPLQwlT7VIgerogydLfGW2KApRyJz3yJ12ag0hVp0Qu30a9fJWKMeYzJV3IRKeiV2oWa87-F4U-Ax6lGsdMOI6ZvnRpLpgSJmFcXoENTx8zTeXXCl5391lz6ncX43yLvfGfmYlKhKYHzBZM8gpSeZXbXmeBMfDlCX4dU8vlqKVRW8ecGpaeqHHR_uXAbSiG9eFv59K8AMOMPzzBhUthr6eSoNHA',
-    action: null,
-  },
-  {
-    id: 'eco-wash',
-    category: 'laundry',
-    label: 'Laundry',
-    impact: 'medium',
-    timeWindow: null,
-    windowStart: null, windowEnd: null,
-    title: 'The Eco-Wash Delay',
-    desc: 'Use the Delay Start feature on your washing machine to run during solar surplus or off-peak hours.',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBjhLHZbdX_il1lydLfYaztp3hmg5jMfaaX_Qbb0HnNyPKm55i2ALDK72ZzzqmTv0r0ssunoJZTFgEZXHFRyOnXj5R5C05W1vgWIO2EeJht9vBFcDZRhwpkrZ6MsPhKrqkU2q9xxXgEZQMUED9Xk1nJj9rT0GrWUHq3oTLMwM-G9pdnEqhpUgT7oaLgasOOJumjkuE5RTLVbksns_UXtH3RDmA-j15oK4-1Jp3InIVLIfs5OBvOK2U7kQgqFGeqJDg3PpFglzRuSWeu',
-    action: 'laundry',
-  },
-  {
-    id: 'smart-cooking',
-    category: 'kitchen',
-    label: 'Kitchen',
-    impact: 'low',
-    timeWindow: '16:00–18:00',
-    windowStart: 16, windowEnd: 18,
-    title: 'Smart Cooking Habits',
-    desc: 'Cover pots while boiling and use a microwave for small tasks — reduces consumption by up to 20%.',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDMy0PhlxobZcJ_4g4Mf9SeMLlF-_DkNtY2SyB6FAWUZHT69Udt45Qsbzuz0ny5-lhDO8unmQcOl3R5vlohm9-yrUTfbhqqfJZyGmYcb45mgqtckZLcMiFAquIe9meoXQbicAKqGdmfXbvUR-oxLoBlywqw2E9uMyMWXpjVv7N6sB6TPmeYssnSGvnVFtzIUabwt393gKzyxnEfJEONPvz-Rpq9bNX9ZvceMD4KN8Q56KHtxXqLKHNXXKHlvDXGzhHKi0MFlg0w59vY',
-    action: 'kitchen',
-  },
-  {
-    id: 'shower-5min',
-    category: 'water',
-    label: 'Water',
-    impact: 'high',
-    timeWindow: null,
-    windowStart: null, windowEnd: null,
-    title: 'The 5-Minute Challenge',
-    desc: 'Reducing shower time saves up to 57 L of water and significant energy used for heating.',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDzmlNYVJl7YfKlpEYRkrcL9kQCQOvMn3CQF4v86Dh5_ybH6eGL5sAEybZJq1lf-n8SqfB_09QtWYaiRw9PT8Dxy2TL98K0iTYGwq-XA1MTc2iAgD3fYl-f5x4NEe8eCvkXSDtTUq3IWXNhwD-bNvzWCAzePLMnID6duNaqbceSQDFgWQGG0L9MkvuDniJc2DWltOPLkbfFUZ-qlnu7-CHPsxTztEHtQS8c9nrFWCYK32iAAW2TB_83yz7ua9xEnrHr0WWzuwWfgnSd',
-    action: 'water',
-  },
-  {
-    id: 'solar-self',
-    category: 'solar',
-    label: 'Solar',
-    impact: 'medium',
-    timeWindow: '11:00–15:00',
-    windowStart: 11, windowEnd: 15,
-    title: 'Max Solar Self-Consumption',
-    desc: 'Run high-wattage appliances during peak sun hours (11 AM–3 PM) to use your own solar instead of the grid.',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC_t0LazH9tTWFhJf0OamJnaPhTE20HMRvoYyiHW4ovkvW8Obf7iqYb2FG2me5J0v5HsFi7e97ChynQX2wQZ0PRYHm_Cdwo-nbV8zNdwy2GEnYe6BmyBC1DPzLbTB98VyChVIHGAak7WY_NRtz4VLl6gPqE1aOkHw64-jAmN217gekRN2mk3jtK77cK9RJWsTEOK523_JQvwlJ_ScxAwONO1DwTtQANhS07eHuu4Ftl9AlZcyp4bL87ckS5TttmR-bJm0zMhaemM_Jh',
-    action: 'solar',
-  },
-  {
-    id: 'standby-off',
-    category: 'electricity',
-    label: 'Electricity',
-    impact: 'medium',
-    timeWindow: null,
-    windowStart: null, windowEnd: null,
-    title: 'Kill Standby Drain',
-    desc: 'Unplug TVs, gaming consoles, and chargers when not in use — standby devices account for up to 10% of bills.',
-    img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=640&q=80',
-    action: 'electricity',
-  },
-  {
-    id: 'geyser-timer',
-    category: 'heating',
-    label: 'Heating',
-    impact: 'high',
-    timeWindow: '22:00–06:00',
-    windowStart: 22, windowEnd: 6,
-    title: 'Geyser Timer Setup',
-    desc: 'Set a timer to heat your geyser only during off-peak hours. A 150L geyser heated off-peak saves up to R280/month.',
-    img: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=640&q=80',
-    action: 'heating',
-  },
-  {
-    id: 'led-switch',
-    category: 'electricity',
-    label: 'Electricity',
-    impact: 'medium',
-    timeWindow: null,
-    windowStart: null, windowEnd: null,
-    title: 'Full LED Switchover',
-    desc: 'Replacing all incandescent bulbs with LEDs saves up to 80% on lighting. Payback period is under 3 months.',
-    img: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=640&q=80',
-    action: 'electricity',
-  },
-]
-
-// ─── Filter state ─────────────────────────────────────────────────────────────
-const activeFilter = ref('all')
-const FILTERS = [
-  { id: 'all',         label: 'All Tips'    },
-  { id: 'electricity', label: 'Electricity' },
-  { id: 'water',       label: 'Water'       },
-  { id: 'heating',     label: 'Heating'     },
-  { id: 'solar',       label: 'Solar'       },
-  { id: 'kitchen',     label: 'Kitchen'     },
-  { id: 'laundry',     label: 'Laundry'     },
-  { id: 'cooling',     label: 'Cooling'     },
-]
-
-function setFilter(id) {
-  // If it's a sub-view category, show the detailed page
-  const SUB_VIEWS = ['electricity', 'water', 'heating', 'solar', 'kitchen', 'laundry']
-  if (SUB_VIEWS.includes(id) && id !== activeFilter.value) {
-    activeFilter.value = id
-  } else if (SUB_VIEWS.includes(id) && id === activeFilter.value) {
-    currentView.value = id
-  } else {
-    activeFilter.value = id
-  }
-}
-
-// Schedule filter: only show tips whose time window overlaps with the user's schedule
-function overlaps(tip) {
-  if (!scheduleFilter.value || tip.windowStart === null) return true
-  const [fh] = scheduleFrom.value.split(':').map(Number)
-  const [th] = scheduleTo.value.split(':').map(Number)
-  // Simple overlap check (handles overnight ranges)
-  const s = tip.windowStart, e = tip.windowEnd
-  if (s < e) return fh < e && th > s
-  return true // overnight tips always match if schedule filter is on
-}
-
-const filteredTips = computed(() =>
-  ALL_TIPS.filter(t =>
-    (activeFilter.value === 'all' || t.category === activeFilter.value) &&
-    overlaps(t)
-  )
-)
-
-const IMPACT_CONFIG = {
-  high:   { label: 'High Impact',   bg: 'bg-red-100',    text: 'text-red-700'    },
-  medium: { label: 'Medium Impact', bg: 'bg-amber-100',  text: 'text-amber-700'  },
-  low:    { label: 'Low Impact',    bg: 'bg-emerald-100', text: 'text-emerald-700'},
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// REQUEST CUSTOM ADVICE — modal with form
-// Submits via mailto or Formspree (same approach as SupportView)
-// ─────────────────────────────────────────────────────────────────────────────
-const FORMSPREE = import.meta.env.VITE_FORMSPREE_ENDPOINT || ''
-const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || 'support@brightbox.app'
-
-const showAdviceModal = ref(false)
-const adviceForm = ref({
-  name:        prefs.profile?.displayName || '',
-  email:       prefs.profile?.email       || '',
-  homeType:    '',
-  occupants:   '',
-  primaryCost: '',
-  budget:      '',
-  goals:       [],
-  extra:       '',
-})
-const adviceSending = ref(false)
-const adviceSent    = ref(false)
-const adviceError   = ref('')
-
-const HOME_TYPES   = ['Apartment / Flat', 'Townhouse', 'Freestanding house', 'Small-holding / Farm', 'Commercial']
-const COST_AREAS   = ['Electricity', 'Water & heating', 'Cooling / Air conditioning', 'Appliances', 'Not sure']
-const BUDGET_OPTS  = ['Under R500/month', 'R500–R2 000/month', 'R2 000–R5 000/month', 'R5 000+/month', 'Prefer not to say']
-const GOAL_OPTS    = ['Lower monthly bill', 'Reduce carbon footprint', 'Solar independence', 'Load-shedding resilience', 'Water saving', 'EV optimisation']
-
-const adviceValid = computed(() =>
-  adviceForm.value.name.trim().length > 1 &&
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adviceForm.value.email) &&
-  adviceForm.value.homeType &&
-  adviceForm.value.occupants
-)
-
-function toggleGoal(g) {
-  const idx = adviceForm.value.goals.indexOf(g)
-  if (idx === -1) adviceForm.value.goals.push(g)
-  else            adviceForm.value.goals.splice(idx, 1)
-}
-
-async function submitAdvice() {
-  if (!adviceValid.value || adviceSending.value) return
-  adviceSending.value = true
-  adviceError.value   = ''
-
-  const f = adviceForm.value
-  const body = `Custom Energy Audit Request
-
-Name: ${f.name}
-Email: ${f.email}
-Home type: ${f.homeType}
-Occupants: ${f.occupants}
-Primary cost area: ${f.primaryCost}
-Budget: ${f.budget}
-Goals: ${f.goals.join(', ') || 'Not specified'}
-Additional info: ${f.extra || 'None'}
-
-Sent from BrightBox Energy Tips`
-
-  // Try Formspree first
-  if (FORMSPREE) {
-    try {
-      const res = await fetch(FORMSPREE, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          name: f.name, email: f.email,
-          subject: `[BrightBox Custom Audit] ${f.name} – ${f.homeType}`,
-          message: body,
-        }),
-      })
-      if (res.ok) { onAdviceSent(); return }
-    } catch { /* fall through */ }
-  }
-
-  // mailto fallback
-  const mailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`[BrightBox Custom Audit] ${f.name} – ${f.homeType}`)}&body=${encodeURIComponent(body)}`
-  window.open(mailto, '_blank')
-  onAdviceSent()
-}
-
-function onAdviceSent() {
-  adviceSending.value = false
-  adviceSent.value    = true
-  notifs.add({
-    type: 'success',
-    title: 'Advice Request Sent',
-    body: `We received your custom audit request, ${adviceForm.value.name}. Expect a response within 2 business days.`,
-  })
-}
-
-function closeAdviceModal() {
-  showAdviceModal.value = false
-  setTimeout(() => { adviceSent.value = false; adviceError.value = '' }, 400)
-}
+  const currentView = ref('main')
+    const timeFrom = ref('16:00')
+    const timeTo = ref('22:00')
+  /*tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "on-surface-variant": "#414753",
+                            "outline-variant": "#c1c6d5",
+                            "on-secondary-container": "#003389",
+                            "surface-dim": "#d8dae3",
+                            "background": "#f9f9ff",
+                            "surface-variant": "#e0e2ec",
+                            "on-error": "#ffffff",
+                            "error-container": "#ffdad6",
+                            "tertiary-container": "#b75b00",
+                            "on-error-container": "#93000a",
+                            "on-tertiary-fixed": "#301400",
+                            "surface": "#f9f9ff",
+                            "primary-fixed": "#75ff69",
+                            "inverse-surface": "#2d3038",
+                            "secondary-fixed": "#dbe1ff",
+                            "surface-bright": "#f9f9ff",
+                            "on-primary": "#ffffff",
+                            "outline": "#717785",
+                            "secondary": "#365ab3",
+                            "on-tertiary-container": "#fffbff",
+                            "on-primary-fixed-variant": "#005307",
+                            "surface-container": "#ecedf7",
+                            "primary": "#006c0c",
+                            "on-secondary-fixed-variant": "#174199",
+                            "surface-tint": "#006e0c",
+                            "tertiary-fixed-dim": "#ffb785",
+                            "error": "#ba1a1a",
+                            "inverse-primary": "#19e52d",
+                            "inverse-on-surface": "#eff0fa",
+                            "primary-container": "#008812",
+                            "on-primary-fixed": "#002201",
+                            "on-background": "#181c22",
+                            "surface-container-lowest": "#ffffff",
+                            "surface-container-low": "#f2f3fd",
+                            "on-secondary-fixed": "#001849",
+                            "tertiary": "#924800",
+                            "on-surface": "#181c22",
+                            "secondary-container": "#7fa0fd",
+                            "secondary-fixed-dim": "#b3c5ff",
+                            "on-secondary": "#ffffff",
+                            "tertiary-fixed": "#ffdcc6",
+                            "on-tertiary-fixed-variant": "#723700",
+                            "on-tertiary": "#ffffff",
+                            "primary-fixed-dim": "#19e52d",
+                            "surface-container-high": "#e6e8f1",
+                            "surface-container-highest": "#e0e2ec",
+                            "on-primary-container": "#f8fff0",
+                            "primary": "#006c0c", 
+                             "brand": "#1978e5",
+                        },
+                        "borderRadius": {
+                            "DEFAULT": "0.125rem",
+                            "lg": "0.25rem",
+                            "xl": "0.5rem",
+                            "full": "0.75rem"
+                        },
+                        "fontFamily": {
+                            "headline": ["Inter"],
+                            "body": ["Inter"],
+                            "label": ["Inter"]
+                        }
+                    },
+                },
+            }*/
 </script>
 
 <template>
