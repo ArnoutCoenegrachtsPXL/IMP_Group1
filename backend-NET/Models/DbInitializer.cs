@@ -9,10 +9,20 @@ namespace backend_NET.Models
             AppDbContext context = applicationBuilder.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
 
 
-            if (!context.Users.Any() && !context.MeterReadings.Any())
+            if (!context.Users.Any() && !context.MeterReadings.Any() && !context.Notifications.Any())
             {
                 Console.WriteLine("Seeding database...");
                 Console.WriteLine("  Seeding users...");
+
+                DateTime date = DateTime.Now;
+                while (date.DayOfWeek > 0)
+                {
+                    date = date.AddDays(-1);
+                }
+                string notifTitle = "Reached weekly goal";
+                string notifDescription = "Congratulations, you've reached your weekly meterreading upload goal! Keep it up!";
+                NotificationType type = NotificationType.SUCCESS;
+
 
                 var userParser = new Microsoft.VisualBasic.FileIO.TextFieldParser("userdata.csv");
                 userParser.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
@@ -47,6 +57,10 @@ namespace backend_NET.Models
                         valueDict[newUser] = 0;
                         dateCounter[newUser] = 0;
                         context.Add(newUser);
+
+                        Notification newNotif = Notification.CreateNewNotification(newUser, notifTitle, notifDescription, type);
+                        newNotif.Date = date;
+                        context.Add(newNotif);
                     }
                 }
 

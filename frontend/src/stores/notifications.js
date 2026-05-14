@@ -5,6 +5,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useUserPrefsStore } from './userPrefs'
+import axios from 'axios'
 
 let _nextId = 100
 
@@ -27,7 +28,9 @@ const SEED = [
 ]
 
 export const useNotificationStore = defineStore('notifications', () => {
-  const items = ref(SEED.map(n => ({ ...n, time: timeAgo(n.ts) })))
+  const items = ref([]) // 
+
+
   let pushPermission = ref(Notification.permission || 'default')
 
   // Refresh time strings every minute
@@ -37,7 +40,7 @@ export const useNotificationStore = defineStore('notifications', () => {
 
   const unreadCount = computed(() => items.value.filter(n => !n.read).length)
 
-  function add(notif) {
+  async function add(notif) {
     items.value.unshift({
       id: makeId(),
       read: false,
@@ -46,6 +49,25 @@ export const useNotificationStore = defineStore('notifications', () => {
       type: 'info',
       ...notif,
     })
+
+    /*const userID = localStorage.getItem('userId')
+    let postData = {
+      "read" : false,
+      "userID" : userID,
+      "date" : Date.now(),
+      "title" : notif.title,
+      "body" : notif.body,
+      "type" : 0
+    }
+    await axios({
+      method : "post",
+      url: 'https://localhost:7126/api/Notification/',
+      data : postData,
+      headers: {
+        "Content-Type" : "application/json"
+      }
+    })*/
+
     // Limit to 50 items
     if (items.value.length > 50) items.value.splice(50)
   }
@@ -83,7 +105,7 @@ export const useNotificationStore = defineStore('notifications', () => {
   function firePriceAlert() {
     const prefs = useUserPrefsStore()
     if (!prefs.notif.priceAlerts) return
-    const n = { type: 'price', title: 'Tariff Alert', body: 'Load-shedding schedule may affect tonight\'s off-peak window. Check Eskom app for Stage updates.' }
+    const n = { type: 'price', title: 'Tariff Alert', body: 'Load-shedding schedule may affect tonight\'s off-peak window. Check Eskom app for Stage updates.' , date: new Date()}
     add(n)
     if (prefs.notif.push) sendBrowserPush(n.title, n.body)
   }
@@ -107,6 +129,6 @@ export const useNotificationStore = defineStore('notifications', () => {
     items, unreadCount, pushPermission,
     add, markRead, markAllRead, remove,
     requestPushPermission, sendBrowserPush,
-    firePriceAlert, fireMaintenanceTip,
+    firePriceAlert, fireMaintenanceTip, timeAgo
   }
 })

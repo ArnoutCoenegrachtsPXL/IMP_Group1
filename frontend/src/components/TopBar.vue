@@ -3,10 +3,31 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Logo from './Logo.vue'
 import { useUserPrefsStore } from '@/stores/userPrefs'
 import { useNotificationStore } from '@/stores/notifications'
+import axios from 'axios'
 
-const prefs  = useUserPrefsStore()
 const notifs = useNotificationStore()
+const prefs  = useUserPrefsStore()
 defineEmits(['toggle-sidebar'])
+
+async function GetNotifs() {
+  const userID = localStorage.getItem('userId')
+  try {
+    await axios({
+      method: "get",
+      url: 'https://localhost:7126/api/Notification/of/'+userID
+    })
+    .then(function (response) {
+      notifs.items = response.data
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+GetNotifs().then(() => console.log("notifs fetched")).then(() => console.log(notifs.items))
 
 const notifOpen   = ref(false)
 const notifBtn    = ref(null)
@@ -18,8 +39,7 @@ function handleOutside(e) {
   if (notifOpen.value && notifPanel.value && !notifPanel.value.contains(e.target) && !notifBtn.value?.contains(e.target))
     notifOpen.value = false
 }
-onMounted(() => document.addEventListener('mousedown', handleOutside))
-onUnmounted(() => document.removeEventListener('mousedown', handleOutside))
+
 
 const unreadCount = computed(() => notifs.unreadCount)
 
@@ -38,6 +58,25 @@ const notifBgMap = {
   price: 'bg-amber-500/10', maintenance: 'bg-blue-500/10', system: 'bg-primary/10',
   info: 'bg-primary/10', success: 'bg-emerald-500/10', warning: 'bg-amber-500/10', alert: 'bg-red-500/10',
 }
+
+function timeAgo(ms) {
+    console.log(ms)
+    if (!(ms instanceof Date)) {
+      ms = new Date(ms)
+      console.log(ms)
+    }
+    const s = Math.floor((Date.now() - ms) / 1000)
+    if (s < 60) return 'Just now'
+    if (s < 3600) return `${Math.floor(s/60)}m ago`
+    if (s < 86400) return `${Math.floor(s/3600)}h ago`
+    return `${Math.floor(s/86400)}d ago`
+  }
+
+
+
+onMounted(() => document.addEventListener('mousedown', handleOutside))
+onUnmounted(() => document.removeEventListener('mousedown', handleOutside))
+
 </script>
 
 <template>
@@ -182,7 +221,7 @@ const notifBgMap = {
                     </div>
                   </div>
                   <p class="text-xs text-on-surface-variant mt-0.5 line-clamp-2 leading-relaxed">{{ n.body }}</p>
-                  <p class="text-[10px] text-on-surface-variant/50 mt-1 font-medium">{{ n.time }}</p>
+                  <p class="text-[10px] text-on-surface-variant/50 mt-1 font-medium">{{ timeAgo(n.date) }}</p>
                 </div>
               </div>
             </div>
