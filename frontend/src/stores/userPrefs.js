@@ -1,8 +1,4 @@
-/**
- * userPrefs.js — BrightBox single source of truth
- * Handles themes, accents, profile (with avatar sync), features,
- * notifications, privacy, energy, security prefs.
- */
+
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 
@@ -106,7 +102,6 @@ export const ACCENT_PALETTES = {
   },
 }
 
-// ─── SURFACE TOKENS ───────────────────────────────────────────────────────────
 // DARK: Rich, warm-dark slate with layered depth — not flat black
 const DARK_SURFACES = {
   '--color-background':               '#131720',

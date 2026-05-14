@@ -1,7 +1,4 @@
-/**
- * notifications.js — Global notification store
- * Handles in-app, push, price alerts, and maintenance tips
- */
+
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useUserPrefsStore } from './userPrefs'

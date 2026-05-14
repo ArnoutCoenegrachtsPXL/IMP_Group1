@@ -17,9 +17,9 @@ const email       = computed(() => prefs.profile.email)
 const navItems = computed(() => [
   { key: 'dashboard',   icon: 'grid_view',   link: '/dashboard',   always: true        },
   { key: 'leaderboard', icon: 'leaderboard', link: '/leaderboard', feat: 'leaderboard' },
-  { key: 'uploadMeter', icon: 'electric_meter', link: '/upload',   always: true        },
+  { key: 'uploadMeter', icon: 'solar_power', link: '/upload',   always: true        },
   { key: 'energyTips',  icon: 'lightbulb',   link: '/energy-tips', feat: 'energyTips'  },
-  { key: 'community',   icon: 'group',       link: '#',            feat: 'community'   },
+  { key: 'community',   icon: 'groups',       link: '/community',   feat: 'community'   },
   { key: 'settings',    icon: 'settings',    link: '/settings',    always: true        },
 ].filter(item => item.always || prefs.features[item.feat]))
 
