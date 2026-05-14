@@ -1,18 +1,5 @@
 <script setup>
-/**
- * GlobalSearch.vue
- * ─────────────────────────────────────────────────────────────────────────
- * FEATURES:
- * • Live fuzzy search across pages, settings, tips, FAQs, quick actions.
- * • Results grouped by type with coloured type badges.
- * • Keyboard nav: ↑↓ move, Enter navigate, Escape close.
- * • Recent searches (localStorage, up to 6) shown when focused + empty.
- * • Quick actions (dark/light toggle) execute without navigation.
- * • Click-outside closes the panel.
- * • Global shortcut: press / or Ctrl+K to focus from anywhere.
- * • Fully accessible: role=combobox, aria-expanded, aria-activedescendant.
- * MARKER: GLOBAL-SEARCH-START
- */
+
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSearchStore, TYPE_META } from '@/stores/search'

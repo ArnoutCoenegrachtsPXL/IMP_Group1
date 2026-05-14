@@ -78,11 +78,6 @@ const ctx = computed(() => {
   }
 })
 
-// ─────────────────────────────────────────────────────────────────────────────
-// OFFLINE KNOWLEDGE BASE
-// 22 entries across app navigation, energy tips, and settings.
-// Every reply() receives ctx so it reads live settings data.
-// ─────────────────────────────────────────────────────────────────────────────
 const KB = [
   // ── App navigation ──────────────────────────────────────────────────────────
   { k: ['dashboard','home','overview'],
@@ -534,12 +529,7 @@ function toggleVoice() {
           </div>
         </div>
 
-        <!--
-          ── Suggestions ──────────────────────────────────────────────────────
-          3 chips that rotate after every message exchange.
-          Horizontal scroll on narrow screens — no wrapping, no overflow.
-          Kept to one row so it never pushes the input off screen.
-        -->
+  
         <div
           class="flex gap-1.5 overflow-x-auto px-3.5 py-2 flex-shrink-0"
           style="scrollbar-width: none; -webkit-overflow-scrolling: touch; border-top: 1px solid var(--border);"

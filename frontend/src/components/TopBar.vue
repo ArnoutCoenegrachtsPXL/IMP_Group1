@@ -1,13 +1,5 @@
 <script setup>
-/**
- * TopBar.vue
- * ─────────────────────────────────────────────────────────────
- * CHANGES FROM ORIGINAL:
- * • Dead search <input> replaced with <GlobalSearch /> component.
- * • Notification bell wired up (from previous update).
- * • All other behaviour unchanged.
- * MARKER: TOPBAR-START
- */
+
 import Logo         from './Logo.vue'
 import GlobalSearch from './GlobalSearch.vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
