@@ -1,3 +1,35 @@
+/**
+ * searchIndex.js
+ * ─────────────────────────────────────────────────────────────────────────
+ * Global search index for the EcoSave app.
+ *
+ * HOW IT WORKS
+ * ─────────────
+ * • SEARCH_INDEX is a flat array of every searchable "record" in the app.
+ *   Each record has: id, type, title, keywords[], description, route, hash.
+ * • useSearchStore exposes:
+ *     query         — the live search string (written by TopBar)
+ *     results       — computed filtered + ranked array (max 12)
+ *     open          — whether the results panel is visible
+ *     search(q)     — called on every keydown
+ *     clear()       — reset query + close
+ *     navigate(r)   — route to the result and close
+ *
+ * SEARCH ALGORITHM
+ * ─────────────────
+ * Scoring (higher = better):
+ *   +10  exact title match (case-insensitive)
+ *   + 7  title starts-with query word
+ *   + 5  title contains query word
+ *   + 3  description contains query word
+ *   + 2  any keyword exact match
+ *   + 1  keyword contains query word
+ * Results are sorted by score descending, then alphabetically by title.
+ * Records with score 0 are excluded.
+ *
+ * TO ADD MORE RECORDS: just push new objects into SEARCH_INDEX.
+ * Each object needs: { id, type, title, keywords, description, route, hash? }
+ */
 
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
@@ -307,7 +339,7 @@ export const useSearchStore = defineStore('search', () => {
     localStorage.removeItem('ep-recent-searches')
   }
 
-  // Returns the record to navigate and clears 
+  // Returns the record to navigate to + clears state
   function pick(record) {
     saveRecent(record)
     clear()
@@ -319,3 +351,44 @@ export const useSearchStore = defineStore('search', () => {
     search, clear, pick, saveRecent, clearRecent,
   }
 })
+
+// ── Community entries appended to SEARCH_INDEX ────────────────────────────────
+// (These extend the array defined above — paste them inside SEARCH_INDEX instead
+//  if you are editing search.js as a single file from scratch.)
+;[
+  {
+    id: 'page-community', type: 'page', icon: 'solar_power',
+    title: 'Community',
+    description: 'Solar community hub — feed, WhatsApp groups, leaderboard and badges',
+    keywords: ['community', 'social', 'group', 'chat', 'whatsapp', 'leaderboard', 'badges', 'challenges', 'feed'],
+    route: '/community',
+  },
+  {
+    id: 'community-whatsapp', type: 'tip', icon: 'chat',
+    title: 'Join a WhatsApp group',
+    description: 'Energy Saving, Solar Talk, Help, Announcements, Trading, Challenges',
+    keywords: ['whatsapp', 'group', 'chat', 'join', 'solar talk', 'energy saving', 'help', 'announcements'],
+    route: '/community',
+  },
+  {
+    id: 'community-feed', type: 'tip', icon: 'dynamic_feed',
+    title: 'Community feed',
+    description: 'Share tips, ask questions and react to posts from your neighbours',
+    keywords: ['feed', 'post', 'share', 'tip', 'question', 'comment', 'like', 'community'],
+    route: '/community',
+  },
+  {
+    id: 'community-badges', type: 'tip', icon: 'workspace_premium',
+    title: 'Badges and perks',
+    description: 'Earn badges for saving energy, streaks and community challenges',
+    keywords: ['badge', 'perk', 'reward', 'achievement', 'streak', 'milestone', 'solar hero'],
+    route: '/community',
+  },
+  {
+    id: 'community-challenge', type: 'tip', icon: 'emoji_events',
+    title: 'Weekly challenge',
+    description: 'Compete in community energy challenges and climb the leaderboard',
+    keywords: ['challenge', 'weekly', 'competition', 'leaderboard', 'rank', 'points'],
+    route: '/community',
+  },
+].forEach(r => SEARCH_INDEX.push(r))
