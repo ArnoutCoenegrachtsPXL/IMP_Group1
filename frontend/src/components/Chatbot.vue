@@ -43,6 +43,11 @@ const offlineHandler = () => { isOnline.value = false }
 onMounted(() => {
   window.addEventListener('online',  onlineHandler)
   window.addEventListener('offline', offlineHandler)
+
+  // Check audio APIs after mount — guaranteed window access
+  // Voice input now uses MediaRecorder (works everywhere) + Gemini transcription
+  hasSpeechInput.value  = !!(window.MediaRecorder && navigator.mediaDevices?.getUserMedia)
+  hasSpeechOutput.value = !!window.speechSynthesis
 })
 onUnmounted(() => {
   window.removeEventListener('online',  onlineHandler)
@@ -51,8 +56,9 @@ onUnmounted(() => {
 })
 
 // ── Speech ────────────────────────────────────────────────────────────────────
-const hasSpeechInput  = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window
-const hasSpeechOutput = 'speechSynthesis' in window
+// Checked inside onMounted — MediaRecorder and getUserMedia availability
+const hasSpeechInput  = ref(false)
+const hasSpeechOutput = ref(false)
 
 // ── UI state ──────────────────────────────────────────────────────────────────
 const open       = ref(false)
@@ -342,7 +348,7 @@ async function send(text) {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function pushBot(text) {
   messages.value.push({ role: 'assistant', content: text, time: nowStr() })
-  if (ttsOn.value && hasSpeechOutput) {
+  if (ttsOn.value && hasSpeechOutput.value) {
     nextTick(() => setTimeout(() => speak(text), 80))
   }
 }
@@ -453,100 +459,158 @@ function toggleTts() {
   if (!ttsOn.value) { window.speechSynthesis?.cancel(); isSpeaking.value = false }
 }
 
-if (hasSpeechOutput) window.speechSynthesis.onvoiceschanged = () => {}
+// voices loaded after mount — handled in onMounted
 
-// ── Voice input ───────────────────────────────────────────────────────────────
-let recognition  = null
-let resultFired  = false   // tracks whether onresult fired before onend
+// ── Voice input — MediaRecorder + Gemini Audio Transcription ────────────────
+// Uses the Gemini API (your already-working key) instead of the Web Speech API.
+// Web Speech API fails on localhost with a "network" error because Chrome's
+// speech servers reject non-HTTPS origins. MediaRecorder + Gemini has no such
+// restriction and works on localhost, HTTP, and all browsers that support
+// MediaRecorder (Chrome, Edge, Firefox, Safari 14.1+).
 
-function stopRecognition() {
-  if (recognition) {
-    try { recognition.abort() } catch { /* already stopped */ }
-    recognition = null
+let mediaRecorder  = null
+let audioChunks    = []
+
+async function transcribeWithGemini(audioBlob) {
+  // Convert blob to base64
+  const arrayBuffer = await audioBlob.arrayBuffer()
+  const bytes       = new Uint8Array(arrayBuffer)
+  let   binary      = ''
+  bytes.forEach(b => { binary += String.fromCharCode(b) })
+  const base64Audio = btoa(binary)
+
+  // Detect MIME type — prefer webm (Chrome/Edge/Firefox), fallback to mp4 (Safari)
+  const mimeType = audioBlob.type || 'audio/webm'
+
+  const body = {
+    contents: [{
+      parts: [
+        {
+          inline_data: {
+            mime_type: mimeType,
+            data:      base64Audio,
+          }
+        },
+        {
+          text: 'Please transcribe the speech in this audio clip exactly as spoken. Return only the transcribed text with no extra commentary, punctuation corrections, or formatting.'
+        }
+      ]
+    }],
+    generationConfig: {
+      temperature:     0,
+      maxOutputTokens: 200,
+    }
   }
-  listening.value = false
+
+  const res = await fetch(GEMINI_URL, {
+    method:  'POST',
+    headers: {
+      'Content-Type':   'application/json',
+      'X-goog-api-key': GEMINI_KEY,
+    },
+    body: JSON.stringify(body),
+  })
+
+  if (!res.ok) throw new Error(`Transcription API error: ${res.status}`)
+
+  const data       = await res.json()
+  const transcript = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
+
+  if (!transcript) throw new Error('Empty transcription response')
+
+  return transcript
 }
 
-function toggleVoice() {
-  // Not supported
-  if (!hasSpeechInput) {
-    pushBot("Voice input isn't supported in this browser. Try Chrome or Edge.")
-    return
-  }
-
-  // Already listening — user tapped mic again to cancel
+async function toggleVoice() {
+  // ── Already recording → stop ───────────────────────────────────────────────
   if (listening.value) {
-    stopRecognition()
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop() // triggers onstop which handles the rest
+    } else {
+      listening.value = false
+    }
     return
   }
 
-  // Abort any previous instance before starting a new one
-  if (recognition) stopRecognition()
-
-  const SR    = window.SpeechRecognition || window.webkitSpeechRecognition
-  recognition = new SR()
-  resultFired = false
-
-  recognition.lang            = 'en-US'
-  recognition.continuous      = false
-  recognition.interimResults  = false
-  recognition.maxAlternatives = 1
-
-  recognition.onstart = () => {
-    listening.value = true
-    resultFired     = false
+  // ── Check MediaRecorder support ────────────────────────────────────────────
+  if (!window.MediaRecorder) {
+    pushBot('Voice input is not supported in your browser. Try Chrome, Edge, or Firefox.')
+    return
   }
 
-  // onresult fires BEFORE onend — capture transcript here and flag it
-  recognition.onresult = e => {
-    resultFired         = true
-    listening.value     = false
-    const transcript    = e.results[0][0].transcript.trim()
-    if (transcript) {
-      input.value = transcript
-      // Small delay gives Vue time to update input.value before send() reads it
-      nextTick(() => send())
-    }
-  }
-
-  // onend always fires last — only reset if onresult did NOT already handle it
-  recognition.onend = () => {
-    listening.value = false
-    // If onend fires without a result (silence / timeout), give user feedback
-    if (!resultFired) {
-      // Don't push a message — just reset silently so user can try again
-      recognition = null
-    }
-  }
-
-  // Detailed error messages so user knows exactly what to do
-  recognition.onerror = e => {
-    listening.value = false
-    resultFired     = true // prevent onend from double-handling
-    recognition     = null
-
-    const errorMessages = {
-      'not-allowed':    'Microphone access was denied. Click the 🔒 icon in your browser address bar and allow microphone access, then try again.',
-      'no-speech':      'No speech detected. Make sure your microphone is unmuted and try speaking clearly.',
-      'audio-capture':  'No microphone found. Please connect a microphone and try again.',
-      'network':        'A network error occurred with speech recognition. Check your connection and try again.',
-      'aborted':        '', // user cancelled — silent
-      'service-not-allowed': 'Speech recognition is blocked on this page. Try using Chrome over HTTPS.',
-    }
-
-    const msg = errorMessages[e.error]
-    if (msg) pushBot(msg)
-  }
-
-  // Start with proper error handling
+  // ── Request microphone ─────────────────────────────────────────────────────
+  let stream
   try {
-    recognition.start()
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
   } catch (err) {
-    listening.value = false
-    recognition     = null
-    // start() throws synchronously if called twice or in wrong state
-    pushBot('Could not start voice input. Please try again.')
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      pushBot('🔒 Microphone access was denied.\n\nClick the 🔒 lock icon in your browser address bar → Microphone → Allow, then try again.')
+    } else if (err.name === 'NotFoundError') {
+      pushBot('🎤 No microphone found. Please connect a microphone and try again.')
+    } else {
+      pushBot(`Could not access microphone: ${err.message}`)
+    }
+    return
   }
+
+  // ── Pick best supported MIME type ─────────────────────────────────────────
+  const preferredTypes = [
+    'audio/webm;codecs=opus',
+    'audio/webm',
+    'audio/ogg;codecs=opus',
+    'audio/mp4',
+  ]
+  const mimeType = preferredTypes.find(t => MediaRecorder.isTypeSupported(t)) || ''
+
+  // ── Start recording ────────────────────────────────────────────────────────
+  audioChunks  = []
+  mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {})
+
+  mediaRecorder.ondataavailable = e => {
+    if (e.data && e.data.size > 0) audioChunks.push(e.data)
+  }
+
+  mediaRecorder.onstop = async () => {
+    // Stop all mic tracks to release the mic indicator in browser
+    stream.getTracks().forEach(t => t.stop())
+
+    listening.value = false
+
+    if (audioChunks.length === 0) return
+
+    const audioBlob = new Blob(audioChunks, { type: mimeType || 'audio/webm' })
+
+    // Need API key to transcribe
+    if (!hasApiKey.value) {
+      pushBot('Voice transcription needs a Gemini API key. Add VITE_GEMINI_KEY to your .env.local file, or type your message instead.')
+      return
+    }
+
+    // Show a transcribing indicator
+    loading.value = true
+    await nextTick()
+
+    try {
+      const transcript = await transcribeWithGemini(audioBlob)
+      loading.value    = false
+      if (transcript) {
+        send(transcript)  // send directly — no input.value needed
+      }
+    } catch (err) {
+      loading.value = false
+      console.error('Transcription error:', err)
+      pushBot('Could not transcribe audio. Please check your API key and try again, or type your message.')
+    }
+  }
+
+  mediaRecorder.onerror = err => {
+    stream.getTracks().forEach(t => t.stop())
+    listening.value = false
+    pushBot(`Recording error: ${err.error?.message || 'unknown'}. Please try again.`)
+  }
+
+  mediaRecorder.start()
+  listening.value = true
 }
 </script>
 
