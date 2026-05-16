@@ -139,6 +139,5 @@ function logout() {
         {{ prefs.t.logout }}
       </button>
     </div>
-    <!-- Attribution -->
   </aside>
 </template>

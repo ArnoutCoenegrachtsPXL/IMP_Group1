@@ -2,11 +2,6 @@
 import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { useUserPrefsStore } from '@/stores/userPrefs'
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONFIG
-// Add to frontend/.env.local:
-//   VITE_GEMINI_KEY=your_key_here   ← get one free at aistudio.google.com
-// ─────────────────────────────────────────────────────────────────────────────
 const GEMINI_KEY = import.meta.env.VITE_GEMINI_KEY || import.meta.env.VITE_GEMINI_API_KEY || ''
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
 
@@ -16,10 +11,6 @@ const prefs = useUserPrefsStore()
 const isOnline  = ref(navigator.onLine)
 const hasApiKey = computed(() => Boolean(GEMINI_KEY))
 
-// Three modes:
-//   'offline'  → no internet
-//   'local'    → online but no API key (KB only)
-//   'hybrid'   → online + API key (KB first, Gemini fallback)
 const mode = computed(() => {
   if (!isOnline.value) return 'offline'
   if (!hasApiKey.value) return 'local'
@@ -44,8 +35,6 @@ onMounted(() => {
   window.addEventListener('online',  onlineHandler)
   window.addEventListener('offline', offlineHandler)
 
-  // Check audio APIs after mount — guaranteed window access
-  // Voice input now uses MediaRecorder (works everywhere) + Gemini transcription
   hasSpeechInput.value  = !!(window.MediaRecorder && navigator.mediaDevices?.getUserMedia)
   hasSpeechOutput.value = !!window.speechSynthesis
 })
@@ -96,18 +85,14 @@ const ctx = computed(() => {
   }
 })
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOCAL KNOWLEDGE BASE
-// Every entry:  { k: string[], r: (ctx) => string }
-// r() always returns a plain string — no other return type.
-// ─────────────────────────────────────────────────────────────────────────────
+
 const KB = [
   // App navigation
   { k: ['dashboard', 'home', 'overview'],
     r: c => `Your Dashboard is BrightBox's live energy command centre, ${c.name}. It shows real-time production vs consumption, battery status, your green energy mix, and a 24-hour usage chart — all updating automatically.` },
 
   { k: ['upload', 'meter', 'reading', 'submit', 'log reading'],
-    r: () => `To upload a meter reading, tap the ⚡ icon in the sidebar or the meter icon in the top bar. Type the value manually or photograph your meter. Readings sync to your account and update your usage charts. Works offline too — syncs when you reconnect.` },
+    r: () => `To upload a meter reading, tap the ⬆️ icon in the sidebar or the meter icon in the top bar. Type the value manually or photograph your meter. Readings sync to your account and update your usage charts. Works offline too — syncs when you reconnect.` },
 
   { k: ['leaderboard', 'rank', 'ranking'],
     r: c => c.leaderboard
@@ -123,7 +108,7 @@ const KB = [
     r: () => `For help, visit the Support page (sidebar bottom-left). It has searchable articles, FAQ, and a contact form. We respond within 24 hours on business days (4 hours for urgent issues). Email: support@brightbox.app.` },
 
   { k: ['navigation', 'menu', 'sidebar', 'find', 'where is', 'how do i get'],
-    r: () => `BrightBox navigation:\n• 🏠 Dashboard — live overview\n• 🏆 Leaderboard — community rankings\n• ⚡ Upload Meter — log readings\n• 💡 Energy Tips — saving advice\n• ⚙️ Settings — all preferences\n• ❓ Support — help & contact\n\nOn mobile, tap ☰ in the top-left to open the sidebar.` },
+    r: () => `BrightBox navigation:\n• 🏠 Dashboard — live overview\n• 🏆 Leaderboard — community rankings\n• ⬆️ Upload Meter — log readings\n• 💡 Energy Tips — saving advice\n• ⚙️ Settings — all preferences\n• ❓ Support — help & contact\n\nOn mobile, tap ☰ in the top-left to open the sidebar.` },
 
   // Energy tips
   { k: ['save energy', 'reduce', 'lower bill', 'cut cost', 'save electricity'],
@@ -176,11 +161,7 @@ const KB = [
     r: c => `${c.smart ? '✅ Smart Scheduling is enabled — optimisation suggestions appear on the Dashboard.' : '💡 Enable Smart Scheduling in Settings → Energy.'}\n\nGolden rule: shift any non-urgent high-draw task to your off-peak window: ${c.offPeak}.` },
 ]
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOCAL KNOWLEDGE LOOKUP
-// Always returns { found: boolean, text: string }
-// This consistent shape is the fix for the original bug.
-// ─────────────────────────────────────────────────────────────────────────────
+
 function localLookup(userText) {
   const t = userText.toLowerCase()
   const c = ctx.value
@@ -277,19 +258,7 @@ User context: Name=${c.name}, Location=${c.location}, Off-peak=${c.offPeak}, EV=
   return text
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN SEND — clean decision tree:
-//
-//  offline → localLookup → if found: show it
-//                        → if not:   show "offline, no answer" message
-//
-//  local   → localLookup → if found: show it (no Gemini key, can't go further)
-//                        → if not:   show "needs API key" hint
-//
-//  hybrid  → localLookup → if found: show it (fast, no API call needed)
-//                        → if not:   callGemini → show result
-//                                               → on fail: show error
-// ─────────────────────────────────────────────────────────────────────────────
+
 async function send(text) {
   const msg = (text || input.value).trim()
   if (!msg || loading.value) return
@@ -459,14 +428,6 @@ function toggleTts() {
   if (!ttsOn.value) { window.speechSynthesis?.cancel(); isSpeaking.value = false }
 }
 
-// voices loaded after mount — handled in onMounted
-
-// ── Voice input — MediaRecorder + Gemini Audio Transcription ────────────────
-// Uses the Gemini API (your already-working key) instead of the Web Speech API.
-// Web Speech API fails on localhost with a "network" error because Chrome's
-// speech servers reject non-HTTPS origins. MediaRecorder + Gemini has no such
-// restriction and works on localhost, HTTP, and all browsers that support
-// MediaRecorder (Chrome, Edge, Firefox, Safari 14.1+).
 
 let mediaRecorder  = null
 let audioChunks    = []
