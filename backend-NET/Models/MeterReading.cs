@@ -9,7 +9,9 @@ namespace backend_NET.Models
         public User User { get; set; } = default!;
         public DateTime Time { get; set; }
         public double Value { get; set; }
-     
+
+        public int HouseholdSize { get; set; }
+
         public byte[]? MeterImage { get; set; }
 
         public Status Status { get; set; }
@@ -28,13 +30,14 @@ namespace backend_NET.Models
             return DateTime.UtcNow;
         }
 
-        public static MeterReading CreateMeterReading(User user, DateTime time, double value, Status status)
+        public static MeterReading CreateMeterReading(User user, DateTime time, double value, Status status, int householdsize)
         {
             MeterReading newReading = new MeterReading();
             newReading.User = user;
             newReading.Time = time;
             newReading.Value = value;
             newReading.Status = status;
+            newReading.HouseholdSize = householdsize;
             return newReading;
         }
     }

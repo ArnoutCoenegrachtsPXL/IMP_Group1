@@ -13,8 +13,8 @@ const emit= defineEmits(['back'])
         sectionTitle="Expert Electricity Tips"
         sectionSubtitle="Expert-verified ways to lower your carbon footprint and costs."
         @back="emit('back')"
-    > 
-     
+    >
+
 
     <!-- Tip 1 -->
     <div class="bg-white rounded-lg border border-slate-200 p-6 flex flex-col shadow-sm hover:shadow-md transition-shadow group relative">
@@ -130,7 +130,7 @@ const emit= defineEmits(['back'])
         <span class="text-blue-700 font-bold text-sm">$30/yr saved</span>
         </div>
         </div>
- 
+
 
     </TipPageLayout>
 </template>

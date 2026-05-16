@@ -8,8 +8,8 @@ namespace backend_NET.Models
         {
             AppDbContext context = applicationBuilder.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
 
-
-            if (!context.Users.Any() && !context.MeterReadings.Any() && !context.Notifications.Any())
+            
+            if (!context.Users.Any() && !context.MeterReadings.Any())
             {
                 Console.WriteLine("Seeding database...");
                 Console.WriteLine("  Seeding users...");
@@ -82,8 +82,8 @@ namespace backend_NET.Models
                         {
                             continue;
                         }
-                        double value = Convert.ToDouble(row[2]);
-                        int householdSize = Convert.ToInt16(row[3]);
+                        double value = Convert.ToDouble(row[2], System.Globalization.CultureInfo.InvariantCulture);
+                        int householdSize = Convert.ToInt16(row[3], System.Globalization.CultureInfo.InvariantCulture);
 
                         if (!houseId.Equals(row[0]))
                         {
@@ -103,7 +103,7 @@ namespace backend_NET.Models
                         valueDict[user] -= value;
                         dateCounter[user] -= 1;
                         Status status = dateCounter[user] > -6 ? Status.PENDING : Status.VERIFIED;
-                        MeterReading newMeterReading = MeterReading.CreateMeterReading(user, DateTime.Today.AddDays(dateCounter[user]), valueDict[user], status);
+                        MeterReading newMeterReading = MeterReading.CreateMeterReading(user, DateTime.Today.AddDays(dateCounter[user]), valueDict[user], status, householdSize);
                         context.MeterReadings.Add(newMeterReading);
                     }
                 }

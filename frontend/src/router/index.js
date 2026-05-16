@@ -8,10 +8,11 @@ import UploadMeterView    from '@/views/UploadMeterView.vue'
 import EnergyTipsView     from '@/views/EnergyTipsView.vue'
 import ForgotPasswordView from '@/views/ForgotPasswordView.vue'
 import ResetPasswordView  from '@/views/ResetPasswordView.vue'
+import LeaderboardPersonalView from '@/views/LeaderboardPersonalView.vue'
 import SettingsView       from '../views/SettingsView.vue'
 import SupportView        from '@/views/SupportView.vue'
 import CommunityView      from '@/views/CommunityView.vue'
-import LeaderboardPersonalView from '@/views/LeaderboardPersonalView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,7 +50,8 @@ const router = createRouter({
     { path: '/settings',        name: 'settings',       component: SettingsView       },
     { path: '/support',         name: 'support',        component: SupportView        },
     { path: '/community',       name: 'community',      component: CommunityView      },
-    // Catch-all
+   
+    // ── Catch-all ────────────────────────────────────────────────────────────
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })

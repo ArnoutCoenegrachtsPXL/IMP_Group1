@@ -172,17 +172,17 @@
             : 'hover:bg-white'"
         >
         <span class="w-8 text-center font-black ...">{{ entry.rank }}</span>
-    <div class="flex-1">
+        <div class="flex-1">
             <p class="font-bold text-on-surface">
             {{ entry.userName }}
             <span v-if="entry.householdId === currentUserId"> (You)</span>
             </p>
             <p class="text-xs text-on-surface-variant">Postal: {{ entry.postalCode }}</p>
-    </div>
+        </div>
         <div class="text-right">
             <p class="font-black text-on-surface">{{ entry.energyPerPerson }} kWh/person</p>
-    </div>
-    </div>
+        </div>
+      </div>
     </div>
     <div class="mt-8 flex justify-center">
     <button class="text-primary font-bold text-sm flex items-center gap-2 hover:gap-4 transition-all group">

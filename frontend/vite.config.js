@@ -30,6 +30,13 @@ export default defineConfig({
       'Cross-Origin-Embedder-Policy': 'unsafe-none'
     },
     host: true,
-    port:5173
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'https://localhost:7126',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 })

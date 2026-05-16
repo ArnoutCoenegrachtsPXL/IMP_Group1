@@ -8,7 +8,6 @@
         public string PasswordHash { get; set; } = string.Empty;
         public string? ResetToken { get; set; }
         public DateTime? ResetTokenExpiry { get; set; }
-
         
         public int? PostalCode { get; set; }
         public int? HouseHoldSize { get; set; } = 1;

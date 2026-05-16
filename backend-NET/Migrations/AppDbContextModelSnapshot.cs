@@ -43,6 +43,9 @@ namespace backend_NET.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
+                    b.Property<int>("HouseholdSize")
+                        .HasColumnType("int");
+
                     b.HasKey("MeterReadingID");
 
                     b.HasIndex("UserId");
