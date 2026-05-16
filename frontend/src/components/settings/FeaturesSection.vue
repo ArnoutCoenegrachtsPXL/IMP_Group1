@@ -37,12 +37,12 @@ const featureItems = [
   },
   {
     key: 'community',
-    icon: 'group',
+    icon: 'solar_power',
     titleKey: 'communityFeature',
     descKey: 'communityFeatureDesc',
-    route: '#',
-    badge: 'Coming Soon',
-    badgeColor: 'bg-amber-500/10 text-amber-500',
+    route: '/community',
+    badge: 'Page',
+    badgeColor: 'bg-primary/10 text-primary',
   },
   {
     key: 'streak',

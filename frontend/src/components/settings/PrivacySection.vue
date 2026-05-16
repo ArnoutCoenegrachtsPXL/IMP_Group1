@@ -18,8 +18,8 @@ const privacyItems = [
   {
     key: 'shareMetrics',
     icon: 'analytics',
-    color: 'text-blue-500',
-    bg: 'bg-blue-500/10',
+    color: 'text-primary',
+    bg: 'bg-primary/10',
     titleKey: 'shareMetrics',
     descKey: 'shareMetricsDesc',
     impact: 'Helps energy researchers improve grid efficiency. Data is always anonymised.',

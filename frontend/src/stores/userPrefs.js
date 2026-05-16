@@ -697,7 +697,7 @@ export const useUserPrefsStore = defineStore('userPrefs', () => {
   watch(peakEnd,   v => localStorage.setItem('ep-peak-end', v))
 
   // ── Security ──────────────────────────────────────────────────────────────────
-  const twoFactor    = ref(localStorage.getItem('ep-2fa') !== 'false')
+  const twoFactor    = ref(localStorage.getItem('ep-2fa') === 'true')   // OFF by default — user must explicitly enable
   const twoFactorSetup = ref(false) // shows setup wizard
   watch(twoFactor, v => localStorage.setItem('ep-2fa', String(v)))
 
