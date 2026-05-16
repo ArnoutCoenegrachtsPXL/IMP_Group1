@@ -1,6 +1,28 @@
 <script setup>
+   
+    import { ref, onMounted } from 'vue'
     import SideBar from '../components/SideBar.vue'
-    import TopBar from '@/components/TopBar.vue';
+    import TopBar from '@/components/TopBar.vue'
+
+    const leaderboard = ref([])        
+    const communityAverage = ref(0)
+    const myRank = ref(null)            
+    const currentUserId = localStorage.getItem('userId')
+
+    onMounted(async () => {
+   //community rank
+    const res = await fetch('/api/leaderboard')
+    const data = await res.json()
+    leaderboard.value = data.topHouseholds      
+    communityAverage.value = data.communityAverage
+//currentuser rank
+    if (currentUserId) {
+        const userRes = await fetch(`/api/leaderboard/user/${currentUserId}`)
+        if (userRes.ok) {
+        myRank.value = await userRes.json()    
+        }
+    }
+})
 </script>
 
 <template>
@@ -14,6 +36,12 @@
     <h3 class="text-4xl font-extrabold text-on-surface font-headline mb-2 leading-tight">2 Day Streak! 🔥</h3>
     <p class="text-on-surface-variant max-w-md leading-relaxed">Stars are earned by keeping your household energy consumption below the community average for 24 hours.</p>
     </div>
+            <p v-if="myRank" class="mt-3 text-sm font-semibold text-on-surface">
+        Your rank: #{{ myRank.rank }} —
+        <span :class="myRank.isBelowCommunityAverage ? 'text-primary' : 'text-error'">
+            {{ myRank.isBelowCommunityAverage ? 'Below community average ' : 'Above community average' }}
+        </span>
+        </p>
     <div class="relative z-10 flex flex-col gap-4 w-full md:w-auto ml-auto">
     <div class="flex items-center justify-between md:justify-end gap-3 px-2">
     <p class="text-sm font-bold font-headline text-on-surface-variant uppercase tracking-tighter">Growth Week</p>
@@ -85,8 +113,8 @@
     <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-outline-variant text-on-surface px-3 py-0.5 rounded-full text-xs font-bold shadow-md">2nd</div>
     </div>
     <div class="text-center bg-surface-container-low w-full pt-8 pb-6 px-4 rounded-t-lg border-b-4 border-outline-variant">
-    <p class="font-bold text-on-surface font-headline">Sarah Jenkins</p>
-    <p class="text-primary font-black text-xl">142 kWh</p>
+    <p class="font-bold text-on-surface font-headline">{{ leaderboard[1]?.userName }}</p>
+    <p class="text-primary font-black text-xl">{{ leaderboard[1]?.energyPerPerson }} kWh</p>
     <p class="text-[10px] uppercase tracking-widest text-on-surface-variant mt-2">Monthly Usage</p>
     </div>
     </div>
@@ -102,8 +130,8 @@
     <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 solar-glow text-white px-5 py-1 rounded-full text-sm font-bold shadow-lg">1st</div>
     </div>
     <div class="text-center bg-surface-container-highest w-full pt-10 pb-8 px-6 rounded-t-lg shadow-xl relative">
-    <p class="font-extrabold text-on-surface font-headline text-lg">Michael Chen</p>
-    <p class="text-primary font-black text-3xl">128 kWh</p>
+    <p class="font-extrabold text-on-surface font-headline text-lg">{{ leaderboard[0]?.userName }}</p>
+    <p class="text-primary font-black text-3xl">{{ leaderboard[0]?.energyPerPerson }} kWh</p>
     <p class="text-xs uppercase tracking-widest text-on-surface-variant mt-2 font-bold">Community Leader</p>
     </div>
     </div>
@@ -116,8 +144,8 @@
     <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary-fixed-dim text-on-primary-fixed px-3 py-0.5 rounded-full text-xs font-bold shadow-md">3rd</div>
     </div>
     <div class="text-center bg-surface-container-low w-full pt-8 pb-6 px-4 rounded-t-lg border-b-4 border-primary-fixed-dim">
-    <p class="font-bold text-on-surface font-headline">Elena Rodriguez</p>
-    <p class="text-primary font-black text-xl">155 kWh</p>
+    <p class="font-bold text-on-surface font-headline">{{ leaderboard[2]?.userName }}</p>
+    <p class="text-primary font-black text-xl">{{ leaderboard[2]?.energyPerPerson }} kWh</p>
     <p class="text-[10px] uppercase tracking-widest text-on-surface-variant mt-2">Monthly Usage</p>
     </div>
     </div>
@@ -135,87 +163,24 @@
     </div>
     </div>
     <div class="space-y-3">
-    <!-- Rank 4 -->
-    <div class="flex items-center bg-surface-container-lowest p-4 rounded-md hover:bg-white transition-all border border-transparent hover:border-primary-fixed/30 group">
-    <span class="w-8 text-center font-black text-on-surface-variant font-headline">4</span>
-    <div class="w-12 h-12 rounded-full overflow-hidden mx-4 flex-shrink-0">
-    <img class="w-full h-full object-cover" data-alt="User Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV8V5F70aoIgSYnGkaN6Hlgcf1taTkpaXvfjSpEgY-LeRDjFhIYUqw2W7CYK1pTJJ6Bi8wZK0R8njzK_ML5pq2gNmBZ5qVFDUVt9dURu1qXoTsAhnVS-tiRom_QavU_GM8co-URQRA1NNeozRpNOMI5CBEeH3EMI0pmr0f_9oF3kPFwN4CCEgw5uBXHLtMtleUPQFlWji6I1AdsLqjkPYKgbgHJtM1r2kf1pEEA8tAAlhuouyBlg2gd0ZuV5pQuEoyJW0g1exN3UM"/>
-    </div>
+      <div
+        v-for="entry in leaderboard.slice(3)"
+        :key="entry.householdId"
+        class="flex items-center bg-surface-container-lowest p-4 rounded-md"
+        :class="entry.householdId === currentUserId
+            ? 'bg-primary-container border-2 border-primary'
+            : 'hover:bg-white'"
+        >
+        <span class="w-8 text-center font-black ...">{{ entry.rank }}</span>
     <div class="flex-1">
-    <p class="font-bold text-on-surface">David Wilson</p>
-    <p class="text-xs text-on-surface-variant">Oakwood District</p>
+            <p class="font-bold text-on-surface">
+            {{ entry.userName }}
+            <span v-if="entry.householdId === currentUserId"> (You)</span>
+            </p>
+            <p class="text-xs text-on-surface-variant">Postal: {{ entry.postalCode }}</p>
     </div>
-    <div class="text-right flex items-center gap-4">
-    <div class="hidden sm:block">
-    <p class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Usage</p>
-    <p class="font-black text-on-surface">162 kWh</p>
-    </div>
-    <div class="w-10 h-10 rounded-md bg-primary/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-    <span class="material-symbols-outlined text-sm">trending_down</span>
-    </div>
-    </div>
-    </div>
-    <!-- Rank 5 -->
-    <div class="flex items-center bg-surface-container-lowest p-4 rounded-md hover:bg-white transition-all border border-transparent hover:border-primary-fixed/30 group">
-    <span class="w-8 text-center font-black text-on-surface-variant font-headline">5</span>
-    <div class="w-12 h-12 rounded-full overflow-hidden mx-4 flex-shrink-0">
-    <img class="w-full h-full object-cover" data-alt="User Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbx-FjLIhkOjBi_b8tlJipvBp1M7sPv2CxcdXYUBJzdWqkgxoXAuUQISHCQIYQxeDvlZ0oHwVTh1-wNgLyx2zhxJwsgK5ahVyG9PDhTmfSjzCFHej5j1dNRYW4Q1xlQ4qwXkqVhmdz6wdB5JjZ3zMxpC8tZWzhQ_YGYzL51qDL8j3fIQt9WFTQZsXlY0dMzYcrMejF6IDHOyh7mqoHNpUmBcnSdsTe8D5jfj8iCbsWM0IagVN6BCMJ8tD5LIWmUH7pwp6iZTaHT7g"/>
-    </div>
-    <div class="flex-1">
-    <p class="font-bold text-on-surface">Amina Sato</p>
-    <p class="text-xs text-on-surface-variant">Green Valley</p>
-    </div>
-    <div class="text-right flex items-center gap-4">
-    <div class="hidden sm:block">
-    <p class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Usage</p>
-    <p class="font-black text-on-surface">168 kWh</p>
-    </div>
-    <div class="w-10 h-10 rounded-md bg-primary/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-    <span class="material-symbols-outlined text-sm">trending_down</span>
-    </div>
-    </div>
-    </div>
-    <!-- Rank 6 (Current User Simulation - Active) -->
-    <div class="flex items-center bg-primary-container p-4 rounded-md border-2 border-primary shadow-lg scale-[1.02] z-10">
-    <span class="w-8 text-center font-black text-on-primary-container font-headline text-lg">6</span>
-    <div class="w-12 h-12 rounded-full overflow-hidden mx-4 flex-shrink-0 border-2 border-white">
-    <img class="w-full h-full object-cover" data-alt="Current User Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk3X9fLHC9CUeW0_v-vUeHtQBlFjJEoiBgE4rsO8lAnKTbJ8eaUnFIzG30-WoD8VcWYODE2R_QC-huqPMkyZGGuuKvTZyJKhDQ8xNk3xBgffF8qzfpdB542MS8lU54bP_AYhUE0e3YNfTVlZqXE7ZCKPBf_dV_8N1ObqZNTj39Kf71LYrPqkkCb7lBm8RjAbslW_UeVn838KRfuqG70D1BrthgJu2zFzmBdgr9HKo3R6eAxCIiWHpzJrUGzXMIhyR5-bdK5hJNgbA"/>
-    </div>
-    <div class="flex-1">
-    <div class="flex items-center gap-2">
-    <p class="font-black text-on-primary-container">You (Energy Hero)</p>
-    <span class="bg-white/50 text-[10px] px-2 py-0.5 rounded-full font-bold">ME</span>
-    </div>
-    <p class="text-xs text-on-primary-container/70">Oakwood District</p>
-    </div>
-    <div class="text-right flex items-center gap-4">
-    <div class="hidden sm:block">
-    <p class="text-xs font-bold text-on-primary-container/70 uppercase tracking-tighter">Usage</p>
-    <p class="font-black text-on-primary-container">174 kWh</p>
-    </div>
-    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm">
-    <span class="material-symbols-outlined text-sm">military_tech</span>
-    </div>
-    </div>
-    </div>
-    <!-- Rank 7 -->
-    <div class="flex items-center bg-surface-container-lowest p-4 rounded-md hover:bg-white transition-all border border-transparent hover:border-primary-fixed/30 group">
-    <span class="w-8 text-center font-black text-on-surface-variant font-headline">7</span>
-    <div class="w-12 h-12 rounded-full overflow-hidden mx-4 flex-shrink-0">
-    <img class="w-full h-full object-cover" data-alt="User Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD11cRQen_HTdjmFKxltdtfExcETUIbPJdZwpKomnVt51lBUS_sMBwk2qUbwJMkV_ioQFTaj_mNyMALtN3m-dV4_aS3VRoz7OhKpIZZsHSsNhTvdQigc62JfY5Iqy3_AekNDmcLTPosMWM9yuo8caCuwgqCCbY8W1clpJ4Ks1Wi1RvIih3nwLAihwNnyr09ID7jy0xA_nCbW2lvyd_povc5P97yNCfdqfqBX2BXzuFvfB4NOM-gp306KkEkDXavonJYwHGmVR9evs8"/>
-    </div>
-    <div class="flex-1">
-    <p class="font-bold text-on-surface">Tom Bradi</p>
-    <p class="text-xs text-on-surface-variant">Oakwood District</p>
-    </div>
-    <div class="text-right flex items-center gap-4">
-    <div class="hidden sm:block">
-    <p class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Usage</p>
-    <p class="font-black text-on-surface">181 kWh</p>
-    </div>
-    <div class="w-10 h-10 rounded-md bg-primary/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-    <span class="material-symbols-outlined text-sm">trending_up</span>
-    </div>
+        <div class="text-right">
+            <p class="font-black text-on-surface">{{ entry.energyPerPerson }} kWh/person</p>
     </div>
     </div>
     </div>
