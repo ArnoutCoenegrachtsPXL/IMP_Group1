@@ -137,7 +137,13 @@ code, pre, .font-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; 
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
-  user-select: none; line-height: 1; display: inline-block; vertical-align: middle; flex-shrink: 0;
+  user-select: none;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -0.125em;  /* nudge down ~2px — optically centres the glyph */
+  flex-shrink: 0;
 }
 
 *, *::before, *::after {
@@ -659,6 +665,239 @@ html.dark .border-outline-variant\/20,
 html.dark .border-outline-variant\/10 {
   border-color: rgba(255,255,255,0.08) !important;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ICON-IN-INPUT ALIGNMENT FIX
+   ─────────────────────────────────────────────────────────────────────────
+   Problem: icons use `absolute left-X top-1/2 -translate-y-1/2` to centre
+   vertically. This works when the wrapper has a fixed height, but our
+   .form-input wrapper `div.relative` has height:auto (wraps the input).
+   The browser computes top:50% from the auto height, which can be off by
+   2–4px depending on the input's padding and line-height.
+
+   Fix: set `display:flex; align-items:stretch` on the wrapper so it adopts
+   the input's exact height. The icon's top:50% then computes against the
+   true rendered height, giving perfect optical centre.
+
+   Applied to:
+    • Profile: location icon, website icon
+    • Security: password visibility toggle buttons
+    • GlobalSearch: search icon, clear button
+    • SupportView: search icon, clear button
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Wrapper divs that hold an absolutely-positioned icon beside a text input */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;   /* vertically centre children in the flex axis      */
+}
+.input-with-icon input,
+.input-with-icon textarea {
+  flex: 1;               /* input fills available width                      */
+}
+.input-with-icon .icon-prefix {
+  /* Left-side icon — positioned absolutely, centred via flexbox parent      */
+  position: absolute;
+  left: 0.75rem;         /* 12px from left edge                              */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  color: var(--color-on-surface-variant);
+  opacity: 0.6;
+  /* Remove any line-height/vertical-align effect on the glyph itself        */
+  line-height: 0;
+}
+.input-with-icon .icon-suffix {
+  /* Right-side icon/button */
+  position: absolute;
+  right: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  line-height: 0;
+}
+
+/* ── Targeted fix for existing templates that use div.relative ──────────────
+   These selectors target the exact wrapper structure used in ProfileSection,
+   SecuritySection, GlobalSearch and SupportView without changing any templates.
+   Specificity is kept low so it doesn't override other things.               */
+
+/* ProfileSection / SecuritySection — div.relative containing a .form-input  */
+div.relative:has(> .form-input),
+div.relative:has(> input.form-input) {
+  display: flex;
+  align-items: center;
+}
+
+/* The absolute icon inside that wrapper — reset any stray transform offset  */
+div.relative:has(> .form-input) > .material-symbols-outlined,
+div.relative:has(> .form-input) > span.material-symbols-outlined {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  line-height: 0;           /* removes the line-height-based vertical offset  */
+  display: flex;
+  align-items: center;
+}
+
+/* The absolute button (eye icon) inside form-input wrappers                 */
+div.relative:has(> .form-input) > button {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+/* GlobalSearch — div.relative wrapping the search input                     */
+#global-search-root > div.relative {
+  display: flex;
+  align-items: center;
+}
+#global-search-root > div.relative > .material-symbols-outlined {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+}
+#global-search-root > div.relative > div.absolute {
+  /* Clear button / kbd hint wrapper */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+/* SupportView search — div.relative.flex.items-center wrapping the input    */
+.relative.flex.items-center > .material-symbols-outlined.absolute {
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 0;
+  display: flex;
+  align-items: center;
+}
+.relative.flex.items-center > button.absolute {
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DARK MODE — SEARCH INPUT OVERRIDES
+   ─────────────────────────────────────────────────────────────────────────
+   The GlobalSearch (TopBar) and SupportView search inputs use Tailwind
+   utility classes (bg-surface-container, bg-surface-container-lowest,
+   text-on-surface, border-outline-variant/*) that Tailwind bakes in at
+   build time as static hex values — they don't automatically respond to
+   dark mode CSS variable changes. These rules force the correct dark values.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── GlobalSearch input (bg-surface-container) ── */
+html.dark #global-search-root input[type="search"] {
+  background-color: #1a2236 !important;   /* --color-surface-container       */
+  color: #dde4f0 !important;              /* --color-on-surface               */
+  border-color: rgba(160,176,204,0.18) !important;
+}
+html.dark #global-search-root input[type="search"]::placeholder {
+  color: #6b7fa0 !important;
+  opacity: 1 !important;
+}
+html.dark #global-search-root input[type="search"]:focus {
+  background-color: #141b27 !important;   /* --color-surface-container-low    */
+  border-color: color-mix(in srgb, var(--color-primary) 70%, transparent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+}
+
+/* The wrapper div that the input sits in */
+html.dark #global-search-root > div {
+  background: transparent;
+}
+
+/* ── GlobalSearch results dropdown panel ── */
+html.dark #global-search-root [role="listbox"] {
+  background-color: #141b27 !important;
+  border-color: rgba(160,176,204,0.12) !important;
+  color: #dde4f0 !important;
+}
+html.dark #global-search-root [role="listbox"] button:hover,
+html.dark #global-search-root [role="listbox"] [data-active="true"] {
+  background-color: #1a2236 !important;
+}
+html.dark #global-search-root [role="listbox"] p {
+  color: #dde4f0 !important;
+}
+html.dark #global-search-root [role="listbox"] p.text-xs,
+html.dark #global-search-root [role="listbox"] p.text-\[10px\] {
+  color: #a0b0cc !important;
+}
+
+/* ── SupportView search input (bg-surface-container-lowest) ── */
+html.dark [aria-label="Search help articles"] {
+  background-color: #141b27 !important;   /* --color-surface-container-low    */
+  color: #dde4f0 !important;
+  border-color: rgba(160,176,204,0.18) !important;
+  box-shadow: none !important;
+}
+html.dark [aria-label="Search help articles"]::placeholder {
+  color: #6b7fa0 !important;
+  opacity: 1 !important;
+}
+html.dark [aria-label="Search help articles"]:focus {
+  background-color: #111827 !important;
+  border-color: color-mix(in srgb, var(--color-primary) 70%, transparent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+}
+
+/* SupportView results dropdown */
+html.dark .relative .absolute.top-full {
+  background-color: #141b27 !important;
+  border-color: rgba(160,176,204,0.12) !important;
+  color: #dde4f0 !important;
+}
+
+/* ── Generic: ANY search input in dark mode ─────────────────────────────────
+   Belt-and-suspenders: catches any other search fields we may have missed.  */
+html.dark input[type="search"] {
+  background-color: #1a2236 !important;
+  color: #dde4f0 !important;
+  border-color: rgba(160,176,204,0.18) !important;
+}
+html.dark input[type="search"]::placeholder {
+  color: #6b7fa0 !important;
+  opacity: 1 !important;
+}
+html.dark input[type="search"]:focus {
+  background-color: #141b27 !important;
+  border-color: color-mix(in srgb, var(--color-primary) 70%, transparent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+}
+
+/* ── Search icon colour in dark mode ── */
+html.dark #global-search-root .material-symbols-outlined,
+html.dark [aria-label="Search help articles"] ~ .material-symbols-outlined,
+html.dark .relative .material-symbols-outlined.absolute {
+  color: #a0b0cc;
+}
+
 
 @media (max-width: 640px) { html { font-size: 14px; } .card { padding: 1rem; border-radius: 14px; } }
 @media (max-width: 390px) { html { font-size: 13.5px; } .card { padding: 0.875rem; } }
