@@ -4,7 +4,7 @@ const props = defineProps(["date", "value", "status", "fade"])
 
 <template>
     <div 
-        class="bg-white border border-outline-variant p-4 rounded flex items-center justify-between item-hover row"
+        class="card border border-outline-variant p-4 rounded flex items-center justify-between item-hover row"
         v-bind:class = "(fade === true)?'opacity-60':''"
     >
         <div class="flex items-center gap-4">

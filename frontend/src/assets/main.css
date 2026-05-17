@@ -49,25 +49,67 @@
 
 html.dark {
   color-scheme: dark;
-  --color-background:               #131720;
-  --color-on-background:            #e2e8f0;
-  --color-surface:                  #131720;
-  --color-surface-dim:              #0e1219;
-  --color-surface-bright:           #1e2535;
-  --color-surface-variant:          #1a2132;
-  --color-on-surface:               #e2e8f0;
-  --color-on-surface-variant:       #8a9bb8;
-  --color-inverse-surface:          #e2e8f0;
-  --color-surface-container-lowest: #0e1219;
-  --color-surface-container-low:    #161d2c;
-  --color-surface-container:        #1c2435;
-  --color-surface-container-high:   #222c3e;
-  --color-surface-container-highest:#293447;
-  --color-outline:          #3d4f6e;
-  --color-outline-variant:  #243047;
-  --surf: #161d2c; --surf-2: #1c2435; --surf-3: #222c3e; --surf-card: #161d2c;
-  --text: #e2e8f0; --text-muted: #8a9bb8;
-  --border: rgba(100,130,180,0.10); --border-strong: rgba(100,130,180,0.22);
+
+  /* ── Background layers — rich gradient-ready dark scale ── */
+  --color-background:               #0d1117;   /* deepest — page bg            */
+  --color-on-background:            #dde4f0;
+  --color-surface:                  #0d1117;
+  --color-surface-dim:              #090d12;   /* even deeper for contrast     */
+  --color-surface-bright:           #1a2235;   /* elevated modals, popovers    */
+  --color-surface-variant:          #141c2b;
+
+  /* ── On-surface text — warm white, never stark #fff ── */
+  --color-on-surface:               #dde4f0;
+  --color-on-surface-variant:       #8696b4;
+  --color-inverse-surface:          #dde4f0;
+
+  /* ── Surface containers — stepped dark greys for depth ── */
+  --color-surface-container-lowest: #090d12;   /* deepest card bg              */
+  --color-surface-container-low:    #111827;   /* default card bg              */
+  --color-surface-container:        #161f30;   /* hover / toggle bg            */
+  --color-surface-container-high:   #1d2740;   /* active / selected bg         */
+  --color-surface-container-highest:#243050;   /* pills, badges                */
+
+  /* ── Navigation sidebar — slightly lighter than page bg ── */
+  --color-nav-surface:              #111827;
+  --color-nav-border:               rgba(255,255,255,0.06);
+  --color-nav-active-bg:            rgba(var(--pri-rgb, 37,99,235), 0.18);
+  --color-nav-text:                 #c8d4e8;
+  --color-nav-text-muted:           #5f7494;
+
+  /* ── Borders — subtle, not distracting ── */
+  --color-outline:                  #2d3f5a;
+  --color-outline-variant:          #1a2640;
+
+  /* ── Alias tokens (used by old utility classes) ── */
+  --surf:      #111827;
+  --surf-2:    #161f30;
+  --surf-3:    #1d2740;
+  --surf-card: #111827;
+  --text:      #dde4f0;
+  --text-muted:#8696b4;
+  --border:       rgba(100,140,200,0.08);
+  --border-strong:rgba(100,140,200,0.18);
+}
+
+/* ── Dark mode: topbar — slightly blurred frosted glass over page bg ── */
+html.dark .topbar {
+  background: color-mix(in srgb, #111827 94%, transparent) !important;
+  border-bottom-color: rgba(255,255,255,0.06) !important;
+}
+
+/* ── Dark mode: cards — layered slightly above background ── */
+html.dark .card {
+  background: var(--color-surface-container-low) !important;
+  border-color: var(--color-outline-variant) !important;
+}
+
+/* ── Dark mode: toggle rows ── */
+html.dark .toggle-row {
+  background: var(--color-surface-container) !important;
+}
+html.dark .toggle-row:hover {
+  background: var(--color-surface-container-high) !important;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -95,7 +137,13 @@ code, pre, .font-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; 
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
-  user-select: none; line-height: 1; display: inline-block; vertical-align: middle; flex-shrink: 0;
+  user-select: none;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -0.125em;  /* nudge down ~2px — optically centres the glyph */
+  flex-shrink: 0;
 }
 
 *, *::before, *::after {
@@ -187,7 +235,7 @@ html.dark .search-field input:focus {
 
 /* Sidebar */
 .sidebar { background: var(--color-surface-container-lowest); border-right: 1px solid var(--color-outline-variant); }
-html.dark .sidebar { background: var(--color-surface-container-low); border-right-color: var(--color-outline-variant); }
+/* sidebar dark mode — see DARK MODE TEXT VISIBILITY block below */
 .sidebar-item-active { background: color-mix(in srgb, var(--color-primary) 12%, transparent); color: var(--color-primary); font-weight: 700; }
 html.dark .sidebar-item-active { background: color-mix(in srgb, var(--color-primary) 18%, transparent); }
 
@@ -271,6 +319,590 @@ html.dark .notif-panel {
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .safe-left { padding-left: env(safe-area-inset-left, 0px); }
 .safe-right { padding-right: env(safe-area-inset-right, 0px); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEMANTIC THEME ALIASES — always track the active accent colour.
+   Use these in components instead of hardcoded text-blue-* / bg-blue-*.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root, html.dark {
+  /* Active accent — use these everywhere a "brand colour" is needed */
+  --theme-accent:          var(--color-primary);
+  --theme-accent-dim:      var(--color-primary-dim);
+  --theme-accent-muted:    color-mix(in srgb, var(--color-primary) 15%, transparent);
+  --theme-accent-subtle:   color-mix(in srgb, var(--color-primary) 8%, transparent);
+  --theme-on-accent:       var(--color-on-primary);
+  --theme-accent-container:var(--color-primary-container);
+  --theme-on-accent-container:var(--color-on-primary-container);
+
+  /* Navigation token — sidebar active item */
+  --theme-nav-active-bg:   color-mix(in srgb, var(--color-primary) 14%, transparent);
+  --theme-nav-active-text: var(--color-primary);
+
+  /* Focus ring */
+  --theme-focus-ring: color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+/* ── Utility: .theme-accent-text   → text colour that follows accent ── */
+.theme-accent-text  { color: var(--theme-accent) !important; }
+.theme-accent-bg    { background-color: var(--theme-accent) !important; }
+.theme-accent-border{ border-color: var(--theme-accent) !important; }
+
+/* ── Active sidebar item — reads from accent, not hardcoded blue ── */
+.sidebar-item-active {
+  background: var(--theme-nav-active-bg) !important;
+  color: var(--theme-nav-active-text) !important;
+  font-weight: 700;
+}
+html.dark .sidebar-item-active {
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+}
+
+/* ── Settings tab active state ── */
+.settings-tab-active {
+  background: var(--theme-accent-muted) !important;
+  color: var(--theme-accent) !important;
+}
+
+/* ── Solar-glow button always uses active accent ── */
+.solar-glow {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dim) 100%) !important;
+  color: var(--color-on-primary) !important;
+}
+
+/* ── Focus ring follows accent ── */
+:focus-visible {
+  outline: 2.5px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 4px var(--theme-focus-ring);
+}
+
+/* ── Dark mode: page background gradient ── */
+html.dark body {
+  background: linear-gradient(180deg,
+    var(--color-background)    0%,
+    var(--color-surface-dim)  100%
+  );
+  min-height: 100dvh;
+}
+
+/* ── Dark mode: navigation sidebar styling ── */
+html.dark nav a, html.dark nav button {
+  color: var(--color-nav-text, #c8d4e8);
+}
+html.dark nav a:hover, html.dark nav button:hover {
+  background: color-mix(in srgb, var(--color-primary) 10%, var(--color-surface-container));
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BLUE-TO-PRIMARY OVERRIDE LAYER
+   ─────────────────────────────────────────────────────────────────────────
+   Many components use hardcoded Tailwind blue-* classes (text-blue-600,
+   bg-blue-700 etc.) that bypass the accent colour system. These rules
+   redirect the most common blue utilities to track --color-primary so that
+   changing the accent in Settings is reflected everywhere.
+
+   NOTE: Only interactive / brand-colour uses are overridden. Intentionally
+   blue-for-meaning colours (water icons, info badges) are left alone.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero / header backgrounds in tip pages ── */
+.bg-blue-700,
+.bg-blue-600 {
+  background-color: var(--color-primary) !important;
+}
+.hover\:bg-blue-500:hover,
+.hover\:bg-blue-600:hover {
+  background-color: var(--color-primary-dim) !important;
+  filter: brightness(1.07);
+}
+
+/* ── Primary CTA buttons inside tip pages ── */
+button.bg-blue-600,
+button.bg-\[\#1978e5\] {
+  background-color: var(--color-primary) !important;
+}
+button.hover\:bg-blue-500:hover,
+button.hover\:bg-blue-600:hover {
+  background-color: var(--color-primary-dim) !important;
+}
+
+/* ── Accent text that should follow brand colour ── */
+.text-blue-700,
+.text-blue-800 {
+  color: var(--color-primary) !important;
+}
+.hover\:text-blue-700:hover {
+  color: var(--color-primary-dim) !important;
+}
+
+/* ── Dark mode blue text adjustments ── */
+html.dark .text-blue-300,
+html.dark .text-blue-400 {
+  color: var(--color-primary-fixed-dim, #93c5fd) !important;
+}
+html.dark .dark\:text-blue-300,
+html.dark .dark\:text-blue-400 {
+  color: var(--color-primary-fixed-dim, #93c5fd) !important;
+}
+
+/* ── Checkbox / form accent ── */
+.text-blue-600 {
+  color: var(--color-primary) !important;
+}
+.focus\:ring-blue-500:focus {
+  --tw-ring-color: color-mix(in srgb, var(--color-primary) 40%, transparent) !important;
+}
+
+/* ── Decorative blob backgrounds (mix-blend-multiply) ── */
+.bg-blue-800 {
+  background-color: var(--color-primary-dim) !important;
+}
+
+/* ── Light tinted surfaces (tip card icons) ── */
+.bg-blue-50 {
+  background-color: var(--color-primary-container, #dbeafe) !important;
+}
+html.dark .bg-blue-50,
+html.dark .dark\:bg-blue-900\/30 {
+  background-color: color-mix(in srgb, var(--color-primary) 15%, transparent) !important;
+}
+
+/* ── PrivacySection blue icon ── */
+.text-blue-500 {
+  color: var(--color-primary) !important;
+}
+.bg-blue-500\/10 {
+  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent) !important;
+}
+
+/* ── NotificationsSection maintenance icon — intentionally left as-is ──
+   (text-blue-500 on the build icon is semantic: "maintenance = blue" is ok)
+   Override only if you want it accent-coloured: */
+/*
+.material-symbols-outlined.text-blue-500 { color: var(--color-primary) !important; }
+*/
+
+/* ── Landing page / login / register brand name text ── */
+.text-blue-700.font-bold,
+.dark\:text-blue-300 {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dim) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── text-blue-100 / text-blue-200 on dark hero backgrounds ── */
+.text-blue-100,
+.text-blue-50\/90 {
+  color: var(--color-on-primary) !important;
+  opacity: 0.85;
+}
+.text-blue-200 {
+  color: var(--color-on-primary) !important;
+  opacity: 0.70;
+}
+
+/* ── CommunityView: help group card ── */
+.from-blue-500\/20 { --tw-gradient-from: color-mix(in srgb, var(--color-primary) 20%, transparent) !important; }
+.to-blue-500\/5    { --tw-gradient-to:   color-mix(in srgb, var(--color-primary) 5%,  transparent) !important; }
+
+/* ── LeaderboardView: AVATAR_COLOURS blue slot ── */
+.bg-blue-500\/20   { background-color: color-mix(in srgb, var(--color-primary) 20%, transparent) !important; }
+.text-blue-600      { color: var(--color-primary) !important; }
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DARK MODE — TEXT VISIBILITY OVERRIDE LAYER
+   ─────────────────────────────────────────────────────────────────────────
+   All text across every view, component and element must be visible in dark
+   mode. The CSS variable system (--color-on-surface, --color-on-surface-
+   variant) is correctly set to light values, but many components use
+   hardcoded Tailwind grey/slate utility classes that don't respond to the
+   vars. This block forces all such classes to use the correct light values
+   in dark mode.
+
+   Scope: html.dark — only fires when dark mode is active, so light mode
+   is completely unaffected.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Body default — everything inherits bright text unless overridden ── */
+html.dark body {
+  color: #dde4f0;    /* --color-on-surface — warm near-white */
+}
+
+/* ── 2. Headings ── */
+html.dark h1, html.dark h2, html.dark h3,
+html.dark h4, html.dark h5, html.dark h6 {
+  color: #e8edf6;   /* slightly brighter than body text for hierarchy */
+}
+
+/* ── 3. Dark text utilities — redirect to light values in dark mode ─────────
+   text-slate-900 / text-gray-900 etc. are near-black and invisible on dark
+   backgrounds. We map them to the appropriate light equivalents.              */
+
+/* Near-black → primary text (#dde4f0) */
+html.dark .text-slate-900,
+html.dark .text-gray-900,
+html.dark .text-zinc-900,
+html.dark .text-neutral-900,
+html.dark .text-stone-900,
+html.dark .text-black { color: #dde4f0 !important; }
+
+/* Dark grey → primary text (#dde4f0) */
+html.dark .text-slate-800,
+html.dark .text-gray-800,
+html.dark .text-zinc-800,
+html.dark .text-neutral-800 { color: #dde4f0 !important; }
+
+/* Medium-dark grey → primary text (#dde4f0) */
+html.dark .text-slate-700,
+html.dark .text-gray-700,
+html.dark .text-zinc-700,
+html.dark .text-neutral-700 { color: #c8d4e8 !important; }
+
+/* Medium grey → muted text (#8696b4) — still readable, slightly subdued */
+html.dark .text-slate-600,
+html.dark .text-gray-600,
+html.dark .text-zinc-600,
+html.dark .text-neutral-600 { color: #a0b0cc !important; }
+
+/* Medium-light grey → muted text */
+html.dark .text-slate-500,
+html.dark .text-gray-500,
+html.dark .text-zinc-500,
+html.dark .text-neutral-500 { color: #8696b4 !important; }
+
+/* Light grey → even more muted but still legible */
+html.dark .text-slate-400,
+html.dark .text-gray-400,
+html.dark .text-zinc-400,
+html.dark .text-neutral-400 { color: #6b7fa0 !important; }
+
+/* ── 4. on-surface utilities (used directly in templates) ── */
+html.dark .text-on-surface         { color: #dde4f0 !important; }
+html.dark .text-on-surface-variant { color: #8696b4 !important; }
+
+/* Opacity variants — keep the opacity but ensure the base is light */
+html.dark .text-on-surface-variant\/70 { color: rgba(134,150,180,0.70) !important; }
+html.dark .text-on-surface-variant\/60 { color: rgba(134,150,180,0.60) !important; }
+html.dark .text-on-surface-variant\/50 { color: rgba(134,150,180,0.50) !important; }
+
+/* ── 5. Paragraph, span, label defaults ──────────────────────────────────────
+   Elements without an explicit text-* class inherit from body (#dde4f0).
+   This rule ensures nothing slips through via browser defaults.               */
+html.dark p:not([class*="text-"]),
+html.dark span:not([class*="text-"]),
+html.dark label:not([class*="text-"]),
+html.dark li:not([class*="text-"]),
+html.dark td:not([class*="text-"]),
+html.dark th:not([class*="text-"]) {
+  color: inherit;   /* inherit from parent — body provides #dde4f0 */
+}
+
+/* ── 6. Form inputs — always readable in dark mode ── */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  color: #dde4f0 !important;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder { color: #6b7fa0 !important; opacity: 1; }
+html.dark label { color: #8696b4; }
+
+/* ── 7. Sidebar navigation text — white with subtle opacity ──────────────────
+   The sidebar <aside> uses `bg-surface` in its Tailwind class which equals
+   the page background in dark mode (#0d1117). Fix: override the background.
+   The nav links use text-on-surface-variant/70 which is already light, but
+   we ensure the close button and user card text are also visible.             */
+html.dark .sidebar {
+  background: #111827 !important;
+  border-right-color: rgba(255,255,255,0.07) !important;
+}
+html.dark .sidebar p,
+html.dark .sidebar span:not(.material-symbols-outlined) {
+  color: #dde4f0 !important;
+}
+html.dark .sidebar a,
+html.dark .sidebar button:not(.solar-glow) {
+  color: #c8d4e8;
+}
+html.dark .sidebar a:hover,
+html.dark .sidebar button:not(.solar-glow):hover {
+  color: #dde4f0;
+  background: rgba(255,255,255,0.06);
+}
+
+/* ── 8. Background surface containers — ensure text on top is always light ── */
+html.dark .bg-surface-container,
+html.dark .bg-surface-container-low,
+html.dark .bg-surface-container-lowest,
+html.dark .bg-surface-container-high,
+html.dark .bg-surface-container-highest {
+  color: #dde4f0;
+}
+
+/* ── 9. Card contents ── */
+html.dark .card { color: #dde4f0; }
+html.dark .card p, html.dark .card span:not(.material-symbols-outlined),
+html.dark .card h1, html.dark .card h2, html.dark .card h3, html.dark .card h4 {
+  color: inherit;
+}
+
+/* ── 10. Toggle row text ── */
+html.dark .toggle-row { color: #dde4f0; }
+
+/* ── 11. ImpactReport — always light-themed for PDF, skip dark override ── */
+html.dark #impact-report-card,
+html.dark #impact-report-card * { /* intentionally no override — report is always light */ }
+
+/* ── 12. Borders — slightly lighter so they're visible without being harsh ── */
+html.dark .border-outline-variant,
+html.dark .border-outline-variant\/20,
+html.dark .border-outline-variant\/10 {
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ICON-IN-INPUT ALIGNMENT FIX
+   ─────────────────────────────────────────────────────────────────────────
+   Problem: icons use `absolute left-X top-1/2 -translate-y-1/2` to centre
+   vertically. This works when the wrapper has a fixed height, but our
+   .form-input wrapper `div.relative` has height:auto (wraps the input).
+   The browser computes top:50% from the auto height, which can be off by
+   2–4px depending on the input's padding and line-height.
+
+   Fix: set `display:flex; align-items:stretch` on the wrapper so it adopts
+   the input's exact height. The icon's top:50% then computes against the
+   true rendered height, giving perfect optical centre.
+
+   Applied to:
+    • Profile: location icon, website icon
+    • Security: password visibility toggle buttons
+    • GlobalSearch: search icon, clear button
+    • SupportView: search icon, clear button
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Wrapper divs that hold an absolutely-positioned icon beside a text input */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;   /* vertically centre children in the flex axis      */
+}
+.input-with-icon input,
+.input-with-icon textarea {
+  flex: 1;               /* input fills available width                      */
+}
+.input-with-icon .icon-prefix {
+  /* Left-side icon — positioned absolutely, centred via flexbox parent      */
+  position: absolute;
+  left: 0.75rem;         /* 12px from left edge                              */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  color: var(--color-on-surface-variant);
+  opacity: 0.6;
+  /* Remove any line-height/vertical-align effect on the glyph itself        */
+  line-height: 0;
+}
+.input-with-icon .icon-suffix {
+  /* Right-side icon/button */
+  position: absolute;
+  right: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  line-height: 0;
+}
+
+/* ── Targeted fix for existing templates that use div.relative ──────────────
+   These selectors target the exact wrapper structure used in ProfileSection,
+   SecuritySection, GlobalSearch and SupportView without changing any templates.
+   Specificity is kept low so it doesn't override other things.               */
+
+/* ProfileSection / SecuritySection — div.relative containing a .form-input  */
+div.relative:has(> .form-input),
+div.relative:has(> input.form-input) {
+  display: flex;
+  align-items: center;
+}
+
+/* The absolute icon inside that wrapper — reset any stray transform offset  */
+div.relative:has(> .form-input) > .material-symbols-outlined,
+div.relative:has(> .form-input) > span.material-symbols-outlined {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  line-height: 0;           /* removes the line-height-based vertical offset  */
+  display: flex;
+  align-items: center;
+}
+
+/* The absolute button (eye icon) inside form-input wrappers                 */
+div.relative:has(> .form-input) > button {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+/* GlobalSearch — div.relative wrapping the search input                     */
+#global-search-root > div.relative {
+  display: flex;
+  align-items: center;
+}
+#global-search-root > div.relative > .material-symbols-outlined {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+}
+#global-search-root > div.relative > div.absolute {
+  /* Clear button / kbd hint wrapper */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+/* SupportView search — div.relative.flex.items-center wrapping the input    */
+.relative.flex.items-center > .material-symbols-outlined.absolute {
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 0;
+  display: flex;
+  align-items: center;
+}
+.relative.flex.items-center > button.absolute {
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DARK MODE — SEARCH INPUT OVERRIDES
+   ─────────────────────────────────────────────────────────────────────────
+   The GlobalSearch (TopBar) and SupportView search inputs use Tailwind
+   utility classes (bg-surface-container, bg-surface-container-lowest,
+   text-on-surface, border-outline-variant/*) that Tailwind bakes in at
+   build time as static hex values — they don't automatically respond to
+   dark mode CSS variable changes. These rules force the correct dark values.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── GlobalSearch input (bg-surface-container) ── */
+html.dark #global-search-root input[type="search"] {
+  background-color: #1a2236 !important;   /* --color-surface-container       */
+  color: #dde4f0 !important;              /* --color-on-surface               */
+  border-color: rgba(160,176,204,0.18) !important;
+}
+html.dark #global-search-root input[type="search"]::placeholder {
+  color: #6b7fa0 !important;
+  opacity: 1 !important;
+}
+html.dark #global-search-root input[type="search"]:focus {
+  background-color: #141b27 !important;   /* --color-surface-container-low    */
+  border-color: color-mix(in srgb, var(--color-primary) 70%, transparent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+}
+
+/* The wrapper div that the input sits in */
+html.dark #global-search-root > div {
+  background: transparent;
+}
+
+/* ── GlobalSearch results dropdown panel ── */
+html.dark #global-search-root [role="listbox"] {
+  background-color: #141b27 !important;
+  border-color: rgba(160,176,204,0.12) !important;
+  color: #dde4f0 !important;
+}
+html.dark #global-search-root [role="listbox"] button:hover,
+html.dark #global-search-root [role="listbox"] [data-active="true"] {
+  background-color: #1a2236 !important;
+}
+html.dark #global-search-root [role="listbox"] p {
+  color: #dde4f0 !important;
+}
+html.dark #global-search-root [role="listbox"] p.text-xs,
+html.dark #global-search-root [role="listbox"] p.text-\[10px\] {
+  color: #a0b0cc !important;
+}
+
+/* ── SupportView search input (bg-surface-container-lowest) ── */
+html.dark [aria-label="Search help articles"] {
+  background-color: #141b27 !important;   /* --color-surface-container-low    */
+  color: #dde4f0 !important;
+  border-color: rgba(160,176,204,0.18) !important;
+  box-shadow: none !important;
+}
+html.dark [aria-label="Search help articles"]::placeholder {
+  color: #6b7fa0 !important;
+  opacity: 1 !important;
+}
+html.dark [aria-label="Search help articles"]:focus {
+  background-color: #111827 !important;
+  border-color: color-mix(in srgb, var(--color-primary) 70%, transparent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+}
+
+/* SupportView results dropdown */
+html.dark .relative .absolute.top-full {
+  background-color: #141b27 !important;
+  border-color: rgba(160,176,204,0.12) !important;
+  color: #dde4f0 !important;
+}
+
+/* ── Generic: ANY search input in dark mode ─────────────────────────────────
+   Belt-and-suspenders: catches any other search fields we may have missed.  */
+html.dark input[type="search"] {
+  background-color: #1a2236 !important;
+  color: #dde4f0 !important;
+  border-color: rgba(160,176,204,0.18) !important;
+}
+html.dark input[type="search"]::placeholder {
+  color: #6b7fa0 !important;
+  opacity: 1 !important;
+}
+html.dark input[type="search"]:focus {
+  background-color: #141b27 !important;
+  border-color: color-mix(in srgb, var(--color-primary) 70%, transparent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+}
+
+/* ── Search icon colour in dark mode ── */
+html.dark #global-search-root .material-symbols-outlined,
+html.dark [aria-label="Search help articles"] ~ .material-symbols-outlined,
+html.dark .relative .material-symbols-outlined.absolute {
+  color: #a0b0cc;
+}
+*, ::before, ::after{
+  --tw-ring-color: var(--color-primary-fixed-dim);
+}::backdrop{
+  --tw-ring-color: var(--color-primary-fixed-dim);
+}
+
 
 @media (max-width: 640px) { html { font-size: 14px; } .card { padding: 1rem; border-radius: 14px; } }
 @media (max-width: 390px) { html { font-size: 13.5px; } .card { padding: 0.875rem; } }

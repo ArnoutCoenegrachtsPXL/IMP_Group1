@@ -1,8 +1,41 @@
 <script setup>
-
+/**
+ * CommunityView.vue
+ * ─────────────────────────────────────────────────────────────────────────
+ * Solar Community Hub
+ *
+ * SECTIONS:
+ * 1. Hero banner  — community stats, user rank, streak
+ * 2. WhatsApp Groups — category cards linking to real WA group links
+ * 3. Community Feed  — posts, reactions, comments (localStorage-persisted)
+ * 4. Leaderboard preview — top 5 members, links to full leaderboard
+ * 5. Community Perks  — badges, milestones, rewards
+ * 6. New Post composer  — rich text with category tag
+ *
+ * THEME INTEGRATION:
+ * • Reads --color-primary, --color-on-primary, --color-surface-* etc.
+ *   from userPrefs.applyAll() via CSS custom properties — all set on <html>
+ * • applyViewTheme('community') called on mount for per-view overrides
+ * • cardStyle() / viewBgStyle() helpers used on all containers
+ * • Responds to dark/light/system mode, font size, compact mode, high contrast
+ * • Fully responsive: mobile-first grid, sidebar collapses on sm screens
+ *
+ * WHATSAPP SETUP:
+ * Replace the `waLink` in each WHATSAPP_GROUPS entry with your real
+ * WhatsApp group invite URL: https://chat.whatsapp.com/XXXXXXXXXXXX
+ *
+ * DATABASE / USER CLASS:
+ * Posts and community members are loaded via the `communityStore` below.
+ * In production, replace localStorage stubs with your API calls.
+ * The User class shape expected: { id, name, avatar, role, kwh, streak,
+ * rank, badges[], joinDate, location }
+ *
+ * MARKER: COMMUNITY-VIEW-START
+ */
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserPrefsStore } from '@/stores/userPrefs'
+import { BADGE_DEFS, earnedBadges } from '@/composables/badges'
 
 const prefs  = useUserPrefsStore()
 const router = useRouter()
@@ -131,15 +164,19 @@ const leaderboardPreview = ref([
 const myRank = ref(42)
 const myKwh  = ref(612.8)
 
-// ── Community perks / badges ───────────────────────────────────────────────────
-const PERKS = [
-  { icon: '🌱', label: 'Seedling',    desc: 'Join the community',      threshold: 0,    achieved: true  },
-  { icon: '☀️', label: 'Solar Rookie', desc: 'Save 100 kWh',           threshold: 100,  achieved: true  },
-  { icon: '⚡', label: 'Spark',       desc: '7-day streak',            threshold: 7,    achieved: true  },
-  { icon: '🔥', label: 'Hot Streak',  desc: '30-day streak',           threshold: 30,   achieved: false },
-  { icon: '🏅', label: 'Top 100',     desc: 'Reach community top 100', threshold: 100,  achieved: false },
-  { icon: '🏆', label: 'Solar Hero',  desc: 'Save 1 000 kWh total',    threshold: 1000, achieved: false },
-]
+// ── Community perks / badges — sourced from shared badges.js composable ─────────
+// myStats represents the current user. In production, load this from your API.
+const myStats = { kwhSaved: 612.8, streak: 7, readings: 18, posts: 4,
+                  challenges: 2, zeroPeakDays: 5, rank: 42 }
+
+const PERKS = computed(() =>
+  BADGE_DEFS.map(b => ({
+    icon:     b.emoji,
+    label:    b.label,
+    desc:     b.desc,
+    achieved: b.condition(myStats),
+  }))
+)
 
 // ── Community feed ─────────────────────────────────────────────────────────────
 const LS_POSTS_KEY = 'ep-community-posts'

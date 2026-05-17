@@ -56,7 +56,7 @@
         <label for="value" class="center block text-[12px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Reading Value (kWh)</label>
         <input 
             id="value" 
-            class="w-full h-12 bg-surface-container border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm" placeholder="00000.00" type="number"
+            class="w-full h-12 form-input border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm" placeholder="00000.00" type="number"
             required
             />
         <div class="md:col-span-2">

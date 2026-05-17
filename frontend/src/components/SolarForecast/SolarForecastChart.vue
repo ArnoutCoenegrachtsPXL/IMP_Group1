@@ -10,6 +10,9 @@
         LinearScale
     } from 'chart.js'
     import { Bar } from 'vue-chartjs'
+    import { useUserPrefsStore, ACCENT_PALETTES } from '@/stores/userPrefs'
+
+    const prefs = useUserPrefsStore()
 
     ChartJS.register(
         Title,
@@ -55,7 +58,7 @@
         datasets: [
             {
                 data : props.y,
-                backgroundColor: "#2563eb",
+                backgroundColor: ACCENT_PALETTES[prefs.accentKey]['--color-primary'],
                 barPercentage: 1.0,
                 categoryPercentage: 1.0
             }

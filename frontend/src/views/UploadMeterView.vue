@@ -43,7 +43,7 @@
     <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start" v-if="target > 0">
         <!-- Left Column: Upload Interaction -->
         <section class="lg:col-span-7 space-y-6">
-            <div class="bg-white rounded border border-outline-variant p-8">
+            <div class="card rounded border border-outline-variant p-8">
                 <UploadMeterForm v-if="showFullHistory===false"/>
                 <MeterReadingHistory v-else :filters="true" :history="history"/>
             </div>
@@ -79,7 +79,7 @@
             </div>
         </div>
         <!-- Educational Tip Card -->
-        <div class="bg-white border-l-4 border-primary rounded p-5 shadow-sm">
+        <div class="card border-l-4 border-primary rounded p-5 shadow-sm">
             <div class="flex items-start gap-4">
                 <span class="material-symbols-outlined text-primary text-2xl">lightbulb</span>
                 <div>

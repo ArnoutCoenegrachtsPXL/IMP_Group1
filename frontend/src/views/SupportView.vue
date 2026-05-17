@@ -429,8 +429,10 @@ const systemStatus = {
           interfere with input clicks. z-10 keeps it above the input background.
         -->
         <span
-          class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 z-10
-                 text-on-surface-variant/60 text-[18px] pointer-events-none select-none"
+          class="material-symbols-outlined absolute left-3.5 z-10
+                 text-on-surface-variant/60 text-[18px] pointer-events-none select-none
+                 flex items-center leading-none"
+          style="top:50%; transform:translateY(-50%); line-height:0"
         >search</span>
 
         <input
@@ -451,9 +453,10 @@ const systemStatus = {
         <!-- Clear button — appears when there's a query -->
         <button
           v-if="searchQuery.length > 0"
-          class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full
+          class="absolute right-3 w-5 h-5 rounded-full
                  bg-on-surface-variant/15 hover:bg-on-surface-variant/25 transition-colors
                  flex items-center justify-center"
+          style="top:50%; transform:translateY(-50%)"
           @click="clearSearch"
           aria-label="Clear search"
         >

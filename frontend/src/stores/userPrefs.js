@@ -697,7 +697,7 @@ export const useUserPrefsStore = defineStore('userPrefs', () => {
   watch(peakEnd,   v => localStorage.setItem('ep-peak-end', v))
 
   // ── Security ──────────────────────────────────────────────────────────────────
-  const twoFactor    = ref(localStorage.getItem('ep-2fa') !== 'false')
+  const twoFactor    = ref(localStorage.getItem('ep-2fa') === 'true')   // OFF by default — user must explicitly enable
   const twoFactorSetup = ref(false) // shows setup wizard
   watch(twoFactor, v => localStorage.setItem('ep-2fa', String(v)))
 
@@ -757,7 +757,7 @@ export const useUserPrefsStore = defineStore('userPrefs', () => {
     language.value = v
     localStorage.setItem('ep-lang', v)
     applyAll()
-    if (typeof window.__ecoTranslate === 'function') setTimeout(() => window.__ecoTranslate(v), 200)
+   
   }
   function setTimezone(v)    { timezone.value = v;    localStorage.setItem('ep-timezone', v) }
   function setCurrency(v)    { currency.value = v;    localStorage.setItem('ep-currency', v) }
