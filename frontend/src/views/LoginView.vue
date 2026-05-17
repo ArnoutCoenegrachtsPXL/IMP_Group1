@@ -169,7 +169,7 @@ const handleLogin = async () => {
     localStorage.setItem('userId', response.data.userId)
     localStorage.setItem('fullName', response.data.fullName)
     localStorage.setItem('email', response.data.email || form.value.email)
-    localStorage.setItem('postalcode', response.data.postalcode)
+    localStorage.setItem('postalcode', response.data.postalCode)
 
     // If postalCode is null, user hasn't completed profile yet
     if (!response.data.postalCode) {
