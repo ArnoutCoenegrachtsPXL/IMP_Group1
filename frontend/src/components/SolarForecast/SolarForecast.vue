@@ -95,3 +95,16 @@
     </div>
     
 </template>
+
+<style scoped>
+    .p-togglebutton.p-togglebutton-checked {
+        --tw-bg-opacity: 1;
+        background-color: var(--color-primary);
+        color: var(--color-on-primary);
+    }
+    .p-togglebutotn {
+        --tw-bg-opacity: 1;
+        background-color: var(--color-primary);
+        color: var(--color-on-primary);
+    }
+</style>

@@ -86,7 +86,7 @@
                 min="2020-01-01"
                 value="2020-01-01"
                 @change="filterData"
-                class="w-full h-12 bg-surface-container border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm"
+                class="w-full h-12 form-input border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm"
             />
             <label for="enddate" class="center block text-[12px] font-black uppercase tracking-widest text-on-surface-variant ml-1">
                 End date:
@@ -96,7 +96,7 @@
                 min="2020-01-01"
                 value="2030-01-01"
                 @change="filterData"
-                class="w-full h-12 bg-surface-container border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm"
+                class="w-full h-12 form-input border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm"
             />
         </div>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 row">
@@ -106,7 +106,7 @@
             <select 
                 id="status"
                 @change="filterData"
-                class="w-full h-12 bg-surface-container border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm"
+                class="w-full h-12 form-input border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm"
             >
                 <option selected="selected" value="9">All</option>
                 <option value=1>Verified</option>
@@ -119,7 +119,7 @@
             <select 
                 id="amount"
                 @change="filterData"
-                class="w-full h-12 bg-surface-container border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm"
+                class="w-full h-12 form-input border border-outline-variant rounded px-4 focus:ring-1 focus:ring-primary focus:border-primary transition-all font-semibold text-sm"
             >
                 <option selected="selected">10</option>
                 <option>25</option>
@@ -127,14 +127,7 @@
             </select>
         </div>
     </div>
-    <div v-bind:class = "(filters === true)?'bg-background list border':''"> 
-        <!--<MeterReadingHistoryItem
-                v-for="index in indices"
-                :value="values[index]"
-                :status="statuses[index]"
-                :date="timestamps[index]"
-                :fade="fade(filters, index)"
-                />-->
+    <div v-bind:class = "(filters === true)?'card list border':''"> 
         <MeterReadingHistoryItem
                 v-for="index in indices"
                 :value="filteredData[index].value"

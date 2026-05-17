@@ -897,6 +897,11 @@ html.dark [aria-label="Search help articles"] ~ .material-symbols-outlined,
 html.dark .relative .material-symbols-outlined.absolute {
   color: #a0b0cc;
 }
+*, ::before, ::after{
+  --tw-ring-color: var(--color-primary-fixed-dim);
+}::backdrop{
+  --tw-ring-color: var(--color-primary-fixed-dim);
+}
 
 
 @media (max-width: 640px) { html { font-size: 14px; } .card { padding: 1rem; border-radius: 14px; } }
