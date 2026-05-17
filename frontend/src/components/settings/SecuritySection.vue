@@ -149,10 +149,10 @@ function onTwoFaToggle(v) {
           <label class="text-[10px] uppercase tracking-widest font-semibold text-on-surface-variant block" for="cur-pw">
             {{ prefs.t.currentPassword }}
           </label>
-          <div class="relative">
+          <div class="relative flex items-center">
             <input :type="showCurrent ? 'text' : 'password'" id="cur-pw" v-model="currentPw"
               placeholder="••••••••" autocomplete="current-password" class="form-input pr-12" />
-            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 btn-icon-sm text-on-surface-variant hover:text-on-surface flex items-center justify-center"
+            <button type="button" class="absolute right-3 btn-icon-sm text-on-surface-variant hover:text-on-surface flex items-center justify-center" style="top:50%;transform:translateY(-50%);line-height:0"
               @click="showCurrent = !showCurrent">
               <span class="material-symbols-outlined text-[18px]">{{ showCurrent ? 'visibility_off' : 'visibility' }}</span>
             </button>
@@ -164,10 +164,10 @@ function onTwoFaToggle(v) {
           <label class="text-[10px] uppercase tracking-widest font-semibold text-on-surface-variant block" for="new-pw">
             {{ prefs.t.newPassword }}
           </label>
-          <div class="relative">
+          <div class="relative flex items-center">
             <input :type="showNew ? 'text' : 'password'" id="new-pw" v-model="newPw"
               placeholder="••••••••" autocomplete="new-password" class="form-input pr-12" />
-            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 btn-icon-sm text-on-surface-variant hover:text-on-surface flex items-center justify-center"
+            <button type="button" class="absolute right-3 btn-icon-sm text-on-surface-variant hover:text-on-surface flex items-center justify-center" style="top:50%;transform:translateY(-50%);line-height:0"
               @click="showNew = !showNew">
               <span class="material-symbols-outlined text-[18px]">{{ showNew ? 'visibility_off' : 'visibility' }}</span>
             </button>
@@ -190,12 +190,12 @@ function onTwoFaToggle(v) {
           <label class="text-[10px] uppercase tracking-widest font-semibold text-on-surface-variant block" for="con-pw">
             {{ prefs.t.confirmPassword }}
           </label>
-          <div class="relative">
+          <div class="relative flex items-center">
             <input :type="showConfirm ? 'text' : 'password'" id="con-pw" v-model="confirmPw"
               placeholder="••••••••" autocomplete="new-password"
               class="form-input pr-12 border"
               :class="pwMatch===false ? 'border-red-500' : pwMatch===true ? 'border-emerald-500/60' : 'border-outline-variant'" />
-            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 btn-icon-sm text-on-surface-variant hover:text-on-surface flex items-center justify-center"
+            <button type="button" class="absolute right-3 btn-icon-sm text-on-surface-variant hover:text-on-surface flex items-center justify-center" style="top:50%;transform:translateY(-50%);line-height:0"
               @click="showConfirm = !showConfirm">
               <span class="material-symbols-outlined text-[18px]">{{ showConfirm ? 'visibility_off' : 'visibility' }}</span>
             </button>

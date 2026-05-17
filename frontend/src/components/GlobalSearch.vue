@@ -123,7 +123,9 @@ const orderedGroups = computed(() => GROUP_ORDER.filter(t => search.groupedResul
     <div class="relative">
       <span
         class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2
-               text-[18px] pointer-events-none transition-colors duration-150"
+               text-[18px] pointer-events-none transition-colors duration-150
+               flex items-center leading-none"
+        style="line-height:0; transform:translateY(-50%)"
         :class="search.open ? 'text-primary' : 'text-on-surface-variant'"
         aria-hidden="true"
       >search</span>
@@ -154,7 +156,7 @@ const orderedGroups = computed(() => GROUP_ORDER.filter(t => search.groupedResul
       />
 
       <!-- Clear button / keyboard hint -->
-      <div class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+      <div class="absolute right-2.5 flex items-center gap-1" style="top:50%; transform:translateY(-50%); line-height:0">
         <button
           v-if="search.query.length > 0"
           class="w-5 h-5 rounded-full bg-outline-variant/30 flex items-center justify-center
