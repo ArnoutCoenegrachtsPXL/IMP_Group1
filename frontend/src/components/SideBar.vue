@@ -53,9 +53,10 @@ function logout() {
 
 <template>
   <aside
+    style="background-color: color-mix(in srgb, var(--color-surface-container-low) 97%, transparent); border-right: 1px solid var(--color-outline-variant);"
     :class="[
       'fixed top-0 h-screen w-[17rem] z-40 flex flex-col',
-      'bg-surface border-outline-variant/20 transition-transform duration-300 ease-in-out',
+      'sidebar transition-transform duration-300 ease-in-out',
       sidebarPosition, sidebarTranslate,
     ]"
     :aria-label="prefs.t.navMenu"

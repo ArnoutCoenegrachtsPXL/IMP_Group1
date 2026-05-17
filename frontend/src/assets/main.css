@@ -92,12 +92,6 @@ html.dark {
   --border-strong:rgba(100,140,200,0.18);
 }
 
-/* ── Dark mode: sidebar gets its own distinct darker bg ── */
-html.dark .sidebar {
-  background: var(--color-nav-surface, #111827) !important;
-  border-right-color: var(--color-nav-border, rgba(255,255,255,0.06)) !important;
-}
-
 /* ── Dark mode: topbar — slightly blurred frosted glass over page bg ── */
 html.dark .topbar {
   background: color-mix(in srgb, #111827 94%, transparent) !important;
@@ -235,7 +229,7 @@ html.dark .search-field input:focus {
 
 /* Sidebar */
 .sidebar { background: var(--color-surface-container-lowest); border-right: 1px solid var(--color-outline-variant); }
-html.dark .sidebar { background: var(--color-surface-container-low); border-right-color: var(--color-outline-variant); }
+/* sidebar dark mode — see DARK MODE TEXT VISIBILITY block below */
 .sidebar-item-active { background: color-mix(in srgb, var(--color-primary) 12%, transparent); color: var(--color-primary); font-weight: 700; }
 html.dark .sidebar-item-active { background: color-mix(in srgb, var(--color-primary) 18%, transparent); }
 
@@ -512,6 +506,159 @@ html.dark .dark\:bg-blue-900\/30 {
 /* ── LeaderboardView: AVATAR_COLOURS blue slot ── */
 .bg-blue-500\/20   { background-color: color-mix(in srgb, var(--color-primary) 20%, transparent) !important; }
 .text-blue-600      { color: var(--color-primary) !important; }
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DARK MODE — TEXT VISIBILITY OVERRIDE LAYER
+   ─────────────────────────────────────────────────────────────────────────
+   All text across every view, component and element must be visible in dark
+   mode. The CSS variable system (--color-on-surface, --color-on-surface-
+   variant) is correctly set to light values, but many components use
+   hardcoded Tailwind grey/slate utility classes that don't respond to the
+   vars. This block forces all such classes to use the correct light values
+   in dark mode.
+
+   Scope: html.dark — only fires when dark mode is active, so light mode
+   is completely unaffected.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Body default — everything inherits bright text unless overridden ── */
+html.dark body {
+  color: #dde4f0;    /* --color-on-surface — warm near-white */
+}
+
+/* ── 2. Headings ── */
+html.dark h1, html.dark h2, html.dark h3,
+html.dark h4, html.dark h5, html.dark h6 {
+  color: #e8edf6;   /* slightly brighter than body text for hierarchy */
+}
+
+/* ── 3. Dark text utilities — redirect to light values in dark mode ─────────
+   text-slate-900 / text-gray-900 etc. are near-black and invisible on dark
+   backgrounds. We map them to the appropriate light equivalents.              */
+
+/* Near-black → primary text (#dde4f0) */
+html.dark .text-slate-900,
+html.dark .text-gray-900,
+html.dark .text-zinc-900,
+html.dark .text-neutral-900,
+html.dark .text-stone-900,
+html.dark .text-black { color: #dde4f0 !important; }
+
+/* Dark grey → primary text (#dde4f0) */
+html.dark .text-slate-800,
+html.dark .text-gray-800,
+html.dark .text-zinc-800,
+html.dark .text-neutral-800 { color: #dde4f0 !important; }
+
+/* Medium-dark grey → primary text (#dde4f0) */
+html.dark .text-slate-700,
+html.dark .text-gray-700,
+html.dark .text-zinc-700,
+html.dark .text-neutral-700 { color: #c8d4e8 !important; }
+
+/* Medium grey → muted text (#8696b4) — still readable, slightly subdued */
+html.dark .text-slate-600,
+html.dark .text-gray-600,
+html.dark .text-zinc-600,
+html.dark .text-neutral-600 { color: #a0b0cc !important; }
+
+/* Medium-light grey → muted text */
+html.dark .text-slate-500,
+html.dark .text-gray-500,
+html.dark .text-zinc-500,
+html.dark .text-neutral-500 { color: #8696b4 !important; }
+
+/* Light grey → even more muted but still legible */
+html.dark .text-slate-400,
+html.dark .text-gray-400,
+html.dark .text-zinc-400,
+html.dark .text-neutral-400 { color: #6b7fa0 !important; }
+
+/* ── 4. on-surface utilities (used directly in templates) ── */
+html.dark .text-on-surface         { color: #dde4f0 !important; }
+html.dark .text-on-surface-variant { color: #8696b4 !important; }
+
+/* Opacity variants — keep the opacity but ensure the base is light */
+html.dark .text-on-surface-variant\/70 { color: rgba(134,150,180,0.70) !important; }
+html.dark .text-on-surface-variant\/60 { color: rgba(134,150,180,0.60) !important; }
+html.dark .text-on-surface-variant\/50 { color: rgba(134,150,180,0.50) !important; }
+
+/* ── 5. Paragraph, span, label defaults ──────────────────────────────────────
+   Elements without an explicit text-* class inherit from body (#dde4f0).
+   This rule ensures nothing slips through via browser defaults.               */
+html.dark p:not([class*="text-"]),
+html.dark span:not([class*="text-"]),
+html.dark label:not([class*="text-"]),
+html.dark li:not([class*="text-"]),
+html.dark td:not([class*="text-"]),
+html.dark th:not([class*="text-"]) {
+  color: inherit;   /* inherit from parent — body provides #dde4f0 */
+}
+
+/* ── 6. Form inputs — always readable in dark mode ── */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  color: #dde4f0 !important;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder { color: #6b7fa0 !important; opacity: 1; }
+html.dark label { color: #8696b4; }
+
+/* ── 7. Sidebar navigation text — white with subtle opacity ──────────────────
+   The sidebar <aside> uses `bg-surface` in its Tailwind class which equals
+   the page background in dark mode (#0d1117). Fix: override the background.
+   The nav links use text-on-surface-variant/70 which is already light, but
+   we ensure the close button and user card text are also visible.             */
+html.dark .sidebar {
+  background: #111827 !important;
+  border-right-color: rgba(255,255,255,0.07) !important;
+}
+html.dark .sidebar p,
+html.dark .sidebar span:not(.material-symbols-outlined) {
+  color: #dde4f0 !important;
+}
+html.dark .sidebar a,
+html.dark .sidebar button:not(.solar-glow) {
+  color: #c8d4e8;
+}
+html.dark .sidebar a:hover,
+html.dark .sidebar button:not(.solar-glow):hover {
+  color: #dde4f0;
+  background: rgba(255,255,255,0.06);
+}
+
+/* ── 8. Background surface containers — ensure text on top is always light ── */
+html.dark .bg-surface-container,
+html.dark .bg-surface-container-low,
+html.dark .bg-surface-container-lowest,
+html.dark .bg-surface-container-high,
+html.dark .bg-surface-container-highest {
+  color: #dde4f0;
+}
+
+/* ── 9. Card contents ── */
+html.dark .card { color: #dde4f0; }
+html.dark .card p, html.dark .card span:not(.material-symbols-outlined),
+html.dark .card h1, html.dark .card h2, html.dark .card h3, html.dark .card h4 {
+  color: inherit;
+}
+
+/* ── 10. Toggle row text ── */
+html.dark .toggle-row { color: #dde4f0; }
+
+/* ── 11. ImpactReport — always light-themed for PDF, skip dark override ── */
+html.dark #impact-report-card,
+html.dark #impact-report-card * { /* intentionally no override — report is always light */ }
+
+/* ── 12. Borders — slightly lighter so they're visible without being harsh ── */
+html.dark .border-outline-variant,
+html.dark .border-outline-variant\/20,
+html.dark .border-outline-variant\/10 {
+  border-color: rgba(255,255,255,0.08) !important;
+}
 
 @media (max-width: 640px) { html { font-size: 14px; } .card { padding: 1rem; border-radius: 14px; } }
 @media (max-width: 390px) { html { font-size: 13.5px; } .card { padding: 0.875rem; } }
