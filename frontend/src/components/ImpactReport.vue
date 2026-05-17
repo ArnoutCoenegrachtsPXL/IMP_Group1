@@ -24,7 +24,7 @@ function openReport() { open.value = true }
 
 // ── Badges (inline — no external composable needed) ───────────────────────────
 const BADGE_DEFS = [
-  { id: 'first-reading', emoji: '⚡', label: 'First Reading'  },
+  { id: 'first-reading', emoji: '⬆️', label: 'First Reading'  },
   { id: 'week-streak',   emoji: '🔥', label: 'Week Streak'    },
   { id: 'green-25',      emoji: '🌿', label: 'Green 25%'      },
   { id: 'green-50',      emoji: '🌱', label: 'Green 50%'      },
