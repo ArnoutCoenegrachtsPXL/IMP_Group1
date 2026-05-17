@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import SideBar from '@/components/SideBar.vue'
-import TopBar from '@/components/TopBar.vue'
+import TopBar  from '@/components/TopBar.vue'
 import ChatBot from '@/components/Chatbot.vue'
 import { useUserPrefsStore } from '@/stores/userPrefs'
 
@@ -10,7 +10,7 @@ const route = useRoute()
 const prefs = useUserPrefsStore()
 
 const isPublicRoute = computed(() => {
-  const publicPaths = ['/', '/login', '/register', '/forgot-password', '/reset-password']
+  const publicPaths = ['/', '/login', '/register', '/forgot-password', '/reset-password', '/complete-profile']
   return publicPaths.includes(route.path)
 })
 

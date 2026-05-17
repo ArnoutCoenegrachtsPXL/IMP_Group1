@@ -67,7 +67,6 @@
               </div>
             </div>
 
-            <!-- Success and Error Messages -->
             <p v-if="success" class="text-green-600 dark:text-green-400 text-sm font-medium">{{ success }}</p>
             <p v-if="error" class="text-error text-sm">{{ error }}</p>
 
@@ -90,7 +89,6 @@
           </div>
 
           <div class="flex justify-center">
-            <!-- Google Sign In Button rendered by Google -->
             <div id="google-btn" class="w-full"></div>
           </div>
 
@@ -145,7 +143,12 @@ const handleGoogleLogin = async (response) => {
     localStorage.setItem('fullName', res.data.fullName)
     localStorage.setItem('email', res.data.email)
 
-    router.push('/dashboard')
+    // New Google user → complete profile, existing → dashboard
+    if (res.data.isNewUser || !res.data.postalCode) {
+      router.push('/complete-profile')
+    } else {
+      router.push('/dashboard')
+    }
   } catch (err) {
     googleError.value = err.response?.data?.message || 'Google sign in failed. Please try again.'
   }
@@ -168,8 +171,14 @@ const handleLogin = async () => {
     localStorage.setItem('email', response.data.email || form.value.email)
     localStorage.setItem('postalcode', response.data.postalcode)
 
-    success.value = 'Login successful! Redirecting to dashboard...'
-    setTimeout(() => router.push('/dashboard'), 1200)
+    // If postalCode is null, user hasn't completed profile yet
+    if (!response.data.postalCode) {
+      success.value = 'Login successful! Please complete your profile...'
+      setTimeout(() => router.push('/complete-profile'), 1000)
+    } else {
+      success.value = 'Login successful! Redirecting to dashboard...'
+      setTimeout(() => router.push('/dashboard'), 1200)
+    }
 
   } catch (err) {
     error.value = err.response?.data?.message || 'Invalid email or password.'

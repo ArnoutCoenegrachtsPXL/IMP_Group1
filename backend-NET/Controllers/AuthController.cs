@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using backend_NET.ApiModels;
 using backend_NET.Models;
 using BCrypt.Net;
@@ -42,7 +43,17 @@ namespace backend_NET.Controllers
             await _userRepo.AddAsync(user);
             await _userRepo.SaveChangesAsync();
 
-            return Ok(new { message = "Account created successfully." });
+            var token = GenerateJwtToken(user);
+            return Ok(new
+            {
+                message = "Account created successfully.",
+                token = token,
+                userId = user.Id,
+                fullName = user.FullName,
+                email = user.Email,
+                postalCode = user.PostalCode,
+                householdSize = user.HouseHoldSize
+            });
         }
 
         [HttpPost("login")]
@@ -62,7 +73,8 @@ namespace backend_NET.Controllers
                 userId = user.Id,
                 fullName = user.FullName,
                 email = user.Email,
-                postalcode = user.PostalCode
+                postalCode = user.PostalCode,
+                householdSize = user.HouseHoldSize
             });
         }
 
@@ -71,7 +83,6 @@ namespace backend_NET.Controllers
         {
             try
             {
-                // Decode the Google JWT credential
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(model.Credential);
 
@@ -82,9 +93,11 @@ namespace backend_NET.Controllers
                     return BadRequest(new { message = "Invalid Google token." });
 
                 var user = await _userRepo.GetByEmailAsync(email.ToLower());
+                bool isNewUser = false;
 
                 if (user == null)
                 {
+                    isNewUser = true;
                     user = new User
                     {
                         Id = Guid.NewGuid(),
@@ -97,12 +110,42 @@ namespace backend_NET.Controllers
                 }
 
                 var token = GenerateJwtToken(user);
-                return Ok(new { message = "Login successful.", token, userId = user.Id, fullName = user.FullName, email = user.Email });
+                return Ok(new
+                {
+                    message = "Login successful.",
+                    token,
+                    userId = user.Id,
+                    fullName = user.FullName,
+                    email = user.Email,
+                    postalCode = user.PostalCode,
+                    householdSize = user.HouseHoldSize,
+                    isNewUser
+                });
             }
             catch (Exception)
             {
                 return BadRequest(new { message = "Failed to process Google login." });
             }
+        }
+
+        [HttpPost("update-profile")]
+        [Authorize]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileModel model)
+        {
+            var user = _userRepo.GetUser(model.UserId);
+
+            if (user == null)
+                return NotFound(new { message = "User not found." });
+
+            if (model.PostalCode.HasValue)
+                user.PostalCode = model.PostalCode.Value;
+
+            if (model.HouseHoldSize.HasValue)
+                user.HouseHoldSize = model.HouseHoldSize.Value;
+
+            await _userRepo.SaveChangesAsync();
+
+            return Ok(new { message = "Profile updated successfully." });
         }
 
         [HttpPost("forgot-password")]
@@ -150,8 +193,8 @@ namespace backend_NET.Controllers
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.FullName)
+                    new Claim(ClaimTypes.Email,          user.Email),
+                    new Claim(ClaimTypes.Name,           user.FullName)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes),
                 Issuer = _jwtSettings.Issuer,

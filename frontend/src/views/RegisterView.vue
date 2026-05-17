@@ -89,7 +89,6 @@
           </div>
 
           <div class="flex justify-center">
-            <!-- Google Sign Up Button -->
             <div id="google-register-btn" class="w-full"></div>
           </div>
 
@@ -146,6 +145,7 @@ const handleGoogleRegister = async (response) => {
     localStorage.setItem('fullName', res.data.fullName)
     localStorage.setItem('email', res.data.email)
 
+    // Google login goes straight to dashboard (may be existing account)
     router.push('/dashboard')
   } catch (err) {
     googleError.value = err.response?.data?.message || 'Google sign up failed. Please try again.'
@@ -168,14 +168,22 @@ const handleRegister = async () => {
   isLoading.value = true
 
   try {
-    await axios.post('https://localhost:7126/api/auth/register', {
+    const res = await axios.post('https://localhost:7126/api/auth/register', {
       fullName: form.value.fullName,
       email: form.value.email,
       password: form.value.password
     })
 
-    success.value = 'Account created successfully! Redirecting to login...'
-    setTimeout(() => router.push('/login'), 1500)
+    // Store auth data returned from registration
+    localStorage.setItem('token', res.data.token)
+    localStorage.setItem('userId', res.data.userId)
+    localStorage.setItem('fullName', res.data.fullName)
+    localStorage.setItem('email', res.data.email)
+    // Flag so router allows access to /complete-profile
+    localStorage.setItem('isNewUser', 'true')
+
+    success.value = 'Account created! Setting up your profile...'
+    setTimeout(() => router.push('/complete-profile'), 800)
 
   } catch (err) {
     error.value = err.response?.data?.message || 'Registration failed. Please try again.'

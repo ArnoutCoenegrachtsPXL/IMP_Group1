@@ -45,4 +45,14 @@ namespace backend_NET.ApiModels
         [Required]
         public string Credential { get; set; } = string.Empty;
     }
+
+    // Used by POST /api/auth/update-profile after registration
+    public class UpdateProfileModel
+    {
+        [Required]
+        public Guid UserId { get; set; }
+
+        public int? PostalCode { get; set; }    // matches User.PostalCode (int?)
+        public int? HouseHoldSize { get; set; } // matches User.HouseHoldSize (int?)
+    }
 }
