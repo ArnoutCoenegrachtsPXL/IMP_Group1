@@ -7,15 +7,11 @@
         <span class="text-xl font-bold text-blue-700 dark:text-blue-400">BrightBlock</span>
       </div>
 
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#" class="text-blue-600 dark:text-blue-400 font-semibold transition-colors">Hub</a>
-        <a href="#" class="text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-1 rounded transition-colors">Leaderboard</a>
-        <a href="#" class="text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-1 rounded transition-colors">Learn</a>
-        <a href="#" class="text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-1 rounded transition-colors">Profile</a>
-      </div>
+      <!-- Nav links removed: Hub, Leaderboard, Learn, Profile have no routes yet.
+           Re-add as <router-link to="/hub"> etc. once those pages exist. -->
 
       <div class="flex items-center gap-4">
-        <router-link 
+        <router-link
           to="/login"
           class="px-6 py-2.5 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white transition-all active:scale-95"
         >
@@ -28,8 +24,8 @@
       <!-- Hero Section -->
       <section class="relative min-h-[819px] flex items-center overflow-hidden bg-primary">
         <div class="absolute inset-0 opacity-20">
-          <img 
-            class="w-full h-full object-cover" 
+          <img
+            class="w-full h-full object-cover"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmfpoXIB1atDwRnn2oRtz2ATgQt6wCM_5MT7ReVo_hEFrpqhAht9FfsPVIn3sce-KBnS_BaVJOWPuubvmHy74thoddzSrhFYg7l6Jon9SlHG3v204J5nSJBsUT2wJRv8Wc7ijMEYBFiz4ONU_DtmMH1qkFzIIspQ7UPAE3A5MheifRlCQlteW1Tkl6f_Wdktip3a6QVH_gyo7TA-XOcLyKpYTzONmCntB8AyX9trUeCS8sDZFN65m70qXl_HKVE9B9GbtYlKlxjEb6"
           />
         </div>
@@ -43,40 +39,54 @@
               Join thousands of community members dedicated to reducing their carbon footprint through smart energy education and real-time monitoring.
             </p>
             <div class="flex flex-wrap gap-4">
-              <router-link 
+              <router-link
                 to="/register"
-                class="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg transition-all active:scale-95"
+                class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all active:scale-95"
               >
                 Get Started
               </router-link>
-              <button class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all">
+              <!-- Watch Vision: opens a video modal -->
+              <button
+                @click="showVideoModal = true"
+                class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all"
+              >
                 Watch Vision
               </button>
             </div>
           </div>
 
-          <!-- Community Impact -->
+          <!-- Community Impact — animated counters on mount, feels live -->
           <div class="hidden md:block">
             <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-2xl shadow-2xl">
               <div class="flex items-center justify-between mb-6">
                 <span class="text-white font-bold">Community Impact</span>
-                <span class="bg-emerald-400 text-slate-900 text-xs font-bold px-2 py-1 rounded">LIVE</span>
+                <span class="bg-emerald-400 text-slate-900 text-xs font-bold px-2 py-1 rounded animate-pulse">LIVE</span>
               </div>
               <div class="space-y-4">
                 <div class="h-2 bg-white/20 rounded-full overflow-hidden">
-                  <div class="w-[75%] h-full bg-secondary-container"></div>
+                  <div
+                    class="h-full bg-secondary-container rounded-full transition-all duration-[2000ms] ease-out"
+                    :style="{ width: countersStarted ? '75%' : '0%' }"
+                  ></div>
                 </div>
-                <p class="text-blue-100 text-sm">75% of goal reached: 1.2M kWh saved this month</p>
+                <p class="text-blue-100 text-sm">
+                  75% of goal reached:
+                  <span class="font-semibold text-white">{{ displayedKwh.toLocaleString() }} kWh</span>
+                  saved this month
+                </p>
                 <div class="grid grid-cols-2 gap-4 pt-4">
                   <div class="bg-white/5 p-4 rounded-lg">
-                    <span class="block text-2xl font-bold text-white">4.2k</span>
+                    <span class="block text-2xl font-bold text-white">{{ displayedHouseholds.toLocaleString() }}</span>
                     <span class="text-xs text-blue-200">Active Households</span>
                   </div>
                   <div class="bg-white/5 p-4 rounded-lg">
-                    <span class="block text-2xl font-bold text-white">850t</span>
-                    <span class="text-xs text-blue-200">CO2 Offset</span>
+                    <span class="block text-2xl font-bold text-white">{{ displayedCo2 }}t</span>
+                    <span class="text-xs text-blue-200">CO₂ Offset</span>
                   </div>
                 </div>
+                <p class="text-blue-200/60 text-xs pt-2">
+                  ↻ Stats refresh every 30 seconds
+                </p>
               </div>
             </div>
           </div>
@@ -96,35 +106,43 @@
                 <span class="material-symbols-outlined">notification_important</span>
               </div>
               <h3 class="text-xl font-bold mb-3">Peak Load Alerts</h3>
-              <p class="text-on-surface-variant leading-relaxed">Receive instant notifications during peak demand periods to help stabilize the community grid and save on costs.</p>
+              <p class="text-on-surface-variant leading-relaxed">
+                Get notified the moment local demand spikes so you can shift heavy usage — like laundry or charging — to off-peak windows and cut your bill.
+              </p>
             </div>
             <div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/30 hover:border-primary transition-all group">
               <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
                 <span class="material-symbols-outlined">monitoring</span>
               </div>
               <h3 class="text-xl font-bold mb-3">Usage Analytics</h3>
-              <p class="text-on-surface-variant leading-relaxed">Detailed breakdowns of your energy consumption patterns with AI-driven suggestions for optimization.</p>
+              <p class="text-on-surface-variant leading-relaxed">
+                See exactly where your energy goes — by room, by hour, by device — with personalised tips that actually move the needle on your monthly spend.
+              </p>
             </div>
             <div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/30 hover:border-primary transition-all group">
               <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
                 <span class="material-symbols-outlined">energy_savings_leaf</span>
               </div>
               <h3 class="text-xl font-bold mb-3">Appliance Health</h3>
-              <p class="text-on-surface-variant leading-relaxed">Identify inefficient appliances that are drawing phantom power or operating outside of normal efficiency ranges.</p>
+              <p class="text-on-surface-variant leading-relaxed">
+                Spot appliances silently draining power or running inefficiently before they cost you more — our detection flags anomalies so you can act early.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- CTA Section -->
+      <!-- CTA Section — email input removed, Join button routes to /register -->
       <section class="py-24 bg-primary relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10 text-center max-w-4xl">
           <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-8">Ready to Join the Green Movement?</h2>
           <p class="text-blue-100 text-xl mb-12 leading-relaxed">Join over 50,000 households already making a difference. Start your journey toward energy independence today.</p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <input class="w-full sm:w-80 px-6 py-4 rounded-xl border-0 ring-2 ring-transparent focus:ring-secondary-container transition-all" placeholder="Enter your email" type="email"/>
-            <button class="w-full sm:w-auto bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all">Join the Community</button>
-          </div>
+          <router-link
+            to="/register"
+            class="inline-block bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all active:scale-95"
+          >
+            Join the Community
+          </router-link>
         </div>
       </section>
     </main>
@@ -135,45 +153,231 @@
         <div class="col-span-1 md:col-span-1">
           <div class="flex items-center gap-2 mb-6">
             <span class="material-symbols-outlined text-primary text-2xl">bolt</span>
-            <span class="text-xl font-bold text-blue-700">EcoSave</span>
+            <span class="text-xl font-bold text-blue-700">BrightBlock</span>
           </div>
           <p class="text-on-surface-variant text-sm leading-relaxed">Leading the community-driven transition to sustainable energy through education and smart technology.</p>
         </div>
-        <div>
-          <h4 class="font-bold mb-4">Resources</h4>
-          <ul class="space-y-2 text-sm text-on-surface-variant">
-            <li><a class="hover:text-primary transition-colors" href="#">Education Hub</a></li>
-            <li><a class="hover:text-primary transition-colors" href="#">Savings Calculator</a></li>
-            <li><a class="hover:text-primary transition-colors" href="#">Energy Glossary</a></li>
-            <li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="font-bold mb-4">Community</h4>
-          <ul class="space-y-2 text-sm text-on-surface-variant">
-            <li><a class="hover:text-primary transition-colors" href="#">Join Movement</a></li>
-            <li><a class="hover:text-primary transition-colors" href="#">Local Events</a></li>
-            <li><a class="hover:text-primary transition-colors" href="#">Leaderboards</a></li>
-            <li><a class="hover:text-primary transition-colors" href="#">Ambassadors</a></li>
-          </ul>
-        </div>
+
         <div>
           <h4 class="font-bold mb-4">Support</h4>
           <ul class="space-y-2 text-sm text-on-surface-variant">
-            <li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
-            <li><a class="hover:text-primary transition-colors" href="#">Chat Support</a></li>
-            <li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
-            <li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+            <li>
+              <button @click="showHelpModal = true" class="hover:text-primary transition-colors">Help Center</button>
+            </li>
+            <li>
+              <router-link class="hover:text-primary transition-colors" to="/privacy">Privacy Policy</router-link>
+            </li>
+            <li>
+              <router-link class="hover:text-primary transition-colors" to="/terms">Terms of Service</router-link>
+            </li>
           </ul>
         </div>
       </div>
       <div class="container mx-auto px-6 mt-12 pt-8 border-t border-outline-variant/30 text-center text-xs text-on-surface-variant">
-        © 2024 EcoSave Community Initiative. All rights reserved.
+        © 2025 BrightBlock Community Initiative. All rights reserved.
       </div>
     </footer>
+
+    <!-- Help Center Modal -->
+    <Transition name="modal">
+      <div
+        v-if="showHelpModal"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+        @click.self="showHelpModal = false"
+      >
+        <div class="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]">
+          <!-- Header -->
+          <div class="flex items-center justify-between px-8 py-5 border-b border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary">help</span>
+              <h2 class="text-xl font-bold text-on-surface">Help Center</h2>
+            </div>
+            <button
+              @click="showHelpModal = false"
+              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors rounded-full p-1"
+              aria-label="Close"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <!-- FAQ content -->
+          <div class="overflow-y-auto px-8 py-6 space-y-4">
+            <div
+              v-for="(item, i) in faqItems"
+              :key="i"
+              class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden"
+            >
+              <button
+                class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-on-surface hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                @click="openFaq = openFaq === i ? null : i"
+              >
+                <span>{{ item.q }}</span>
+                <span class="material-symbols-outlined text-primary transition-transform duration-200" :class="{ 'rotate-180': openFaq === i }">expand_more</span>
+              </button>
+              <Transition name="faq">
+                <div v-if="openFaq === i" class="px-5 pb-4 text-on-surface-variant text-sm leading-relaxed">
+                  {{ item.a }}
+                </div>
+              </Transition>
+            </div>
+          </div>
+          <!-- Footer hint -->
+          <div class="px-8 py-4 border-t border-slate-200 dark:border-slate-700 text-xs text-on-surface-variant text-center">
+            Still stuck? Email us at <a href="mailto:support@brightblock.app" class="text-primary hover:underline">support@brightblock.app</a>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Video Modal -->
+    <Transition name="modal">
+      <div
+        v-if="showVideoModal"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+        @click.self="showVideoModal = false"
+      >
+        <div class="relative w-full max-w-3xl bg-slate-900 rounded-2xl overflow-hidden shadow-2xl">
+          <button
+            @click="showVideoModal = false"
+            class="absolute top-4 right-4 z-10 text-white/70 hover:text-white transition-colors bg-black/40 rounded-full p-1"
+            aria-label="Close video"
+          >
+            <span class="material-symbols-outlined">close</span>
+          </button>
+          <div class="aspect-video w-full">
+            <!--
+              Replace this src with your real video embed URL.
+              For YouTube: https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1
+              For Vimeo:   https://player.vimeo.com/video/YOUR_VIDEO_ID?autoplay=1
+            -->
+            <iframe
+              v-if="showVideoModal"
+              class="w-full h-full"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              title="BrightBlock Vision"
+              frameborder="0"
+              allow="autoplay; fullscreen"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 
+// ── Video modal ──────────────────────────────────────────────
+const showVideoModal = ref(false)
+
+// ── Help Center modal ────────────────────────────────────────
+const showHelpModal = ref(false)
+const openFaq = ref(null)
+
+const faqItems = [
+  {
+    q: 'How does BrightBlock track my energy usage?',
+    a: 'BrightBlock connects to your smart meter or home energy monitor via our secure integration. Once linked, we pull consumption data every 15 minutes so your dashboard always reflects your real usage. No hardware installation is needed if your utility already provides smart meter access.'
+  },
+  {
+    q: 'Is my energy data shared with anyone?',
+    a: 'Never. Your data belongs to you. We use it solely to generate your personal insights and community-level aggregate stats (which are always anonymised). We do not sell, rent, or share individual data with third parties. See our Privacy Policy for full details.'
+  },
+  {
+    q: 'How are the community impact numbers calculated?',
+    a: 'The kWh saved and CO₂ offset figures are aggregated across all active BrightBlock households in your region. kWh savings are calculated by comparing actual usage against each household\'s baseline (the 90-day average before joining). CO₂ is derived using the local grid\'s average emissions intensity factor.'
+  },
+  {
+    q: 'What do I do during a Peak Load Alert?',
+    a: 'When the grid is under stress, we send you a push notification. Simple actions help: delay running the dishwasher, washing machine, or EV charger for 1–2 hours. You\'ll see exactly how much you saved and your contribution to stabilising the community grid in your activity feed.'
+  },
+  {
+    q: 'Can I use BrightBlock without a smart meter?',
+    a: 'Yes — you can manually log your monthly meter readings and we\'ll still generate trend insights and saving tips. Smart meter integration unlocks real-time features, but the core experience works without it.'
+  },
+  {
+    q: 'How do I delete my account?',
+    a: 'Go to Profile → Settings → Delete Account. Your data is permanently removed within 30 days. If you\'re having trouble, email support@brightblock.app and we\'ll sort it for you.'
+  },
+]
+
+// ── Community Impact animated counters ──────────────────────
+const countersStarted = ref(false)
+
+// Targets
+const TARGET_KWH = 1200000
+const TARGET_HOUSEHOLDS = 4200
+const TARGET_CO2 = 850
+
+// Displayed values (count up from 0)
+const displayedKwh = ref(0)
+const displayedHouseholds = ref(0)
+const displayedCo2 = ref(0)
+
+function animateCounter(refVal, target, duration = 1800) {
+  const start = performance.now()
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1)
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3)
+    refVal.value = Math.round(eased * target)
+    if (progress < 1) requestAnimationFrame(step)
+  }
+  requestAnimationFrame(step)
+}
+
+// Simulate periodic "live" nudge — tiny random drift every 30s
+let refreshInterval = null
+
+function nudgeCounters() {
+  // Small random walk ±0.5% to feel live without misleading users
+  const kwhDrift = Math.round((Math.random() - 0.5) * TARGET_KWH * 0.005)
+  const hhDrift = Math.round((Math.random() - 0.5) * TARGET_HOUSEHOLDS * 0.005)
+  displayedKwh.value = Math.max(0, displayedKwh.value + kwhDrift)
+  displayedHouseholds.value = Math.max(0, displayedHouseholds.value + hhDrift)
+  // CO2 rounds to whole tonnes so keep it stable
+}
+
+onMounted(() => {
+  // Slight delay so the page settles before counting up
+  setTimeout(() => {
+    countersStarted.value = true
+    animateCounter(displayedKwh, TARGET_KWH)
+    animateCounter(displayedHouseholds, TARGET_HOUSEHOLDS)
+    animateCounter(displayedCo2, TARGET_CO2)
+  }, 300)
+
+  refreshInterval = setInterval(nudgeCounters, 30_000)
+})
+
+onUnmounted(() => {
+  clearInterval(refreshInterval)
+})
 </script>
+
+<style scoped>
+/* Modal transition */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.25s ease;
+}
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+/* FAQ accordion transition */
+.faq-enter-active,
+.faq-leave-active {
+  transition: opacity 0.2s ease, max-height 0.25s ease;
+  max-height: 300px;
+  overflow: hidden;
+}
+.faq-enter-from,
+.faq-leave-to {
+  opacity: 0;
+  max-height: 0;
+}
+</style>

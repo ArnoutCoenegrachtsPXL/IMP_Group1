@@ -13,6 +13,8 @@ import LeaderboardPersonalView from '@/views/LeaderboardPersonalView.vue'
 import SettingsView            from '../views/SettingsView.vue'
 import SupportView             from '@/views/SupportView.vue'
 import CommunityView           from '@/views/CommunityView.vue'
+import PrivacyPolicyView       from '@/views/PrivacyPolicyView.vue'
+import TermsOfServiceView      from '@/views/TermsOfServiceView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,20 +39,23 @@ const router = createRouter({
 
   routes: [
     // Public
-    { path: '/',                 name: 'landing',         component: LandingPageView        },
-    { path: '/login',            name: 'login',           component: LoginView              },
-    { path: '/register',         name: 'register',        component: RegisterView           },
-    { path: '/forgot-password',  name: 'forgot-password', component: ForgotPasswordView     },
-    { path: '/reset-password',   name: 'reset-password',  component: ResetPasswordView      },
-    { path: '/complete-profile', name: 'complete-profile',component: CompleteProfileView    },
+    { path: '/',                 name: 'landing',         component: LandingPageView         },
+    { path: '/login',            name: 'login',           component: LoginView               },
+    { path: '/register',         name: 'register',        component: RegisterView            },
+    { path: '/forgot-password',  name: 'forgot-password', component: ForgotPasswordView      },
+    { path: '/reset-password',   name: 'reset-password',  component: ResetPasswordView       },
+    { path: '/complete-profile', name: 'complete-profile',component: CompleteProfileView     },
+    { path: '/privacy',          name: 'privacy',         component: PrivacyPolicyView       },
+    { path: '/terms',            name: 'terms',           component: TermsOfServiceView      },
+
     // Protected
-    { path: '/dashboard',        name: 'dashboard',       component: DashboardView          },
-    { path: '/leaderboard',      name: 'leaderboard',     component: LeaderboardPersonalView},
-    { path: '/upload',           name: 'upload-meter',    component: UploadMeterView        },
-    { path: '/energy-tips',      name: 'energy-tips',     component: EnergyTipsView         },
-    { path: '/settings',         name: 'settings',        component: SettingsView           },
-    { path: '/support',          name: 'support',         component: SupportView            },
-    { path: '/community',        name: 'community',       component: CommunityView          },
+    { path: '/dashboard',        name: 'dashboard',       component: DashboardView           },
+    { path: '/leaderboard',      name: 'leaderboard',     component: LeaderboardPersonalView },
+    { path: '/upload',           name: 'upload-meter',    component: UploadMeterView         },
+    { path: '/energy-tips',      name: 'energy-tips',     component: EnergyTipsView          },
+    { path: '/settings',         name: 'settings',        component: SettingsView            },
+    { path: '/support',          name: 'support',         component: SupportView             },
+    { path: '/community',        name: 'community',       component: CommunityView           },
 
     // Catch-all
     { path: '/:pathMatch(.*)*', redirect: '/' },

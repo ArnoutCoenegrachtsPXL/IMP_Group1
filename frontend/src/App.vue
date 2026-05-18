@@ -10,7 +10,7 @@ const route = useRoute()
 const prefs = useUserPrefsStore()
 
 const isPublicRoute = computed(() => {
-  const publicPaths = ['/', '/login', '/register', '/forgot-password', '/reset-password', '/complete-profile']
+  const publicPaths = ['/', '/login', '/register', '/forgot-password', '/reset-password', '/complete-profile', '/privacy', '/terms']
   return publicPaths.includes(route.path)
 })
 
