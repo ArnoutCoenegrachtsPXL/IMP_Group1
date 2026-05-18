@@ -54,7 +54,7 @@ const selectionLabel = computed(() => {
     const hour   = h % 12 || 12
     return `${hour}:${String(m).padStart(2, '0')} ${suffix}`
   }
-  return `${fmt(startTime.value)} – ${fmt(endTime.value)}`
+  return `${fmt(startTime.value)} - ${fmt(endTime.value)}`
 })
 
 async function fetchTips() {

@@ -9,7 +9,7 @@ namespace backend_NET.Models
             AppDbContext context = applicationBuilder.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
 
             
-            if (!context.Users.Any() && !context.MeterReadings.Any())
+            if (/*!context.Users.Any() && */!context.MeterReadings.Any())
             {
                 Console.WriteLine("Seeding database...");
                 Console.WriteLine("  Seeding users...");

@@ -40,9 +40,54 @@ import { BADGE_DEFS, earnedBadges } from '@/composables/badges'
 const prefs  = useUserPrefsStore()
 const router = useRouter()
 
+// ── Leaderboard data ──────────────────────────────────────────────────────────
+
+function rankBadge(rank) {
+  //windows key + . for emojis
+  if (rank === 1) return '🏆'
+  if (rank === 2) return '🥈'
+  if (rank === 3) return '🥉'
+  if (rank <= 10) return '⚡'
+  return '🌱'
+}
+
 // ── Theme integration ─────────────────────────────────────────────────────────
-onMounted(() => {
+onMounted(async () => {
   if (typeof prefs.applyViewTheme === 'function') prefs.applyViewTheme('community')
+
+  try {
+    const res = await fetch('/api/leaderboard')
+    if (res.ok) {
+      const data = await res.json()
+      const households = data.topHouseholds || []
+
+      leaderboardPreview.value = households.slice(0, 5).map(h => ({
+        rank:     h.rank,
+        name:     h.userName,
+        avatar:   h.profileImageUrl || '',
+        kwh:      h.energyPerPerson,
+        badge:    rankBadge(h.rank),
+        location: String(h.postalCode),
+      }))
+
+      const userId = localStorage.getItem('userId')
+      const me = households.find(h => h.householdId === userId)
+      if (me) {
+        myRank.value = me.rank
+        myKwh.value  = me.energyPerPerson
+      } else if (userId) {
+        const userRes = await fetch(`/api/leaderboard/user/${userId}`)
+        if (userRes.ok) {
+          const userData = await userRes.json()
+          myRank.value = userData.rank
+          if (userData.energyPerPerson != null) myKwh.value = userData.energyPerPerson
+        }
+
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load leaderboard:', err)
+  }
 })
 onUnmounted(() => {
   const html = document.documentElement
@@ -152,17 +197,11 @@ const communityStats = ref({
 })
 
 // ── Leaderboard preview ────────────────────────────────────────────────────────
-const leaderboardPreview = ref([
-  { rank: 1,  name: 'Thabo M.',    avatar: '', kwh: 1842, streak: 32, badge: '🏆', location: 'Sandton'    },
-  { rank: 2,  name: 'Priya S.',    avatar: '', kwh: 1730, streak: 28, badge: '🥈', location: 'Cape Town'  },
-  { rank: 3,  name: 'Johan V.',    avatar: '', kwh: 1621, streak: 21, badge: '🥉', location: 'Pretoria'   },
-  { rank: 4,  name: 'Amahle D.',   avatar: '', kwh: 1489, streak: 19, badge: '⚡', location: 'Durban'     },
-  { rank: 5,  name: 'Riaan B.',    avatar: '', kwh: 1344, streak: 15, badge: '🌱', location: 'Stellenbosch' },
-])
+const leaderboardPreview = ref([])
 
-// Current user rank (from prefs / API in production)
-const myRank = ref(42)
-const myKwh  = ref(612.8)
+// Current user rank — populated from API in onMounted
+const myRank = ref(null)
+const myKwh  = ref(null)
 
 // ── Community perks / badges — sourced from shared badges.js composable ─────────
 // myStats represents the current user. In production, load this from your API.
@@ -360,11 +399,11 @@ function avatarText(name) {
           <!-- User stats pill -->
           <div class="flex gap-3 flex-wrap">
             <div class="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 text-center min-w-[80px]">
-              <p class="text-2xl font-black text-on-primary">#{{ myRank }}</p>
+              <p class="text-2xl font-black text-on-primary">{{ myRank != null ? '#' + myRank : '—' }}</p>
               <p class="text-[10px] text-on-primary/70 uppercase tracking-wider mt-0.5">My Rank</p>
             </div>
             <div class="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 text-center min-w-[80px]">
-              <p class="text-2xl font-black text-on-primary">{{ myKwh }}</p>
+              <p class="text-2xl font-black text-on-primary">{{ myKwh != null ? myKwh : '—' }}</p>
               <p class="text-[10px] text-on-primary/70 uppercase tracking-wider mt-0.5">My kWh</p>
             </div>
             <div class="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 text-center min-w-[80px]">
@@ -730,7 +769,7 @@ function avatarText(name) {
             <!-- My rank divider -->
             <div class="border-t border-outline-variant/20 my-2 pt-3">
               <div class="flex items-center gap-3 p-2.5 rounded-xl bg-primary/8">
-                <span class="text-sm shrink-0 w-6 text-center font-bold text-primary">#{{ myRank }}</span>
+                <span class="text-sm shrink-0 w-6 text-center font-bold text-primary">{{ myRank != null ? '#' + myRank : '—' }}</span>
                 <div class="w-8 h-8 rounded-full overflow-hidden shrink-0">
                   <img v-if="prefs.avatarUrl" :src="prefs.avatarUrl" class="w-full h-full object-cover" :alt="prefs.profile.displayName"/>
                   <div v-else class="w-full h-full flex items-center justify-center text-xs font-bold"
@@ -743,7 +782,7 @@ function avatarText(name) {
                   <p class="text-[10px] text-on-surface-variant">{{ prefs.profile.location || 'South Africa' }}</p>
                 </div>
                 <div class="text-right shrink-0">
-                  <p class="text-xs font-bold text-primary">{{ myKwh }}</p>
+                  <p class="text-xs font-bold text-primary">{{ myKwh ?? '—' }}</p>
                   <p class="text-[10px] text-on-surface-variant">kWh</p>
                 </div>
               </div>
