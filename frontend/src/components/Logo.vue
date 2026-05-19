@@ -12,3 +12,4 @@
     </span>
   </router-link>
 </template>
+<!-- The logo is a router-link to the dashboard, with an icon and wordmark. -->
