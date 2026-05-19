@@ -7,6 +7,7 @@ import ElectricitySavingTip from '@/components/EnergySavingTipsComponents/Electr
 import HeatingSavingTip     from '@/components/EnergySavingTipsComponents/HeatingSavingTip.vue'
 import KitchenSavingTip     from '@/components/EnergySavingTipsComponents/KitchenSavingTip.vue'
 import LaundrySavingTip     from '@/components/EnergySavingTipsComponents/LaundrySavingTip.vue'
+import ScheduledTip         from '@/components/EnergySavingTipsComponents/ScheduledTip.vue'
 import SolarSavingTip       from '@/components/EnergySavingTipsComponents/SolarSavingTip.vue'
 import WaterSavingTip       from '@/components/EnergySavingTipsComponents/WaterSavingTip.vue'
 
@@ -351,6 +352,7 @@ function closeAdviceModal() {
     <SolarSavingTip       v-if="currentView === 'solar'"       @back="currentView = 'main'" />
     <KitchenSavingTip     v-if="currentView === 'kitchen'"     @back="currentView = 'main'" />
     <LaundrySavingTip     v-if="currentView === 'laundry'"     @back="currentView = 'main'" />
+    <ScheduledTip         v-if="currentView === 'schedule'"    :timeFrom="scheduleFrom" :timeTo="scheduleTo" @back="currentView = 'main'" />
 
     <!-- ── Main view ──────────────────────────────────────────────────────── -->
     <div v-if="currentView === 'main'" class="space-y-8">
@@ -415,12 +417,12 @@ function closeAdviceModal() {
               <span class="text-sm font-semibold text-on-surface">Show tips for my active hours only</span>
             </label>
 
-            <!-- Apply button -->
+            <!-- Apply button — navigates to ScheduledTip view, then saves schedule -->
             <button
               class="solar-glow px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 min-h-[44px] shrink-0 transition-all"
               :class="scheduleApplied ? 'bg-emerald-500' : ''"
               :style="scheduleApplied ? 'background: #10b981;' : ''"
-              @click="applySchedule"
+              @click="applySchedule(); currentView = 'schedule'"
               :disabled="savingSchedule"
             >
               <svg v-if="savingSchedule" class="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
