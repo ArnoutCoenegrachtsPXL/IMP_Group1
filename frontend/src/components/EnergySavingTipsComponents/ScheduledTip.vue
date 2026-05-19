@@ -18,9 +18,9 @@ const startTime = ref(props.timeFrom)
 const endTime   = ref(props.timeTo)
 
 const impactConfig = {
-  high:   { label: 'High Impact',   classes: 'bg-red-100 text-red-700' },
-  medium: { label: 'Medium Impact', classes: 'bg-primary-container/60 text-primary' },
-  low:    { label: 'Low Impact',    classes: 'bg-surface-container-high text-on-surface-variant' },
+  high:   { label: 'High Impact',   bg: 'bg-red-100',     text: 'text-red-700'    },
+  medium: { label: 'Medium Impact', bg: 'bg-amber-100',   text: 'text-amber-700'  },
+  low:    { label: 'Low Impact',    bg: 'bg-emerald-100', text: 'text-emerald-700' },
 }
 
 const categoryIcons = {
@@ -33,12 +33,21 @@ const categoryIcons = {
   Electricity: 'bolt',
 }
 
+// Fallback placeholder images per category so cards always have a hero image
+const categoryImages = {
+  Cooling:     'https://lh3.googleusercontent.com/aida-public/AB6AXuDav2CwnH7_sK8zJshe51W_8peePokZF0VTHkhWK4i9wTp6MyPQHEPLQwlT7VIgerogydLfGW2KApRyJz3yJ12ag0hVp0Qu30a9fJWKMeYzJV3IRKeiV2oWa87-F4U-Ax6lGsdMOI6ZvnRpLpgSJmFcXoENTx8zTeXXCl5391lz6ncX43yLvfGfmYlKhKYHzBZM8gpSeZXbXmeBMfDlCX4dU8vlqKVRW8ecGpaeqHHR_uXAbSiG9eFv59K8AMOMPzzBhUthr6eSoNHA',
+  Laundry:     'https://lh3.googleusercontent.com/aida-public/AB6AXuBjhLHZbdX_il1lydLfYaztp3hmg5jMfaaX_Qbb0HnNyPKm55i2ALDK72ZzzqmTv0r0ssunoJZTFgEZXHFRyOnXj5R5C05W1vgWIO2EeJht9vBFcDZRhwpkrZ6MsPhKrqkU2q9xxXgEZQMUED9Xk1nJj9rT0GrWUHq3oTLMwM-G9pdnEqhpUgT7oaLgasOOJumjkuE5RTLVbksns_UXtH3RDmA-j15oK4-1Jp3InIVLIfs5OBvOK2U7kQgqFGeqJDg3PpFglzRuSWeu',
+  Kitchen:     'https://lh3.googleusercontent.com/aida-public/AB6AXuDMy0PhlxobZcJ_4g4Mf9SeMLlF-_DkNtY2SyB6FAWUZHT69Udt45Qsbzuz0ny5-lhDO8unmQcOl3R5vlohm9-yrUTfbhqqfJZyGmYcb45mgqtckZLcMiFAquIe9meoXQbicAKqGdmfXbvUR-oxLoBlywqw2E9uMyMWXpjVv7N6sB6TPmeYssnSGvnVFtzIUabwt393gKzyxnEfJEONPvz-Rpq9bNX9ZvceMD4KN8Q56KHtxXqLKHNXXKHlvDXGzhHKi0MFlg0w59vY',
+  Water:       'https://lh3.googleusercontent.com/aida-public/AB6AXuDzmlNYVJl7YfKlpEYRkrcL9kQCQOvMn3CQF4v86Dh5_ybH6eGL5sAEybZJq1lf-n8SqfB_09QtWYaiRw9PT8Dxy2TL98K0iTYGwq-XA1MTc2iAgD3fYl-f5x4NEe8eCvkXSDtTUq3IWXNhwD-bNvzWCAzePLMnID6duNaqbceSQDFgWQGG0L9MkvuDniJc2DWltOPLkbfFUZ-qlnu7-CHPsxTztEHtQS8c9nrFWCYK32iAAW2TB_83yz7ua9xEnrHr0WWzuwWfgnSd',
+  Solar:       'https://lh3.googleusercontent.com/aida-public/AB6AXuC_t0LazH9tTWFhJf0OamJnaPhTE20HMRvoYyiHW4ovkvW8Obf7iqYb2FG2me5J0v5HsFi7e97ChynQX2wQZ0PRYHm_Cdwo-nbV8zNdwy2GEnYe6BmyBC1DPzLbTB98VyChVIHGAak7WY_NRtz4VLl6gPqE1aOkHw64-jAmN217gekRN2mk3jtK77cK9RJWsTEOK523_JQvwlJ_ScxAwONO1DwTtQANhS07eHuu4Ftl9AlZcyp4bL87ckS5TttmR-bJm0zMhaemM_Jh',
+  Electricity: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=640&q=80',
+  Heating:     'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=640&q=80',
+}
 
 const toMinutes = (t) => {
   const [h, m] = t.split(':').map(Number)
   return h * 60 + m
 }
-
 
 const selectionSegments = computed(() => {
   const s = (toMinutes(startTime.value) / 1440) * 100
@@ -132,10 +141,10 @@ fetchTips()
         </div>
       </div>
 
-      <!-- timeline  --> 
+      <!-- Timeline -->
       <div class="relative">
-          <br>
-        <!-- Colour zones for timeline -->
+        <br>
+        <!-- Colour zones -->
         <div class="relative h-12 rounded-xl overflow-hidden flex">
           <div class="" style="width:25%;background:#16a34a"  title="00:00–06:00 Off-peak"></div>
           <div class="bg-orange-500" style="width:4.17%"  title="06:00–07:00 Standard"></div>
@@ -148,7 +157,7 @@ fetchTips()
           <div class="" style="width:4.17%;background:#16a34a"  title="23:00–24:00 Off-peak"></div>
         </div>
 
-        <!-- cool glass effect over timeline --> 
+        <!-- Glass overlay -->
         <div
           v-for="(seg, i) in selectionSegments"
           :key="i"
@@ -156,7 +165,7 @@ fetchTips()
           :style="{ left: seg.left + '%', width: seg.width + '%' }"
         ></div>
 
-        <!-- users'time selected shown above timeline -->
+        <!-- Selected time label -->
         <div
           class="absolute top-0 text-[11px] font-bold text-surface bg-surface/20 backdrop-blur-sm px-4 py-0.5 rounded-md whitespace-nowrap transition-all duration-300"
           :style="{ left: selectionSegments[0].left + '%', transform: 'translateX(-10%)' }"
@@ -164,7 +173,7 @@ fetchTips()
           {{ selectionLabel }}
         </div>
 
-        <!-- Hour markers at bottom of timeline -->
+        <!-- Hour markers -->
         <div class="flex justify-between mt-2 px-0.5">
           <span class="text-[10px] text-surface/60">0:00</span>
           <span class="text-[10px] text-surface/60">6:00</span>
@@ -173,9 +182,8 @@ fetchTips()
           <span class="text-[10px] text-surface/60">24:00</span>
         </div>
       </div>
-
     </div>
-    <!--Timeline card -->
+    <!-- /Timeline card -->
 
     <h1 class="text-3xl font-extrabold text-on-background tracking-tight">Your Personalised Tips</h1>
     <p v-if="data" class="text-on-surface-variant text-sm mt-1">
@@ -204,6 +212,8 @@ fetchTips()
 
   <!-- Cards -->
   <template v-else-if="data">
+
+    <!-- Summary stats -->
     <div class="flex flex-wrap gap-4 mb-8">
       <div class="bg-primary-container/40 border border-outline-variant rounded-xl px-6 py-4 text-center">
         <p class="text-xs font-bold text-primary uppercase tracking-wider mb-1">Potential Saving</p>
@@ -215,44 +225,67 @@ fetchTips()
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- ── Tips grid — matches main view card style ── -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
       <div
         v-for="tip in data.tips"
         :key="tip.title"
-        class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 shadow-sm hover:shadow-md transition-shadow group flex flex-col"
+        class="bg-surface-container-lowest border border-outline-variant/40 rounded-[16px]
+               overflow-hidden shadow-sm hover:shadow-md transition-all group"
       >
-        <div class="flex items-start gap-4 mb-4">
-          <div class="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center text-primary flex-shrink-0 group-hover:opacity-80 transition-opacity">
-            <span class="material-symbols-outlined text-2xl">
-              {{ categoryIcons[tip.category] ?? 'lightbulb' }}
+        <!-- Hero image -->
+        <div class="h-36 relative overflow-hidden">
+          <img
+            :src="tip.imageUrl || categoryImages[tip.category] || categoryImages['Electricity']"
+            :alt="tip.title"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <!-- Gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          <!-- Badges -->
+          <div class="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
+            <span
+              class="px-2 py-0.5 text-[10px] font-bold uppercase rounded-full tracking-wider"
+              :class="[
+                impactConfig[tip.impact]?.bg ?? 'bg-surface-container',
+                impactConfig[tip.impact]?.text ?? 'text-on-surface-variant'
+              ]"
+            >
+              {{ impactConfig[tip.impact]?.label ?? tip.impact }}
             </span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex flex-wrap gap-1.5 mb-2">
-              <span
-                class="px-2 py-0.5 text-[10px] font-bold uppercase rounded tracking-wider"
-                :class="impactConfig[tip.impact]?.classes ?? 'bg-surface-container text-on-surface-variant'"
-              >
-                {{ impactConfig[tip.impact]?.label ?? tip.impact }}
-              </span>
-              <span
-                v-if="tip.timeLabel"
-                class="px-2 py-0.5 bg-primary-container text-on-primary-container text-[10px] font-bold uppercase rounded tracking-wider"
-              >
-                {{ tip.timeLabel }}
-              </span>
-            </div>
-            <h4 class="text-base font-bold text-on-surface group-hover:text-primary transition-colors leading-snug">
-              {{ tip.title }}
-            </h4>
+            <span
+              v-if="tip.timeLabel"
+              class="px-2 py-0.5 bg-primary/90 text-on-primary text-[10px] font-bold uppercase rounded-full tracking-wider"
+            >
+              {{ tip.timeLabel }}
+            </span>
           </div>
         </div>
 
-        <p class="text-sm text-on-surface-variant leading-relaxed flex-1">{{ tip.description }}</p>
+        <!-- Card body -->
+        <div class="p-4">
+          <span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/60 mb-1 block">
+            {{ tip.category }}
+          </span>
+          <h4 class="text-sm font-bold text-on-surface mb-1.5 group-hover:text-primary transition-colors leading-snug">
+            {{ tip.title }}
+          </h4>
+          <p class="text-xs text-on-surface-variant leading-relaxed line-clamp-2 mb-3">
+            {{ tip.description }}
+          </p>
 
-        <div class="mt-4 pt-4 border-t border-outline-variant/40 flex items-center justify-between">
-          <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">{{ tip.category }}</span>
-          <span v-if="tip.saving" class="text-xs font-bold text-primary">{{ tip.saving }}</span>
+          <!-- Footer row -->
+          <div class="flex items-center justify-between pt-3 border-t border-outline-variant/15 gap-2">
+            <span class="flex items-center gap-1.5 text-[10px] font-bold text-on-surface-variant/60 uppercase tracking-widest">
+              <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1">
+                {{ categoryIcons[tip.category] ?? 'lightbulb' }}
+              </span>
+              {{ tip.category }}
+            </span>
+            <span v-if="tip.saving" class="text-xs font-bold text-primary">
+              {{ tip.saving }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -266,7 +299,7 @@ fetchTips()
       <div class="flex flex-wrap justify-center gap-4">
         <button
           class="bg-primary text-on-primary font-bold py-3 px-8 rounded-md hover:opacity-90 transition-opacity flex items-center gap-2"
-          @click="currentView='uploadMeter'"
+          @click="currentView = 'uploadMeter'"
         >
           <span class="material-symbols-outlined">bolt</span>
           Connect My Meter
@@ -278,5 +311,5 @@ fetchTips()
     </div>
   </template>
 
-  <UploadMeterForm v-if="currentView === 'uploadMeter'" @back="currentView = 'main'"/>
+  <UploadMeterForm v-if="currentView === 'uploadMeter'" @back="currentView = 'main'" />
 </template>

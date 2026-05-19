@@ -9,13 +9,13 @@ services:
     ports:
       - 9876:9876
   
-  #frontend:
-  #  build: ./frontend
-  #  container_name: "frontend"
-  #  volumes:
-  #    - ./frontend:/frontend
-  #    - /frontend/node_modules
-  #  ports:
-  #    - 5173:5173
+  frontend:
+    build: ./frontend
+    container_name: "frontend"
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    ports:
+      - 5173:5173
 
   
