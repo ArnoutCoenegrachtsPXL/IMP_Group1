@@ -36,7 +36,7 @@ namespace backend_NET.Models
 
         public IEnumerable<MeterReading> GetReadingsOf(User user)
         {
-            return _context.MeterReadings.Include(r => r.User).Where(r =>  r.User == user);
+            return _context.MeterReadings.Include(r => r.User).Where(r => r.User.Id == user.Id);
         }
 
         public IEnumerable<MeterReading> GetRecentReadingsOf(User user)

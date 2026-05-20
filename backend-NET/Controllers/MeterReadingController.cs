@@ -43,6 +43,7 @@ namespace backend_NET.Controllers
 
             MeterReading newReading = _mapper.Map<MeterReading>(model);
             newReading.User = _userRepository.GetUser(model.UserId);
+            newReading.HouseholdSize = newReading.User?.HouseHoldSize ?? 1;
             newReading.MeterImage = bytes;
             newReading.Time = MeterReading.ExtractTimestamp(bytes);
             newReading.Status = Status.PENDING;
