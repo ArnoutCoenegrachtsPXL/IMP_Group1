@@ -43,6 +43,37 @@ function applySchedule() {
   }, 600)
 }
 
+// Pre-filtered tips passed into ScheduledTip so it doesn't need the backend API
+const scheduledTips = computed(() => {
+  const [fh, fm] = scheduleFrom.value.split(':').map(Number)
+  const [th, tm] = scheduleTo.value.split(':').map(Number)
+  const fromMin = fh * 60 + fm
+  const toMin   = th * 60 + tm
+
+  return ALL_TIPS.filter(tip => {
+    // Tips with no time window are always relevant
+    if (tip.windowStart === null) return true
+    const s = tip.windowStart * 60
+    const e = tip.windowEnd   * 60
+    // Check overlap between [fromMin, toMin] and [s, e]
+    if (s < e) {
+      // Normal range (e.g. 11:00–15:00)
+      return fromMin < e && toMin > s
+    } else {
+      // Overnight range (e.g. 22:00–06:00)
+      return fromMin < e || toMin > s
+    }
+  }).map(tip => ({
+    title:       tip.title,
+    description: tip.desc,
+    category:    tip.label,
+    impact:      tip.impact,
+    imageUrl:    tip.img,
+    timeLabel:   tip.timeWindow,
+    saving:      null,
+  }))
+})
+
 // ─────────────────────────────────────────────────────────────────────────────
 // SAVINGS ALGORITHM
 // Estimates monthly savings based on:
@@ -105,7 +136,7 @@ const ALL_TIPS = [
     title: 'Optimise Peak Hour Cooling',
     desc: 'Lower your AC by 2°C between 4–6 PM to avoid peak tariff pricing and reduce grid strain.',
     img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDav2CwnH7_sK8zJshe51W_8peePokZF0VTHkhWK4i9wTp6MyPQHEPLQwlT7VIgerogydLfGW2KApRyJz3yJ12ag0hVp0Qu30a9fJWKMeYzJV3IRKeiV2oWa87-F4U-Ax6lGsdMOI6ZvnRpLpgSJmFcXoENTx8zTeXXCl5391lz6ncX43yLvfGfmYlKhKYHzBZM8gpSeZXbXmeBMfDlCX4dU8vlqKVRW8ecGpaeqHHR_uXAbSiG9eFv59K8AMOMPzzBhUthr6eSoNHA',
-    action: null,
+    action: 'electricity',
   },
   {
     id: 'eco-wash',
@@ -352,7 +383,14 @@ function closeAdviceModal() {
     <SolarSavingTip       v-if="currentView === 'solar'"       @back="currentView = 'main'" />
     <KitchenSavingTip     v-if="currentView === 'kitchen'"     @back="currentView = 'main'" />
     <LaundrySavingTip     v-if="currentView === 'laundry'"     @back="currentView = 'main'" />
-    <ScheduledTip         v-if="currentView === 'schedule'"    :timeFrom="scheduleFrom" :timeTo="scheduleTo" @back="currentView = 'main'" />
+    <ScheduledTip
+      v-if="currentView === 'schedule'"
+      :timeFrom="scheduleFrom"
+      :timeTo="scheduleTo"
+      :localTips="scheduledTips"
+      :estimatedSavings="estimatedSavings"
+      @back="currentView = 'main'"
+    />
 
     <!-- ── Main view ──────────────────────────────────────────────────────── -->
     <div v-if="currentView === 'main'" class="space-y-8">
@@ -583,14 +621,14 @@ function closeAdviceModal() {
                 {{ completedTips.includes(tip.id) ? 'Done' : 'Mark done' }}
               </button>
 
-              <!-- Details button -->
+              <!-- Details button — navigates to category sub-view (from old project) -->
               <button v-if="tip.action"
                 class="text-primary text-xs font-bold flex items-center gap-1 hover:opacity-70 transition-opacity"
                 @click="currentView = tip.action"
                 aria-label="View full details"
               >
                 <span>Details</span>
-                <span class="material-symbols-outlined text-[13px]">arrow_forward</span>
+                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
               </button>
             </div>
           </div>

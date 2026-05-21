@@ -3,8 +3,10 @@ import { ref, computed } from 'vue'
 import UploadMeterForm from '@/components/UploadMeterComponents/UploadMeterForm.vue'
 
 const props = defineProps({
-  timeFrom: { type: String, default: '08:00' },
-  timeTo:   { type: String, default: '22:00' },
+  timeFrom:          { type: String, default: '08:00' },
+  timeTo:            { type: String, default: '22:00' },
+  localTips:         { type: Array,  default: () => [] },
+  estimatedSavings:  { type: Object, default: () => ({ symbol: 'R', amount: 0, percentage: 0 }) },
 })
 
 const emit = defineEmits(['back', 'navigate'])
@@ -69,6 +71,20 @@ const selectionLabel = computed(() => {
 async function fetchTips() {
   loading.value = true
   error.value   = false
+
+  // ── Primary: use locally pre-filtered tips passed from EnergyTipsView ────
+  if (props.localTips && props.localTips.length > 0) {
+    data.value = {
+      scheduleSummary: `${props.timeFrom} – ${props.timeTo}`,
+      potentialSaving: `${props.estimatedSavings.symbol}${props.estimatedSavings.amount}/mo`,
+      tipCount:        props.localTips.length,
+      tips:            props.localTips,
+    }
+    loading.value = false
+    return
+  }
+
+  // ── Fallback: try the backend API ─────────────────────────────────────────
   try {
     const res = await fetch('https://localhost:7126/api/tips/schedule', {
       method: 'POST',
@@ -78,7 +94,7 @@ async function fetchTips() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     data.value = await res.json()
   } catch (e) {
-    console.error(e)
+    console.warn('Schedule API unavailable, no local tips provided.', e)
     error.value = true
   } finally {
     loading.value = false
@@ -189,6 +205,7 @@ fetchTips()
     <p v-if="data" class="text-on-surface-variant text-sm mt-1">
       Based on your active hours:
       <span class="font-bold text-primary">{{ data.scheduleSummary }}</span>
+      <span v-if="data.tipCount === 0" class="ml-2 text-amber-600 font-medium">— no time-specific tips for this window, showing all general tips.</span>
     </p>
   </div>
 
